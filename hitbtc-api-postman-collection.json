@@ -1,0 +1,1295 @@
+{
+    "id": "518ed0f6b0de82c12895545fd9980382",
+    "name": "HitBTC API",
+    "description": null,
+    "auth": null,
+    "events": null,
+    "variables": [],
+    "order": [],
+    "folders_order": [],
+    "folders": [],
+    "requests": [
+        {
+            "id": "b7d6aefefa6588244921358a55f1b08d",
+            "name": "Available Currency Symbols",
+            "url": "https\/api\/2\/public\/symbol",
+            "description": "Available currency symbols.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "5bbd1c539f269d1f4c53dd37c4467917",
+            "name": "Get Symbol Info",
+            "url": "https\/api\/2\/public\/symbol\/{symbol}",
+            "description": "Get symbol info.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "748052fa238c460def0ec69f046734e5",
+            "name": "Available Currencies",
+            "url": "https\/api\/2\/public\/currency",
+            "description": "Available currencies.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "c933c36cb2460f7ab53c762c06f590ca",
+            "name": "Get Currency Info",
+            "url": "https\/api\/2\/public\/currency\/{currency}",
+            "description": "Get currency info.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "fe41746a4fdf459366799c44a658c93e",
+            "name": "Ticker List For All Symbols",
+            "url": "https\/api\/2\/public\/ticker",
+            "description": "Ticker list for all symbols.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "8da7b3b1c3f5ec8e649cec7b41942ab4",
+            "name": "Ticker For Symbol",
+            "url": "https\/api\/2\/public\/ticker\/{symbol}",
+            "description": "Ticker for symbol.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "900475eb40ccdddf023b2e9f2ed4590a",
+            "name": "Trades",
+            "url": "https\/api\/2\/public\/trades\/{symbol}",
+            "description": "Trades.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "sort",
+                    "description": "Sort direction",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "by",
+                    "description": "Filter field",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "from",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "till",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "offset",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "1f72811dfd74aa50d8744bf93b95827b",
+            "name": "Orderbook",
+            "url": "https\/api\/2\/public\/orderbook\/{symbol}",
+            "description": "Orderbook.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "951d3ff2bab34d4c74078e0bcdb7caf6",
+            "name": "Candles",
+            "url": "https\/api\/2\/public\/candles\/{symbol}",
+            "description": "Candles.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "period",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "f212483a051fcad31c0d2276bbaa78a8",
+            "name": "List Your Current Open Orders",
+            "url": "https\/api\/2\/order",
+            "description": "List your current open orders.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "12ff9521ae7cfb085d47a269c90dbf8e",
+            "name": "Create New Order",
+            "url": "https\/api\/2\/order",
+            "description": "Create new order.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "post",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "side",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "type",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "timeInForce",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "quantity",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "price",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "stopPrice",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "expireTime",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "strictValidate",
+                    "description": "Strict validate amount and price precision without rounding",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "448b1704a8c90568240ebe05d3c75c52",
+            "name": "Cancel All Open Orders",
+            "url": "https\/api\/2\/order",
+            "description": "Cancel all open orders.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "delete",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "4c303cb59bc6c20f0de2384fb7f40d12",
+            "name": "Get A Single Order By ClientOrderId",
+            "url": "https\/api\/2\/order\/{clientOrderId}",
+            "description": "Get a single order by clientorderid.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "wait",
+                    "description": "Long polling wait timeout in milliseconds. Max 60000.",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "c57c5154604084fba410f4fd4d37b48e",
+            "name": "Create New Order",
+            "url": "https\/api\/2\/order\/{clientOrderId}",
+            "description": "Create new order.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "put",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "side",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "type",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "timeInForce",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "quantity",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "price",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "stopPrice",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "expireTime",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "strictValidate",
+                    "description": "Strict validate amount and price precision without rounding",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "c18818ff1b550077b190f0793acaf815",
+            "name": "Cancel Order",
+            "url": "https\/api\/2\/order\/{clientOrderId}",
+            "description": "Cancel order.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "delete",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "8883cde13f916e7ce013b9a17b379ffa",
+            "name": "Cancel Replace Order",
+            "url": "https\/api\/2\/order\/{clientOrderId}",
+            "description": "Cancel replace order.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "patch",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "quantity",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "price",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "requestClientId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "cea01bb1d5bdb63ac949cceeeb0d9cfd",
+            "name": "Get Trading Balance",
+            "url": "https\/api\/2\/trading\/balance",
+            "description": "Get trading balance.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "2148fb7c400ed827629327abdbced702",
+            "name": "Get Trading Fee Rate",
+            "url": "https\/api\/2\/trading\/fee\/{symbol}",
+            "description": "Get trading fee rate.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "ae75e13899f4e00cccf0a88338bc2551",
+            "name": "Get Historical Trades",
+            "url": "https\/api\/2\/history\/trades",
+            "description": "Get historical trades.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "sort",
+                    "description": "Sort direction",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "by",
+                    "description": "Filter field",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "from",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "till",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "offset",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "22ed9862f8eca0dd5c274660bc770e89",
+            "name": "Get Historical Orders",
+            "url": "https\/api\/2\/history\/order",
+            "description": "Get historical orders.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "symbol",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "from",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "till",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "offset",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "clientOrderId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "fd24b5e915b86d1200eaacb29fa0437e",
+            "name": "Get Historical Trades By Specified Order",
+            "url": "https\/api\/2\/history\/order\/{id}\/trades",
+            "description": "Get historical trades by specified order.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "id",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "eb12941615b8a514d524e8052fee130a",
+            "name": "Get Main Acccount Balance",
+            "url": "https\/api\/2\/account\/balance",
+            "description": "Get main acccount balance.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "37a111ec1b8a95d47eff4966736b51d3",
+            "name": "Get Account Transactions",
+            "url": "https\/api\/2\/account\/transactions",
+            "description": "Get account transactions.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "sort",
+                    "description": "Sort direction",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "by",
+                    "description": "Filter field",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "from",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "till",
+                    "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "limit",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "offset",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "e7110b280d6e3a033f94588d2121bf87",
+            "name": "Get Account Transaction By Id",
+            "url": "https\/api\/2\/account\/transactions\/{id}",
+            "description": "Get account transaction by id.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "id",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "ea849a0505db4ee694f8a2f6ceae4232",
+            "name": "Withdraw Crypro",
+            "url": "https\/api\/2\/account\/crypto\/withdraw",
+            "description": "Withdraw crypro.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "post",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "amount",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "address",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "paymentId",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "networkFee",
+                    "description": "Suggest preferred network fee.",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "includeFee",
+                    "description": "If enabled, then fee will be subtracted from amount.",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "autoCommit",
+                    "description": "If Auto commit disabled you should commit it or rollback within 1 hour. After expires 1 hour, the transaction will automatically be rolled back.",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "b08dc32de425a41cfb5139b1b3c352c1",
+            "name": "Commit Withdraw Crypro",
+            "url": "https\/api\/2\/account\/crypto\/withdraw\/{id}",
+            "description": "Commit withdraw crypro.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "put",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "id",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "ca4fcb10a88e994aecf3d5b738f06889",
+            "name": "Rollback Withdraw Crypro",
+            "url": "https\/api\/2\/account\/crypto\/withdraw\/{id}",
+            "description": "Rollback withdraw crypro.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "delete",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "id",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "a28feb66ef3e9228953b5d69e416bd13",
+            "name": "Get Deposit Crypro Address",
+            "url": "https\/api\/2\/account\/crypto\/address\/{currency}",
+            "description": "Get deposit crypro address.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "get",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "38b2ff09ca9b33b9aa54410ba48dfae4",
+            "name": "Create New Deposit Crypro Address",
+            "url": "https\/api\/2\/account\/crypto\/address\/{currency}",
+            "description": "Create new deposit crypro address.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "post",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        },
+        {
+            "id": "4d426806d2bc059d77ef0faa0900e804",
+            "name": "Transfer Amount To Trading",
+            "url": "https\/api\/2\/account\/transfer",
+            "description": "Transfer amount to trading.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": null,
+            "method": "post",
+            "pathVariableData": [],
+            "queryParams": [
+                {
+                    "key": "currency",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "amount",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                },
+                {
+                    "key": "type",
+                    "description": "",
+                    "value": "",
+                    "equals": true,
+                    "enabled": true
+                }
+            ],
+            "auth": null,
+            "events": null,
+            "folder": null,
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "responses": [],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "rawModeData": ""
+        }
+    ]
+}
