@@ -1,0 +1,1130 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "",
+        "title": "HitBTC API",
+        "description": "Create API keys in your profile https:\/\/hitbtc.com\/settings\/api-keys and use public API key as username and secret as password to authorize.\n",
+        "termsOfService": ""
+    },
+    "servers": [
+        "https\/api\/2"
+    ],
+    "paths": {
+        "\/public\/symbol": {
+            "get": {
+                "summary": "Available Currency Symbols",
+                "description": "Available currency symbols.",
+                "operationId": "GetPublicSymbol",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/public\/symbol\/{symbol}": {
+            "get": {
+                "summary": "Get Symbol Info",
+                "description": "Get symbol info.",
+                "operationId": "GetPublicSymbolSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/public\/currency": {
+            "get": {
+                "summary": "Available Currencies",
+                "description": "Available currencies.",
+                "operationId": "GetPublicCurrency",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/public\/currency\/{currency}": {
+            "get": {
+                "summary": "Get Currency Info",
+                "description": "Get currency info.",
+                "operationId": "GetPublicCurrencyCurrency",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/public\/ticker": {
+            "get": {
+                "summary": "Ticker List For All Symbols",
+                "description": "Ticker list for all symbols.",
+                "operationId": "GetPublicTicker",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/public\/ticker\/{symbol}": {
+            "get": {
+                "summary": "Ticker For Symbol",
+                "description": "Ticker for symbol.",
+                "operationId": "GetPublicTickerSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/public\/trades\/{symbol}": {
+            "get": {
+                "summary": "Trades",
+                "description": "Trades.",
+                "operationId": "GetPublicTradesSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort direction"
+                    },
+                    {
+                        "name": "by",
+                        "in": "query",
+                        "description": "Filter field"
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "till",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/public\/orderbook\/{symbol}": {
+            "get": {
+                "summary": "Orderbook",
+                "description": "Orderbook.",
+                "operationId": "GetPublicOrderbookSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/public\/candles\/{symbol}": {
+            "get": {
+                "summary": "Candles",
+                "description": "Candles.",
+                "operationId": "GetPublicCandlesSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/order": {
+            "get": {
+                "summary": "List Your Current Open Orders",
+                "description": "List your current open orders.",
+                "operationId": "GetOrder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create New Order",
+                "description": "Create new order.",
+                "operationId": "PostOrder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "clientOrderId",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "symbol",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "side",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "timeInForce",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "stopPrice",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "expireTime",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "strictValidate",
+                        "in": "formData",
+                        "description": "Strict validate amount and price precision without rounding"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Cancel All Open Orders",
+                "description": "Cancel all open orders.",
+                "operationId": "DeleteOrder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "formData",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/order\/{clientOrderId}": {
+            "get": {
+                "summary": "Get A Single Order By ClientOrderId",
+                "description": "Get a single order by clientorderid.",
+                "operationId": "GetOrderClientorder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "clientOrderId",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "wait",
+                        "in": "query",
+                        "description": "Long polling wait timeout in milliseconds. Max 60000."
+                    }
+                ]
+            },
+            "put": {
+                "summary": "Create New Order",
+                "description": "Create new order.",
+                "operationId": "PutOrderClientorder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "clientOrderId",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "symbol",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "side",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "timeInForce",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "stopPrice",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "expireTime",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "strictValidate",
+                        "in": "formData",
+                        "description": "Strict validate amount and price precision without rounding"
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Cancel Order",
+                "description": "Cancel order.",
+                "operationId": "DeleteOrderClientorder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "clientOrderId",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            },
+            "patch": {
+                "summary": "Cancel Replace Order",
+                "description": "Cancel replace order.",
+                "operationId": "PatchOrderClientorder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "clientOrderId",
+                        "in": "path",
+                        "description": ""
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "price",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "requestClientId",
+                        "in": "formData",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/trading\/balance": {
+            "get": {
+                "summary": "Get Trading Balance",
+                "description": "Get trading balance.",
+                "operationId": "GetTradingBalance",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/trading\/fee\/{symbol}": {
+            "get": {
+                "summary": "Get Trading Fee Rate",
+                "description": "Get trading fee rate.",
+                "operationId": "GetTradingFeeSymbol",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/history\/trades": {
+            "get": {
+                "summary": "Get Historical Trades",
+                "description": "Get historical trades.",
+                "operationId": "GetHistoryTrades",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort direction"
+                    },
+                    {
+                        "name": "by",
+                        "in": "query",
+                        "description": "Filter field"
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "till",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/history\/order": {
+            "get": {
+                "summary": "Get Historical Orders",
+                "description": "Get historical orders.",
+                "operationId": "GetHistoryOrder",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "symbol",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "till",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "clientOrderId",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/history\/order\/{id}\/trades": {
+            "get": {
+                "summary": "Get Historical Trades By Specified Order",
+                "description": "Get historical trades by specified order.",
+                "operationId": "GetHistoryOrderTrades",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/account\/balance": {
+            "get": {
+                "summary": "Get Main Acccount Balance",
+                "description": "Get main acccount balance.",
+                "operationId": "GetAccountBalance",
+                "deprecated": 0,
+                "parameters": []
+            }
+        },
+        "\/account\/transactions": {
+            "get": {
+                "summary": "Get Account Transactions",
+                "description": "Get account transactions.",
+                "operationId": "GetAccountTransactions",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort direction"
+                    },
+                    {
+                        "name": "by",
+                        "in": "query",
+                        "description": "Filter field"
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "till",
+                        "in": "query",
+                        "description": "If filter by timestamp, then datetime in iso format or timestamp in millisecond otherwise trade id"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": ""
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/account\/transactions\/{id}": {
+            "get": {
+                "summary": "Get Account Transaction By Id",
+                "description": "Get account transaction by id.",
+                "operationId": "GetAccountTransactions",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/account\/crypto\/withdraw": {
+            "post": {
+                "summary": "Withdraw Crypro",
+                "description": "Withdraw crypro.",
+                "operationId": "PostAccountCryptoWithdraw",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "amount",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "address",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "paymentId",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "networkFee",
+                        "in": "formData",
+                        "description": "Suggest preferred network fee."
+                    },
+                    {
+                        "name": "includeFee",
+                        "in": "formData",
+                        "description": "If enabled, then fee will be subtracted from amount."
+                    },
+                    {
+                        "name": "autoCommit",
+                        "in": "formData",
+                        "description": "If Auto commit disabled you should commit it or rollback within 1 hour. After expires 1 hour, the transaction will automatically be rolled back."
+                    }
+                ]
+            }
+        },
+        "\/account\/crypto\/withdraw\/{id}": {
+            "put": {
+                "summary": "Commit Withdraw Crypro",
+                "description": "Commit withdraw crypro.",
+                "operationId": "PutAccountCryptoWithdraw",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Rollback Withdraw Crypro",
+                "description": "Rollback withdraw crypro.",
+                "operationId": "DeleteAccountCryptoWithdraw",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/account\/crypto\/address\/{currency}": {
+            "get": {
+                "summary": "Get Deposit Crypro Address",
+                "description": "Get deposit crypro address.",
+                "operationId": "GetAccountCryptoAddressCurrency",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create New Deposit Crypro Address",
+                "description": "Create new deposit crypro address.",
+                "operationId": "PostAccountCryptoAddressCurrency",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "path",
+                        "description": ""
+                    }
+                ]
+            }
+        },
+        "\/account\/transfer": {
+            "post": {
+                "summary": "Transfer Amount To Trading",
+                "description": "Transfer amount to trading.",
+                "operationId": "PostAccountTransfer",
+                "deprecated": 0,
+                "parameters": [
+                    {
+                        "name": "currency",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "amount",
+                        "in": "formData",
+                        "description": ""
+                    },
+                    {
+                        "name": "type",
+                        "in": "formData",
+                        "description": ""
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Currency": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "fullName": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "crypto": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payinEnabled": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payinPaymentId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payinConfirmations": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payoutEnabled": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payoutFee": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "payoutIsPaymentId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "delisted": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "transferEnabled": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Balance": {
+                "type": "object",
+                "properties": {
+                    "currency": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "available": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "reserved": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Ticker": {
+                "type": "object",
+                "properties": {
+                    "symbol": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "ask": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "bid": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "last": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "low": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "high": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "open": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "volume": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "volumeQuoute": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "timestamp": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "PublicTrade": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "price": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "quantity": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "side": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "timestamp": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Orderbook": {
+                "type": "object",
+                "properties": {
+                    "ask": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "bid": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "timestamp": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "TradingFee": {
+                "type": "object",
+                "properties": {
+                    "takeLiquidityRate": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "provideLiquidityRate": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Symbol": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "baseCurrency": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "quoteCurrency": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "quantityIncrement": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "tickSize": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "takeLiquidityRate": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "provideLiquidityRate": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "feeCurrency": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "clientOrderId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "symbol": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "side": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "status": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "type": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "timeInForce": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "quantity": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "price": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "cumQuantity": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "createdAt": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "updatedAt": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "stopPrice": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "expireTime": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "tradesReport": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Trade": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "clientOrderId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "orderId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "symbol": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "side": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "quantity": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "fee": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "price": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "timestamp": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Transaction": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "index": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "currency": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "amount": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "fee": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "address": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "paymentId": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "hash": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "status": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "type": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "createdAt": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "updatedAt": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Address": {
+                "type": "object",
+                "properties": {
+                    "address": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "paymentId": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "WithdrawConfirm": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Candle": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "open": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "close": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "min": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "max": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "volume": {
+                        "description": "",
+                        "type": "post"
+                    },
+                    "volumeQuote": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "description": "",
+                        "type": "post"
+                    }
+                }
+            }
+        }
+    }
+}
