@@ -1,0 +1,71 @@
+{
+    "name": "HitBTC",
+    "description": "We bring cutting-edge technology to the Bitcoin ecosystem!    Hitbtc provides an excellent trading terminal based on professional trading software which is suitable for new and sophisticated users.    As one of our valued customers, we understand how i...",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/hitbtc-logo.png",
+    "tags": [
+        "api provider",
+        "blockchain",
+        "general data",
+        "have api",
+        "marketplaces"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/hitbtc\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "HitBTC API",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/hitbtc-logo.png",
+            "humanURL": "https:\/\/hitbtc.com",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/openapis\/hitbtc-api.json"
+                },
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/hitbtc-api-openapi.json"
+                },
+                {
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/hitbtc-api-postman-collection.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Blog RSS",
+            "url": "https:\/\/blog.hitbtc.com\/feed\/"
+        },
+        {
+            "type": "Github",
+            "url": "https:\/\/github.com\/hitbtc-com"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/hitbtc"
+        },
+        {
+            "type": "Blog",
+            "url": "https:\/\/blog.hitbtc.com\/"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/hitbtc"
+        },
+        {
+            "type": "Documentation",
+            "url": "https:\/\/api.hitbtc.com\/api\/2\/explore\/"
+        },
+        {
+            "type": "Website",
+            "url": "https:\/\/hitbtc.com"
+        }
+    ]
+}
