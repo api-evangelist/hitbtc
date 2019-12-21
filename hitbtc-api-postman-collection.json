@@ -1,5 +1,5 @@
 {
-    "id": "518ed0f6b0de82c12895545fd9980382",
+    "id": "acecd02795ef58a5937dd31372d188f8",
     "name": "HitBTC API",
     "description": null,
     "auth": null,
@@ -10,7 +10,7 @@
     "folders": [],
     "requests": [
         {
-            "id": "b7d6aefefa6588244921358a55f1b08d",
+            "id": "1059665ae98392093bb27f0f15617bd4",
             "name": "Available Currency Symbols",
             "url": "https\/api\/2\/public\/symbol",
             "description": "Available currency symbols.",
@@ -29,11 +29,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "5bbd1c539f269d1f4c53dd37c4467917",
+            "id": "fa99e960152a557a574e44c44b0128a5",
             "name": "Get Symbol Info",
             "url": "https\/api\/2\/public\/symbol\/{symbol}",
             "description": "Get symbol info.",
@@ -60,11 +60,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "748052fa238c460def0ec69f046734e5",
+            "id": "7faa25a284f235fe4d2863ea5588242f",
             "name": "Available Currencies",
             "url": "https\/api\/2\/public\/currency",
             "description": "Available currencies.",
@@ -83,11 +83,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "c933c36cb2460f7ab53c762c06f590ca",
+            "id": "aa3def3013445fee3b2e530bb9d61362",
             "name": "Get Currency Info",
             "url": "https\/api\/2\/public\/currency\/{currency}",
             "description": "Get currency info.",
@@ -114,11 +114,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "fe41746a4fdf459366799c44a658c93e",
+            "id": "d5f72caabd3278835fcba9189e619ada",
             "name": "Ticker List For All Symbols",
             "url": "https\/api\/2\/public\/ticker",
             "description": "Ticker list for all symbols.",
@@ -137,11 +137,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "8da7b3b1c3f5ec8e649cec7b41942ab4",
+            "id": "5e1c8356b20cf4ecd439c814cedfea72",
             "name": "Ticker For Symbol",
             "url": "https\/api\/2\/public\/ticker\/{symbol}",
             "description": "Ticker for symbol.",
@@ -168,11 +168,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "900475eb40ccdddf023b2e9f2ed4590a",
+            "id": "9a727f54ce81d74a645cbbd79c9bc095",
             "name": "Trades",
             "url": "https\/api\/2\/public\/trades\/{symbol}",
             "description": "Trades.",
@@ -241,11 +241,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "1f72811dfd74aa50d8744bf93b95827b",
+            "id": "da80a12e9d1471edce21df63599af7f4",
             "name": "Orderbook",
             "url": "https\/api\/2\/public\/orderbook\/{symbol}",
             "description": "Orderbook.",
@@ -279,11 +279,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "951d3ff2bab34d4c74078e0bcdb7caf6",
+            "id": "24815927f57172b91b70f48f38be5157",
             "name": "Candles",
             "url": "https\/api\/2\/public\/candles\/{symbol}",
             "description": "Candles.",
@@ -324,11 +324,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "f212483a051fcad31c0d2276bbaa78a8",
+            "id": "58f6d1d4c675339ed629e61c3fcacda4",
             "name": "List Your Current Open Orders",
             "url": "https\/api\/2\/order",
             "description": "List your current open orders.",
@@ -355,11 +355,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "12ff9521ae7cfb085d47a269c90dbf8e",
+            "id": "6ca4034d657b4f22cf4e81e8eb4c1be6",
             "name": "Create New Order",
             "url": "https\/api\/2\/order",
             "description": "Create new order.",
@@ -449,11 +449,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "448b1704a8c90568240ebe05d3c75c52",
+            "id": "1ece8291a54d42f07d3432198c297994",
             "name": "Cancel All Open Orders",
             "url": "https\/api\/2\/order",
             "description": "Cancel all open orders.",
@@ -480,11 +480,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "4c303cb59bc6c20f0de2384fb7f40d12",
+            "id": "5e838294bf7e284a43a9e9940336735a",
             "name": "Get A Single Order By ClientOrderId",
             "url": "https\/api\/2\/order\/{clientOrderId}",
             "description": "Get a single order by clientorderid.",
@@ -518,11 +518,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "c57c5154604084fba410f4fd4d37b48e",
+            "id": "fa134155b485296fa057928607b7f0f1",
             "name": "Create New Order",
             "url": "https\/api\/2\/order\/{clientOrderId}",
             "description": "Create new order.",
@@ -612,11 +612,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "c18818ff1b550077b190f0793acaf815",
+            "id": "31db0bca3277bb3ff2e44d2ba89ea32e",
             "name": "Cancel Order",
             "url": "https\/api\/2\/order\/{clientOrderId}",
             "description": "Cancel order.",
@@ -643,11 +643,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "8883cde13f916e7ce013b9a17b379ffa",
+            "id": "8a45582750fce1ec1b344b525a5b3e91",
             "name": "Cancel Replace Order",
             "url": "https\/api\/2\/order\/{clientOrderId}",
             "description": "Cancel replace order.",
@@ -695,11 +695,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "cea01bb1d5bdb63ac949cceeeb0d9cfd",
+            "id": "ad8969753bfe75e66dbf941903a6d3a5",
             "name": "Get Trading Balance",
             "url": "https\/api\/2\/trading\/balance",
             "description": "Get trading balance.",
@@ -718,11 +718,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "2148fb7c400ed827629327abdbced702",
+            "id": "1c1b99a7de9350d2a41a9692a2b745d9",
             "name": "Get Trading Fee Rate",
             "url": "https\/api\/2\/trading\/fee\/{symbol}",
             "description": "Get trading fee rate.",
@@ -749,11 +749,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "ae75e13899f4e00cccf0a88338bc2551",
+            "id": "9a9a4e3f3e53db820d69ba4f0689f371",
             "name": "Get Historical Trades",
             "url": "https\/api\/2\/history\/trades",
             "description": "Get historical trades.",
@@ -822,11 +822,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "22ed9862f8eca0dd5c274660bc770e89",
+            "id": "3ba11c1a1debc22b5a618bcaedf67562",
             "name": "Get Historical Orders",
             "url": "https\/api\/2\/history\/order",
             "description": "Get historical orders.",
@@ -888,11 +888,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "fd24b5e915b86d1200eaacb29fa0437e",
+            "id": "f81761ce6d2131b7951125675668d8fe",
             "name": "Get Historical Trades By Specified Order",
             "url": "https\/api\/2\/history\/order\/{id}\/trades",
             "description": "Get historical trades by specified order.",
@@ -919,11 +919,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "eb12941615b8a514d524e8052fee130a",
+            "id": "9c720389ec40cfc27a88b511ca23d282",
             "name": "Get Main Acccount Balance",
             "url": "https\/api\/2\/account\/balance",
             "description": "Get main acccount balance.",
@@ -942,11 +942,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "37a111ec1b8a95d47eff4966736b51d3",
+            "id": "5cf054428216d1348e31d267310d1d82",
             "name": "Get Account Transactions",
             "url": "https\/api\/2\/account\/transactions",
             "description": "Get account transactions.",
@@ -1015,11 +1015,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "e7110b280d6e3a033f94588d2121bf87",
+            "id": "18ed5ab0aec2036fcadb70ae5303ffbf",
             "name": "Get Account Transaction By Id",
             "url": "https\/api\/2\/account\/transactions\/{id}",
             "description": "Get account transaction by id.",
@@ -1046,11 +1046,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "ea849a0505db4ee694f8a2f6ceae4232",
+            "id": "25ad03c8a84f61fe1bc42f77738791a7",
             "name": "Withdraw Crypro",
             "url": "https\/api\/2\/account\/crypto\/withdraw",
             "description": "Withdraw crypro.",
@@ -1119,11 +1119,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "b08dc32de425a41cfb5139b1b3c352c1",
+            "id": "07e07eeb3a31c93b6ec9bab249c8d1c9",
             "name": "Commit Withdraw Crypro",
             "url": "https\/api\/2\/account\/crypto\/withdraw\/{id}",
             "description": "Commit withdraw crypro.",
@@ -1150,11 +1150,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "ca4fcb10a88e994aecf3d5b738f06889",
+            "id": "01e45f756dc658bc36e0fc83129b6fc5",
             "name": "Rollback Withdraw Crypro",
             "url": "https\/api\/2\/account\/crypto\/withdraw\/{id}",
             "description": "Rollback withdraw crypro.",
@@ -1181,11 +1181,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "a28feb66ef3e9228953b5d69e416bd13",
+            "id": "6c31e787653e1e69e998799a491db2c4",
             "name": "Get Deposit Crypro Address",
             "url": "https\/api\/2\/account\/crypto\/address\/{currency}",
             "description": "Get deposit crypro address.",
@@ -1212,11 +1212,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "38b2ff09ca9b33b9aa54410ba48dfae4",
+            "id": "0ce9f2b2f791de0af84bb26dd53c8467",
             "name": "Create New Deposit Crypro Address",
             "url": "https\/api\/2\/account\/crypto\/address\/{currency}",
             "description": "Create new deposit crypro address.",
@@ -1243,11 +1243,11 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         },
         {
-            "id": "4d426806d2bc059d77ef0faa0900e804",
+            "id": "98cffef441578b65b5b072a02374f100",
             "name": "Transfer Amount To Trading",
             "url": "https\/api\/2\/account\/transfer",
             "description": "Transfer amount to trading.",
@@ -1288,7 +1288,7 @@
             "responses": [],
             "currentHelper": null,
             "helperAttributes": null,
-            "collectionId": "518ed0f6b0de82c12895545fd9980382",
+            "collectionId": "acecd02795ef58a5937dd31372d188f8",
             "rawModeData": ""
         }
     ]
