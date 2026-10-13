@@ -1,16 +1,46 @@
 generated: '2026-10-13'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/hitbtc/integrations
 - https://n8n.io/integrations/hitbtc/
 - https://composio.dev/toolkits/hitbtc
 - https://monid.ai/tools/hitbtc
 checked:
+- https://api.coingecko.com/api/v3/exchanges
 - https://composio.dev/toolkits/hitbtc
 - https://monid.ai/tools/hitbtc
 - https://n8n.io/integrations/hitbtc/
+- https://raw.githubusercontent.com/ccxt/ccxt/master/exchanges.json
 - https://zapier.com/apps/hitbtc/integrations
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: CCXT
+  partner: null
+  partner_match: null
+  type: coverage
+  channel: open-source-node
+  relationship: connector-coverage
+  direction: partner-built
+  evidence: https://github.com/ccxt/ccxt/blob/master/ts/src/hitbtc.ts
+  ccxt_id: hitbtc
+  ccxt_certified: null
+  ccxt_pro: null
+  matched_by: domain:hitbtc.com
+  partner_gap: no ccxt repo in all/* (catalog gap)
+  detected_by: sweep-crypto.py
+  first_seen: '2026-10-13'
+- partner_name: CoinGecko
+  partner: coingecko
+  partner_match: aggregator
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://api.coingecko.com/api/v3/exchanges/hitbtc
+  matched_by: domain:hitbtc.com
+  coingecko_id: hitbtc
+  trust_score: 4
+  detected_by: sweep-crypto.py
+  first_seen: '2026-10-13'
 templates: []
