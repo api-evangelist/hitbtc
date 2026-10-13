@@ -1,0 +1,12 @@
+name: HitBTC Demo Environment
+generated: '2026-10-13'
+method: searched
+source: https://api.hitbtc.com/#api-urls
+description: HitBTC documents a Demo Environment (Sandbox) mirroring the production API URLs. No test key prefixes, test credentials or fixture tooling are published on the docs page.
+docs: https://api.hitbtc.com/#api-urls
+environments:
+- name: Demo Environment (Sandbox)
+  rest: https://api.demo.hitbtc.com/api/3
+  streaming_market_data: wss://api.demo.hitbtc.com/api/3/ws/public
+  streaming_trading: wss://api.demo.hitbtc.com/api/3/ws/trading
+  streaming_wallet: wss://api.demo.hitbtc.com/api/3/ws/wallet

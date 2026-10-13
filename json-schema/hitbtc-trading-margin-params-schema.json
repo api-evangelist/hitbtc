@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-margin-params-schema.json",
+  "title": "Margin parameters",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/trading_MarginParams",
+  "type": "object",
+  "required": [
+    "symbol",
+    "margin_call_leverage_mul",
+    "liquidation_leverage_mul",
+    "max_initial_leverage",
+    "margin_mode",
+    "force_close_fee",
+    "enabled",
+    "active"
+  ],
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "margin_call_leverage_mul": {
+      "type": "string",
+      "description": "Multiplier for calculating margin call leverage."
+    },
+    "liquidation_leverage_mul": {
+      "type": "string",
+      "description": "Multiplier for calculating liquidation leverage."
+    },
+    "max_initial_leverage": {
+      "type": "string",
+      "description": "Maximum leverage that the user can use for margin trading."
+    },
+    "margin_mode": {
+      "type": "string",
+      "enum": [
+        "Isolated",
+        "Cross"
+      ],
+      "description": "Margin mode."
+    },
+    "force_close_fee": {
+      "type": "string",
+      "description": "Fee for the force closing of the position."
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Flag indicating whether the margin trading is available."
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Flag indicating whether any positions comply with the parameters (including not yet opened)."
+    },
+    "limit_base": {
+      "type": "string",
+      "description": "An absolute maximum that a position value can reach.\n\nConditions: risk limits exist\n"
+    },
+    "limit_power": {
+      "type": "string",
+      "description": "Power which determines the influence of the leverage on the risk limit value.\n\nConditions: risk limits exist\n"
+    },
+    "unlimited_threshold": {
+      "type": "string",
+      "description": "Position leverage below which the risk limit is not calculated.\n\nConditions: risk limits exist\n"
+    }
+  }
+}

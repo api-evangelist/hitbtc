@@ -1,0 +1,100 @@
+name: HitBTC API rate limits
+generated: '2026-10-13'
+method: searched
+source: https://api.hitbtc.com/#rate-limits
+description: Rate limit plus burst limit within a 1-second sliding window, counted
+  per call per IP address and per account.
+exhaustion:
+  status: 429
+  text: If both limits in total are exceeded, an HTTP 429 response is returned.
+limit_count: 13
+limits:
+- name: Per IP /* (default)
+  scope: per-ip
+  endpoint: /* (default)
+  window: 1 second
+  max: 20
+  burst: 30
+  limit_text: /* (default) 20 30
+- name: Per IP /public/*
+  scope: per-ip
+  endpoint: /public/*
+  window: 1 second
+  max: 30
+  burst: 50
+  limit_text: /public/* 30 50
+- name: Per IP /wallet/*
+  scope: per-ip
+  endpoint: /wallet/*
+  window: 1 second
+  max: 10
+  burst: 10
+  limit_text: /wallet/* 10 10
+- name: Per IP /spot/order/*
+  scope: per-ip
+  endpoint: /spot/order/*
+  window: 1 second
+  max: 300
+  burst: 450
+  limit_text: /spot/order/* 300 450
+- name: Per IP /margin/order/*, /margin/account/*, /margin/position/*
+  scope: per-ip
+  endpoint: /margin/order/*, /margin/account/*, /margin/position/*
+  window: 1 second
+  max: 300
+  burst: 450
+  limit_text: /margin/order/*, /margin/account/*, /margin/position/* 300 450
+- name: Per IP /futures/order/*, /futures/account/*, /futures/position/*
+  scope: per-ip
+  endpoint: /futures/order/*, /futures/account/*, /futures/position/*
+  window: 1 second
+  max: 300
+  burst: 450
+  limit_text: /futures/order/*, /futures/account/*, /futures/position/* 300 450
+- name: Per IP /transfer-convert/config
+  scope: per-ip
+  endpoint: /transfer-convert/config
+  window: 1 second
+  max: 10
+  burst: 10
+  limit_text: /transfer-convert/config 10 10
+- name: Per IP /ws/public
+  scope: per-ip
+  endpoint: /ws/public
+  window: 1 second
+  max: 10
+  burst: 10
+  limit_text: /ws/public 10 10
+- name: Per IP /ws/trading
+  scope: per-ip
+  endpoint: /ws/trading
+  window: 1 second
+  max: 10
+  burst: 10
+  limit_text: /ws/trading 10 10
+- name: Per IP /ws/wallet
+  scope: per-ip
+  endpoint: /ws/wallet
+  window: 1 second
+  max: 10
+  burst: 10
+  limit_text: /ws/wallet 10 10
+- name: Per account /wallet/*, /transfer-convert/config
+  scope: per-account
+  endpoint: /wallet/*, /transfer-convert/config
+  window: 1 second
+  max: 20
+  burst: 30
+  limit_text: /wallet/*, /transfer-convert/config 20 30
+- name: Per account /sub-account/*
+  scope: per-account
+  endpoint: /sub-account/*
+  window: 1 second
+  max: 20
+  burst: 30
+  limit_text: /sub-account/* 20 30
+- name: Active and suspended orders
+  scope: per-account
+  max: 25000
+  limit_text: The total number of user's active and suspended orders cannot exceed
+    25000 across all symbols and 2000 — for a particular symbol.

@@ -1,23 +1,156 @@
 aid: hitbtc
+
 name: HitBTC
-description: 'HitBTC is a company surfaced via the API Evangelist harvest backlog (source: market-gap:crypto-exchanges)
-  and added to the network as a stub for full-pipeline profiling.'
+
+description: HitBTC is a cryptocurrency exchange offering spot, margin and futures trading. It publishes a public REST API (v3, with legacy v2)
+  at api.hitbtc.com with market data, spot/margin/futures trading, wallet, sub-account and user-management endpoints, three WebSocket streaming
+  APIs (market data, trading, wallet), HMAC (HS256) and Basic authentication, a demo sandbox at api.demo.hitbtc.com, and a Swagger UI API explorer
+  serving its OpenAPI 3.1 contract.
+
+image: https://api.hitbtc.com/images/favicon.png
+
 url: https://raw.githubusercontent.com/api-evangelist/hitbtc/refs/heads/main/apis.yml
+
 x-type: company
+
 x-source: harvest:market-gap:crypto-exchanges
-x-tier: stub
-x-tier-reason: harvest
+
+x-tier: profiled
+
+x-tier-reason: enrichment pass 2026-10-13 (local-v5; was harvest)
+
 specificationVersion: '0.20'
+
 created: '2026-10-13'
+
 modified: '2026-10-13'
+
 tags:
 - Company
-apis: []
+- Cryptocurrency
+- Crypto Exchange
+- Trading
+- Market Data
+- Futures
+- Wallets
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/hitbtc-agentic-access.yml
+- type: RateLimits
+  url: rate-limits/hitbtc-rate-limits.yml
+- type: Spectral
+  url: rules/hitbtc-rules.yml
+- type: JSONLD
+  url: json-ld/hitbtc-context.jsonld
+- type: Vocabulary
+  url: vocabulary/hitbtc-vocabulary.yml
+- type: DataModel
+  url: data-model/hitbtc-data-model.yml
+- type: ChangeLog
+  url: changelog/hitbtc-changelog.yml
+- type: Conventions
+  url: conventions/hitbtc-conventions.yml
+- type: Sandbox
+  url: sandbox/hitbtc-sandbox.yml
+- type: ErrorCatalog
+  url: errors/hitbtc-problem-types.yml
+- type: Conformance
+  url: conformance/hitbtc-conformance.yml
+- type: Hosts
+  url: hosts/hitbtc-hosts.yml
+- type: Vendors
+  url: vendors/hitbtc-vendors.yml
+- type: SDKs
+  url: packages/hitbtc-packages.yml
+- type: Packages
+  url: packages/hitbtc-packages.yml
+- type: Authentication
+  url: authentication/hitbtc-authentication.yml
+- type: DomainSecurity
+  url: security/hitbtc-domain-security.yml
 - type: Website
   url: https://hitbtc.com
+- type: Documentation
+  url: https://api.hitbtc.com/
+- type: APIReference
+  url: https://api.hitbtc.com/
+- type: GitHubOrganization
+  url: https://github.com/hitbtc-com
+- type: Support
+  url: https://support.hitbtc.com/en/support/home
+- type: Twitter
+  url: https://x.com/hitbtc
+
+apis:
+- aid: hitbtc:hitbtc-api-v3
+  image: https://api.hitbtc.com/images/favicon.png
+  name: HitBTC API v3
+  description: HitBTC REST API v3 covering public market data (currencies, symbols, tickers, trades, order books, candles, futures info), spot,
+    margin and futures trading, wallet management, sub-accounts and user management. Authenticated with Basic or HS256 (HMAC-SHA256) API keys.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Market Data
+  - Trading
+  - Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://api.hitbtc.com/api/3/explore/spec.yaml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+- aid: hitbtc:hitbtc-api-v2
+  image: https://api.hitbtc.com/images/favicon.png
+  name: HitBTC API v2
+  description: Legacy HitBTC REST API v2 (public market data, trading, account and wallet), still served with its own OpenAPI contract and Swagger
+    UI explorer.
+  humanURL: https://api.hitbtc.com/api/2/explore/
+  baseURL: https://api.hitbtc.com/api/2
+  tags:
+  - Trading
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-v2-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://api.hitbtc.com/api/2/explore/spec.yaml
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+x-enrichment:
+  date: '2026-10-13'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v5

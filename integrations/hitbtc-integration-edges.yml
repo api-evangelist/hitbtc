@@ -1,0 +1,16 @@
+generated: '2026-10-13'
+method: none
+source:
+- https://zapier.com/apps/hitbtc/integrations
+- https://n8n.io/integrations/hitbtc/
+- https://composio.dev/toolkits/hitbtc
+- https://monid.ai/tools/hitbtc
+checked:
+- https://composio.dev/toolkits/hitbtc
+- https://monid.ai/tools/hitbtc
+- https://n8n.io/integrations/hitbtc/
+- https://zapier.com/apps/hitbtc/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []

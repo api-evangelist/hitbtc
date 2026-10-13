@@ -1,0 +1,49 @@
+name: HitBTC API changelog
+generated: '2026-10-13'
+method: searched
+source: https://api.hitbtc.com/#changelog
+scheme: dated
+current_version: '3'
+entries:
+- version: '3'
+  date: '2026-08-27'
+  breaking: false
+  highlights:
+  - 'AMM (auto margin management) and AMR (auto margin replenishment): the margin
+    settings endpoints, the margin_auto parameter of new order requests, and the margin_auto
+    and amr fields of margin account, position, and order models.'
+- version: '3'
+  date: '2025-01-06'
+  breaking: false
+  highlights:
+  - 'Added an optional symbol parameter in: GET /api/3/margin/history/positions ;
+    GET /api/3/futures/history/positions .'
+  - Added the price_average field in the order model.
+- version: '3'
+  date: '2024-12-16'
+  breaking: false
+  highlights:
+  - Cross-margin accounts.
+- version: '3'
+  date: '2024-11-29'
+  breaking: false
+  highlights:
+  - Added order limits.
+- version: '3'
+  date: '2024-10-22'
+  breaking: false
+  highlights:
+  - 'Added endpoints: GET /api/3/user/api-keys ; GET /api/3/wallet/crypto/address/white-list
+    .'
+  - Added the attempt_hashes field in transaction history.
+- version: '3'
+  date: '2024-10-02'
+  breaking: false
+  highlights:
+  - 'Added endpoints: POST /api/3/sub-account/transfer/sub-to-super ; POST /api/3/sub-account/transfer/sub-to-sub
+    .'
+- version: '3'
+  date: '2021-07-28'
+  breaking: false
+  highlights:
+  - API v3 initial release.

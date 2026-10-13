@@ -1,0 +1,35 @@
+name: HitBTC API conventions
+generated: '2026-10-13'
+method: searched
+source: https://api.hitbtc.com/
+auth:
+  style: Basic (apiKey:secretKey) or HS256 (HMAC-SHA256 signed Authorization header)
+  docs: https://api.hitbtc.com/#authentication
+idempotency:
+  coverage: none
+  note: No idempotency key header is documented. Orders accept a client-supplied client_order_id, but the docs do not describe it as replay protection.
+pagination:
+  docs: https://api.hitbtc.com/#pagination
+request_format: Pass a request payload (body) in POST requests and query parameters in GET requests.
+datetime_format: All timestamps are returned in ISO 8601 format.
+error_envelope:
+  shape: '{"error": {"code": 20001, "message": "Insufficient funds", "description": "..."}}'
+  text: All error responses have error code and human-readable message fields. Some errors contain an additional description field.
+rate_limit_signaling:
+  status: 429
+  see: rate-limits/hitbtc-rate-limits.yml
+versioning:
+  scheme: URL path major version (/api/2, /api/3)
+reversibility:
+  surfaces:
+  - write: POST /api/3/wallet/crypto/withdraw (auto_commit=false)
+    reversal: DELETE /api/3/wallet/crypto/withdraw/{id}
+    window: If false is set, then you should commit or rollback a transaction in an hour.
+    status: verified
+    docs: https://api.hitbtc.com/#withdraw-crypto-commit-or-rollback
+  - write: POST /api/3/spot/order (and margin/futures equivalents)
+    reversal: DELETE /api/3/spot/order/{client_order_id}
+    window: null
+    status: documented
+    note: Cancels an open order only; executed trades are not reversible. No window stated.
+    docs: https://api.hitbtc.com/

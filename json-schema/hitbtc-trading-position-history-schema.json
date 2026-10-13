@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-position-history-schema.json",
+  "title": "Positions history",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/trading_PositionHistory",
+  "type": "object",
+  "required": [
+    "id",
+    "entry_value",
+    "entry_price",
+    "avg_buy_price",
+    "avg_sell_price",
+    "quantity",
+    "buy_quantity",
+    "sell_quantity",
+    "margin_call_price",
+    "liquidation_price",
+    "bankruptcy_price",
+    "margin",
+    "required_margin",
+    "orders_margin",
+    "pnl",
+    "leverage",
+    "margin_mode",
+    "state",
+    "symbol",
+    "margin_call",
+    "margin_auto",
+    "amr",
+    "create_timestamp",
+    "update_timestamp"
+  ],
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Position identifier."
+    },
+    "entry_value": {
+      "type": "string",
+      "description": "Position value in currency."
+    },
+    "entry_price": {
+      "type": "string",
+      "description": "Weighted average open price."
+    },
+    "avg_buy_price": {
+      "type": "string",
+      "description": "Weighted average buy price."
+    },
+    "avg_sell_price": {
+      "type": "string",
+      "description": "Weighted average sell price."
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Position quantity."
+    },
+    "buy_quantity": {
+      "type": "string",
+      "description": "Total quantity of buy trades in the position."
+    },
+    "sell_quantity": {
+      "type": "string",
+      "description": "Total quantity of sell trades in the position."
+    },
+    "margin_call_price": {
+      "type": "string",
+      "description": "If the market is equal to or worse than this price a margin call will be issued."
+    },
+    "liquidation_price": {
+      "type": "string",
+      "description": "The price at which the platform begins to close the position."
+    },
+    "bankruptcy_price": {
+      "type": "string",
+      "description": "The price at which the position can no longer be closed with any non-negative PnL."
+    },
+    "margin": {
+      "type": "string",
+      "description": "Amount of margin expressed in the quote currency."
+    },
+    "required_margin": {
+      "type": "string",
+      "description": "Margin reserved for close orders."
+    },
+    "orders_margin": {
+      "type": "string",
+      "description": "Margin reserved for open orders."
+    },
+    "pnl": {
+      "type": "string",
+      "description": "Unrealized Profit and Loss."
+    },
+    "leverage": {
+      "type": "string",
+      "description": "Position leverage."
+    },
+    "margin_mode": {
+      "$ref": "#/$defs/trading_MarginModeCommon"
+    },
+    "state": {
+      "type": "string",
+      "description": "Position state.",
+      "enum": [
+        "closed",
+        "active",
+        "liquidated"
+      ]
+    },
+    "fee_cumulative": {
+      "type": "string",
+      "description": "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "margin_call": {
+      "type": "boolean",
+      "description": "Flag indicating the position is close to the liquidation, and increased margin may prevent it from happening."
+    },
+    "margin_auto": {
+      "type": "boolean",
+      "description": "Flag indicating whether AMM (auto margin management) was enabled for\n the position.\n"
+    },
+    "amr": {
+      "type": "boolean",
+      "description": "Value of the AMR (auto margin replenishment) flag of the position.\n"
+    },
+    "create_timestamp": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Timestamp of the position creation in nanoseconds."
+    },
+    "update_timestamp": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Timestamp of the position last update in nanoseconds."
+    }
+  },
+  "$defs": {
+    "trading_MarginModeCommon": {
+      "title": "Margin mode",
+      "type": "string",
+      "enum": [
+        "cross",
+        "Cross",
+        "isolated",
+        "Isolated"
+      ],
+      "description": "Margin mode."
+    }
+  }
+}

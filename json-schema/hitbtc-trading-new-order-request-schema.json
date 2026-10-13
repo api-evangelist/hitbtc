@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-new-order-request-schema.json",
+  "title": "trading_NewOrderRequest",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-v2-openapi.yml#/components/schemas/trading_NewOrderRequest",
+  "required": [
+    "symbol",
+    "side",
+    "quantity"
+  ],
+  "type": "object",
+  "properties": {
+    "clientOrderId": {
+      "type": "string",
+      "description": "Unique order identifier as assigned by the trader.\n"
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "sell",
+        "buy"
+      ],
+      "description": "Trade side."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "market",
+        "limit",
+        "stopMarket",
+        "stopLimit",
+        "takeProfitLimit",
+        "takeProfitMarket"
+      ],
+      "default": "limit",
+      "description": "Order type."
+    },
+    "timeInForce": {
+      "type": "string",
+      "enum": [
+        "GTC",
+        "IOC",
+        "FOK",
+        "Day",
+        "GTD"
+      ],
+      "description": "Order expiration mode.\n\nDefault:\n* `type` is `\"market\"`, `\"stopMarket\"`, `\"takeProfitMarket\"`—`\"FOK\"`;\n* `type` is `\"limit\"`, `\"stopLimit\"`, `\"takeProfitLimit\"`—`\"GTC\"`.\n\nValues:\n* *GTC* (\"Good-Till-Canceled\")—order will not be closed until it is filled.\n* *IOC* (\"Immediate-Or-Cancel\")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled.\n* *FOK* (\"Fill-Or-Kill\")—order must be executed immediately and completely or not executed at all.\n* *Day*—keeps the order active until the end of the trading day (23:59 UTC+0).\n* *GTD* (\"Good-Till-Date\")—order will be canceled on the specified date.\n"
+    },
+    "quantity": {
+      "type": "number",
+      "description": "Order quantity."
+    },
+    "price": {
+      "type": "number",
+      "description": "Order price."
+    },
+    "stopPrice": {
+      "type": "number",
+      "description": "The price level that triggers order activation. Required if `\"type\"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or `takeProfitMarket`."
+    },
+    "expireTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order expiration. Required if `\"timeInForce\"` is `GTD`."
+    },
+    "strictValidate": {
+      "type": "boolean",
+      "description": "Price and quantity will be checked for incrementation within the symbol’s tick size and quantity step."
+    },
+    "postOnly": {
+      "type": "boolean",
+      "description": "A post-only order is an order that does not remove liquidity.\nIf the post-only order would cause a match with a pre-existing order as a taker, then the order will be canceled\n"
+    },
+    "closePosition": {
+      "type": "boolean",
+      "default": false,
+      "description": "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n\nConditions: `quantity` is omitted.\n"
+    },
+    "takeLiquidityMarkup": {
+      "type": "number",
+      "description": "Additional fee charged from a taker for high-risk operations."
+    },
+    "provideLiquidityMarkup": {
+      "type": "number",
+      "description": "Additional fee charged from a maker for high-risk operations."
+    }
+  }
+}

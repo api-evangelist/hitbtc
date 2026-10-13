@@ -1,0 +1,22 @@
+generated: '2026-10-13'
+method: derived
+source: openapi/hitbtc-openapi.yml, openapi/hitbtc-v2-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: wallet_BasicAuth
+  type: http
+  scheme: basic
+  description: Provide a public key as the username and a secret key as the password.
+  sources:
+  - openapi/hitbtc-openapi.yml
+  - openapi/hitbtc-v2-openapi.yml
+- name: wallet_BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: Provide a bearer token obtained from the authentication service.
+  sources:
+  - openapi/hitbtc-openapi.yml
+  - openapi/hitbtc-v2-openapi.yml

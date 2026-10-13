@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-market-data-currency-schema.json",
+  "title": "marketData_Currency",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-v2-openapi.yml#/components/schemas/marketData_Currency",
+  "required": [
+    "id",
+    "fullName",
+    "crypto",
+    "payinEnabled",
+    "payinPaymentId",
+    "payoutEnabled",
+    "payoutIsPaymentId",
+    "transferEnabled",
+    "delisted",
+    "payinConfirmations",
+    "payoutFee",
+    "precisionPayout",
+    "precisionTransfer"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Currency identifier."
+    },
+    "fullName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Full currency name."
+    },
+    "crypto": {
+      "type": "boolean",
+      "description": "Determines whether the currency belongs to a blockchain."
+    },
+    "payinEnabled": {
+      "type": "boolean",
+      "description": "Determines whether it is allowed to generate addresses for a deposit."
+    },
+    "payinPaymentId": {
+      "type": "boolean",
+      "description": "Determines whether it is required to provide additional information other than the address for a deposit."
+    },
+    "payoutEnabled": {
+      "type": "boolean",
+      "description": "Determines whether the withdrawal is allowed."
+    },
+    "payoutIsPaymentId": {
+      "type": "boolean",
+      "description": "Determines whether providing additional information for the withdrawal is allowed."
+    },
+    "transferEnabled": {
+      "type": "boolean",
+      "description": "Determines whether the transfer between trading account and wallet account is allowed (may be disabled on a maintenance)."
+    },
+    "delisted": {
+      "type": "boolean",
+      "default": false,
+      "description": "An indication of whether the currency was delisted."
+    },
+    "payinConfirmations": {
+      "type": "number",
+      "description": "Count of confirmations for the transaction."
+    },
+    "payoutFee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Default withdrawal fee."
+    },
+    "precisionPayout": {
+      "type": "number",
+      "description": "Currency precision for the payout (accepted number of digits after the decimal point)."
+    },
+    "precisionTransfer": {
+      "type": "number",
+      "description": "Currency precision for transfer (accepted number of digits after the decimal point)."
+    },
+    "lowProcessingTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The lowest processing time in seconds for the payout operation."
+    },
+    "highProcessingTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The highest processing time in seconds for the payout operation."
+    },
+    "avgProcessingTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The average processing time in seconds for the payout operation."
+    },
+    "tokenFamily": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Token group."
+    },
+    "sign": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Currency sign."
+    },
+    "cryptoPaymentIdName": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Transaction identifier, e.g., comment, message, memo, attachment, etc."
+    },
+    "cryptoType": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Type of crypto platform."
+    },
+    "qrPrefix": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "QR prefix. The prefix is used to indicate the currency in a deposit address."
+    },
+    "cryptoExplorer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Link to the currency explorer with \"{tx}\" placeholder instead of hash."
+    },
+    "category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Currency category."
+    },
+    "isInstrumentsStable": {
+      "type": "boolean",
+      "description": "If `true`, the pairs of this currency are displayed on the Stable tab."
+    },
+    "accountTopOrder": {
+      "type": "number",
+      "description": "The order in which the user sees the currencies on the Account page."
+    }
+  }
+}

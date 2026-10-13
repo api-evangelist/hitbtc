@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-history-trade-schema.json",
+  "title": "trading_HistoryTrade",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-v2-openapi.yml#/components/schemas/trading_HistoryTrade",
+  "required": [
+    "id",
+    "orderId",
+    "clientOrderId",
+    "symbol",
+    "side",
+    "quantity",
+    "price",
+    "fee",
+    "timestamp",
+    "taker",
+    "margin_mode"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Trade unique identifier as assigned by the exchange."
+    },
+    "orderId": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Unique order identifier as assigned by the exchange."
+    },
+    "clientOrderId": {
+      "type": "string",
+      "description": "Unique order identifier as assigned by the trader."
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "sell",
+        "buy"
+      ],
+      "description": "Trade side."
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Quantity of trade."
+    },
+    "price": {
+      "type": "string",
+      "description": "Trade price."
+    },
+    "fee": {
+      "type": "string",
+      "description": "Fee paid for trade."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Trade timestamp."
+    },
+    "taker": {
+      "type": "boolean",
+      "description": "Liquidity indicator."
+    },
+    "positionId": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Position identifier."
+    },
+    "pnl": {
+      "type": "string",
+      "description": "Realized profit produced by the trade."
+    },
+    "otc": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Flag that indicated whether the trade was performed out the trading venue."
+    },
+    "liquidation": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Flag that indicated whether the trade was a close trade."
+    },
+    "margin_mode": {
+      "type": "string",
+      "enum": [
+        "isolated",
+        "cross"
+      ],
+      "description": "Margin mode."
+    }
+  }
+}

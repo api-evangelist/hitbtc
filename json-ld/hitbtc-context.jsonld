@@ -1,0 +1,943 @@
+{
+  "@context": {
+    "@vocab": "https://hitbtc.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "hitbtc": "https://hitbtc.com/schema#",
+    "marketData_CurrencyNetworkBase": "hitbtc:marketData_CurrencyNetworkBase",
+    "payin_enabled": {
+      "@id": "hitbtc:payin_enabled",
+      "@type": "xsd:boolean"
+    },
+    "payout_enabled": {
+      "@id": "hitbtc:payout_enabled",
+      "@type": "xsd:boolean"
+    },
+    "crypto_payment_id_name": {
+      "@id": "hitbtc:crypto_payment_id_name",
+      "@type": "xsd:string"
+    },
+    "crypto_explorer": {
+      "@id": "hitbtc:crypto_explorer",
+      "@type": "xsd:string"
+    },
+    "marketData_NetworkBase": "hitbtc:marketData_NetworkBase",
+    "payout_fee": {
+      "@id": "hitbtc:payout_fee",
+      "@type": "xsd:string"
+    },
+    "precision_payout": {
+      "@id": "hitbtc:precision_payout",
+      "@type": "xsd:string"
+    },
+    "payout_is_payment_id": {
+      "@id": "hitbtc:payout_is_payment_id",
+      "@type": "xsd:boolean"
+    },
+    "payin_payment_id": {
+      "@id": "hitbtc:payin_payment_id",
+      "@type": "xsd:boolean"
+    },
+    "payin_confirmations": {
+      "@id": "hitbtc:payin_confirmations",
+      "@type": "xsd:integer"
+    },
+    "low_processing_time": {
+      "@id": "hitbtc:low_processing_time",
+      "@type": "xsd:string"
+    },
+    "high_processing_time": {
+      "@id": "hitbtc:high_processing_time",
+      "@type": "xsd:string"
+    },
+    "avg_processing_time": {
+      "@id": "hitbtc:avg_processing_time",
+      "@type": "xsd:string"
+    },
+    "marketData_SymbolStatus": "hitbtc:marketData_SymbolStatus",
+    "marketData_FuturesSymbolStatus": "hitbtc:marketData_FuturesSymbolStatus",
+    "marketData_SymbolTypeEnum": "hitbtc:marketData_SymbolTypeEnum",
+    "marketData_FuturesSymbolTypeEnum": "hitbtc:marketData_FuturesSymbolTypeEnum",
+    "marketData_SymbolMarginFields": "hitbtc:marketData_SymbolMarginFields",
+    "margin_trading": {
+      "@id": "hitbtc:margin_trading",
+      "@type": "xsd:boolean"
+    },
+    "max_initial_leverage": {
+      "@id": "hitbtc:max_initial_leverage",
+      "@type": "xsd:string"
+    },
+    "marketData_Price": "hitbtc:marketData_Price",
+    "currency": {
+      "@id": "hitbtc:currency",
+      "@type": "xsd:string"
+    },
+    "price": {
+      "@id": "hitbtc:price",
+      "@type": "xsd:string"
+    },
+    "timestamp": {
+      "@id": "hitbtc:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "marketData_LastPrice": "hitbtc:marketData_LastPrice",
+    "marketData_CandleBase": "hitbtc:marketData_CandleBase",
+    "open": {
+      "@id": "hitbtc:open",
+      "@type": "xsd:string"
+    },
+    "close": {
+      "@id": "hitbtc:close",
+      "@type": "xsd:string"
+    },
+    "min": {
+      "@id": "hitbtc:min",
+      "@type": "xsd:string"
+    },
+    "max": {
+      "@id": "hitbtc:max",
+      "@type": "xsd:string"
+    },
+    "marketData_VolumeBase": "hitbtc:marketData_VolumeBase",
+    "volume": {
+      "@id": "hitbtc:volume",
+      "@type": "xsd:string"
+    },
+    "volume_quote": {
+      "@id": "hitbtc:volume_quote",
+      "@type": "xsd:string"
+    },
+    "marketData_LastPriceHistory": "hitbtc:marketData_LastPriceHistory",
+    "history": {
+      "@id": "hitbtc:history",
+      "@container": "@list"
+    },
+    "marketData_ConvertedCandle": "hitbtc:marketData_ConvertedCandle",
+    "target_currency": {
+      "@id": "hitbtc:target_currency"
+    },
+    "data": {
+      "@id": "hitbtc:data",
+      "@container": "@list"
+    },
+    "marketData_ConvertedCandles": "hitbtc:marketData_ConvertedCandles",
+    "marketData_OrderBook": "hitbtc:marketData_OrderBook",
+    "ask": {
+      "@id": "hitbtc:ask",
+      "@container": "@list"
+    },
+    "bid": {
+      "@id": "hitbtc:bid",
+      "@container": "@list"
+    },
+    "marketData_Trade": "hitbtc:marketData_Trade",
+    "id": {
+      "@id": "hitbtc:id",
+      "@type": "xsd:integer"
+    },
+    "qty": {
+      "@id": "hitbtc:qty",
+      "@type": "xsd:string"
+    },
+    "side": {
+      "@id": "hitbtc:side",
+      "@type": "xsd:string"
+    },
+    "marketData_FundingHistory": "hitbtc:marketData_FundingHistory",
+    "funding_rate": {
+      "@id": "hitbtc:funding_rate",
+      "@type": "xsd:string"
+    },
+    "avg_premium_index": {
+      "@id": "hitbtc:avg_premium_index",
+      "@type": "xsd:string"
+    },
+    "next_funding_time": {
+      "@id": "hitbtc:next_funding_time",
+      "@type": "xsd:string"
+    },
+    "interest_rate": {
+      "@id": "hitbtc:interest_rate",
+      "@type": "xsd:string"
+    },
+    "marketData_FuturesInfoBase": "hitbtc:marketData_FuturesInfoBase",
+    "contract_type": {
+      "@id": "hitbtc:contract_type",
+      "@type": "xsd:string"
+    },
+    "mark_price": {
+      "@id": "hitbtc:mark_price",
+      "@type": "xsd:string"
+    },
+    "index_price": {
+      "@id": "hitbtc:index_price",
+      "@type": "xsd:string"
+    },
+    "open_interest": {
+      "@id": "hitbtc:open_interest",
+      "@type": "xsd:string"
+    },
+    "marketData_Error": "hitbtc:marketData_Error",
+    "error": {
+      "@id": "hitbtc:error"
+    },
+    "path": {
+      "@id": "hitbtc:path",
+      "@type": "xsd:string"
+    },
+    "requestId": {
+      "@id": "hitbtc:requestId",
+      "@type": "xsd:string"
+    },
+    "wallet_Result": "hitbtc:wallet_Result",
+    "result": {
+      "@id": "hitbtc:result",
+      "@type": "xsd:boolean"
+    },
+    "wallet_Currency": "hitbtc:wallet_Currency",
+    "wallet_Network": "hitbtc:wallet_Network",
+    "network_code": {
+      "@id": "hitbtc:network_code",
+      "@type": "@id"
+    },
+    "wallet_Amount": "hitbtc:wallet_Amount",
+    "amount": {
+      "@id": "hitbtc:amount",
+      "@type": "@id"
+    },
+    "wallet_PublicComment": "hitbtc:wallet_PublicComment",
+    "public_comment": {
+      "@id": "hitbtc:public_comment",
+      "@type": "xsd:string"
+    },
+    "wallet_Address": "hitbtc:wallet_Address",
+    "address": {
+      "@id": "hitbtc:address",
+      "@type": "@id"
+    },
+    "wallet_PaymentID": "hitbtc:wallet_PaymentID",
+    "payment_id": {
+      "@id": "hitbtc:payment_id",
+      "@type": "xsd:string"
+    },
+    "wallet_Fee": "hitbtc:wallet_Fee",
+    "fee": {
+      "@id": "hitbtc:fee",
+      "@type": "xsd:string"
+    },
+    "wallet_Hash": "hitbtc:wallet_Hash",
+    "tx_hash": {
+      "@id": "hitbtc:tx_hash",
+      "@type": "@id"
+    },
+    "wallet_CreatedAt": "hitbtc:wallet_CreatedAt",
+    "created_at": {
+      "@id": "hitbtc:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "wallet_UpdatedAt": "hitbtc:wallet_UpdatedAt",
+    "updated_at": {
+      "@id": "hitbtc:updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "wallet_DeletedAt": "hitbtc:wallet_DeletedAt",
+    "deleted_at": {
+      "@id": "hitbtc:deleted_at",
+      "@type": "xsd:dateTime"
+    },
+    "wallet_OperationID": "hitbtc:wallet_OperationID",
+    "operation_id": {
+      "@id": "hitbtc:operation_id",
+      "@type": "xsd:string"
+    },
+    "wallet_ApiKey": "hitbtc:wallet_ApiKey",
+    "api_key_first_six": {
+      "@id": "hitbtc:api_key_first_six",
+      "@type": "xsd:string"
+    },
+    "key_name": {
+      "@id": "hitbtc:key_name",
+      "@type": "xsd:string"
+    },
+    "exchange_read": {
+      "@id": "hitbtc:exchange_read",
+      "@type": "xsd:boolean"
+    },
+    "exchange_trade": {
+      "@id": "hitbtc:exchange_trade",
+      "@type": "xsd:boolean"
+    },
+    "bank_read": {
+      "@id": "hitbtc:bank_read",
+      "@type": "xsd:boolean"
+    },
+    "bank_withdraw": {
+      "@id": "hitbtc:bank_withdraw",
+      "@type": "xsd:boolean"
+    },
+    "allowed_ips": {
+      "@id": "hitbtc:allowed_ips",
+      "@container": "@list"
+    },
+    "is_active": {
+      "@id": "hitbtc:is_active",
+      "@type": "xsd:boolean"
+    },
+    "wallet_TransferEnum": "hitbtc:wallet_TransferEnum",
+    "wallet_SpotTransferEnum": "hitbtc:wallet_SpotTransferEnum",
+    "wallet_DerivativesTransferEnum": "hitbtc:wallet_DerivativesTransferEnum",
+    "wallet_ConvertConfig": "hitbtc:wallet_ConvertConfig",
+    "currencyFrom": {
+      "@id": "hitbtc:currencyFrom",
+      "@type": "@id"
+    },
+    "currencyTo": {
+      "@id": "hitbtc:currencyTo",
+      "@type": "xsd:string"
+    },
+    "customTypeTo": {
+      "@id": "hitbtc:customTypeTo",
+      "@type": "xsd:string"
+    },
+    "customTypeFrom": {
+      "@id": "hitbtc:customTypeFrom",
+      "@type": "xsd:string"
+    },
+    "comment": {
+      "@id": "hitbtc:comment",
+      "@type": "xsd:string"
+    },
+    "wallet_InternalWithdrawalRequestByEnum": "hitbtc:wallet_InternalWithdrawalRequestByEnum",
+    "wallet_ptyHash-Fees": "hitbtc:wallet_ptyHash-Fees",
+    "hash": {
+      "@id": "hitbtc:hash",
+      "@type": "xsd:string"
+    },
+    "wallet_ptyDefaultLevelId": "hitbtc:wallet_ptyDefaultLevelId",
+    "default_level_id": {
+      "@id": "hitbtc:default_level_id",
+      "@type": "@id"
+    },
+    "wallet_ptyFees": "hitbtc:wallet_ptyFees",
+    "fees": {
+      "@id": "hitbtc:fees",
+      "@container": "@list"
+    },
+    "wallet_TransactionStatuses": "hitbtc:wallet_TransactionStatuses",
+    "wallet_TransactionTypesBase": "hitbtc:wallet_TransactionTypesBase",
+    "wallet_OTCTransactionTypes": "hitbtc:wallet_OTCTransactionTypes",
+    "wallet_TransactionSubtypesBase": "hitbtc:wallet_TransactionSubtypesBase",
+    "wallet_FuturesTransactionSubtypes": "hitbtc:wallet_FuturesTransactionSubtypes",
+    "wallet_SubaccountsTransactionSubtypes": "hitbtc:wallet_SubaccountsTransactionSubtypes",
+    "wallet_AirdropTransactionSubtypes": "hitbtc:wallet_AirdropTransactionSubtypes",
+    "wallet_SwapOperationType": "hitbtc:wallet_SwapOperationType",
+    "wallet_OTCOperationType": "hitbtc:wallet_OTCOperationType",
+    "wallet_CommitRisk": "hitbtc:wallet_CommitRisk",
+    "score": {
+      "@id": "hitbtc:score",
+      "@type": "xsd:integer"
+    },
+    "rbf": {
+      "@id": "hitbtc:rbf",
+      "@type": "xsd:boolean"
+    },
+    "low_fee": {
+      "@id": "hitbtc:low_fee",
+      "@type": "xsd:boolean"
+    },
+    "wallet_SubaccountID": "hitbtc:wallet_SubaccountID",
+    "sub_account_id": {
+      "@id": "hitbtc:sub_account_id",
+      "@type": "xsd:string"
+    },
+    "wallet_Subaccount": "hitbtc:wallet_Subaccount",
+    "email": {
+      "@id": "hitbtc:email",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "hitbtc:status",
+      "@type": "xsd:string"
+    },
+    "wallet_SubaccountCreateRequest": "hitbtc:wallet_SubaccountCreateRequest",
+    "password": {
+      "@id": "hitbtc:password",
+      "@type": "xsd:string"
+    },
+    "wallet_SubaccountCreated": "hitbtc:wallet_SubaccountCreated",
+    "sub_account_status": {
+      "@id": "hitbtc:sub_account_status",
+      "@type": "xsd:string"
+    },
+    "wallet_SubaccountsIds": "hitbtc:wallet_SubaccountsIds",
+    "sub_account_ids": {
+      "@id": "hitbtc:sub_account_ids",
+      "@container": "@list"
+    },
+    "wallet_SubaccountACLBase": "hitbtc:wallet_SubaccountACLBase",
+    "deposit_address_generation_enabled": {
+      "@id": "hitbtc:deposit_address_generation_enabled",
+      "@type": "xsd:boolean"
+    },
+    "withdraw_enabled": {
+      "@id": "hitbtc:withdraw_enabled",
+      "@type": "xsd:boolean"
+    },
+    "description": {
+      "@id": "hitbtc:description",
+      "@type": "xsd:string"
+    },
+    "wallet_SpotBalance": "hitbtc:wallet_SpotBalance",
+    "available": {
+      "@id": "hitbtc:available",
+      "@type": "xsd:string"
+    },
+    "reserved": {
+      "@id": "hitbtc:reserved",
+      "@type": "xsd:string"
+    },
+    "wallet_MarginBalanceFields": "hitbtc:wallet_MarginBalanceFields",
+    "reserved_margin": {
+      "@id": "hitbtc:reserved_margin",
+      "@type": "xsd:string"
+    },
+    "wallet_AirdropStatuses": "hitbtc:wallet_AirdropStatuses",
+    "wallet_IdempotencyKey": "hitbtc:wallet_IdempotencyKey",
+    "idempotency_key": {
+      "@id": "hitbtc:idempotency_key",
+      "@type": "xsd:string"
+    },
+    "wallet_Error": "hitbtc:wallet_Error",
+    "trading_MarginModeCommon": "hitbtc:trading_MarginModeCommon",
+    "trading_Currency": "hitbtc:trading_Currency",
+    "trading_Symbol": "hitbtc:trading_Symbol",
+    "symbol": {
+      "@id": "hitbtc:symbol",
+      "@type": "xsd:string"
+    },
+    "trading_SpotBalance": "hitbtc:trading_SpotBalance",
+    "trading_MarginBalanceFields": "hitbtc:trading_MarginBalanceFields",
+    "cross_margin_reserved": {
+      "@id": "hitbtc:cross_margin_reserved",
+      "@type": "xsd:string"
+    },
+    "trading_Fee": "hitbtc:trading_Fee",
+    "take_rate": {
+      "@id": "hitbtc:take_rate",
+      "@type": "xsd:string"
+    },
+    "make_rate": {
+      "@id": "hitbtc:make_rate",
+      "@type": "xsd:string"
+    },
+    "trading_OrderCommon": "hitbtc:trading_OrderCommon",
+    "client_order_id": {
+      "@id": "hitbtc:client_order_id",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "hitbtc:type",
+      "@type": "xsd:string"
+    },
+    "time_in_force": {
+      "@id": "hitbtc:time_in_force",
+      "@type": "xsd:string"
+    },
+    "quantity": {
+      "@id": "hitbtc:quantity",
+      "@type": "xsd:string"
+    },
+    "quantity_cumulative": {
+      "@id": "hitbtc:quantity_cumulative",
+      "@type": "xsd:string"
+    },
+    "expire_time": {
+      "@id": "hitbtc:expire_time",
+      "@type": "xsd:dateTime"
+    },
+    "price_average": {
+      "@id": "hitbtc:price_average",
+      "@type": "xsd:string"
+    },
+    "trading_OrderTrades": "hitbtc:trading_OrderTrades",
+    "trades": {
+      "@id": "hitbtc:trades",
+      "@container": "@list"
+    },
+    "trading_MarginOrderTrades": "hitbtc:trading_MarginOrderTrades",
+    "trading_OrderTradesBase": "hitbtc:trading_OrderTradesBase",
+    "taker": {
+      "@id": "hitbtc:taker",
+      "@type": "xsd:boolean"
+    },
+    "trading_Price": "hitbtc:trading_Price",
+    "trading_StopPrice": "hitbtc:trading_StopPrice",
+    "stop_price": {
+      "@id": "hitbtc:stop_price",
+      "@type": "xsd:string"
+    },
+    "trading_OrderListFields": "hitbtc:trading_OrderListFields",
+    "order_list_id": {
+      "@id": "hitbtc:order_list_id",
+      "@type": "xsd:string"
+    },
+    "contingency_type": {
+      "@id": "hitbtc:contingency_type",
+      "@type": "xsd:string"
+    },
+    "trading_HiddenOrderFields": "hitbtc:trading_HiddenOrderFields",
+    "display_quantity": {
+      "@id": "hitbtc:display_quantity",
+      "@type": "xsd:string"
+    },
+    "trading_MarginMode": "hitbtc:trading_MarginMode",
+    "margin_mode": {
+      "@id": "hitbtc:margin_mode",
+      "@type": "@id"
+    },
+    "trading_MarginAuto": "hitbtc:trading_MarginAuto",
+    "margin_auto": {
+      "@id": "hitbtc:margin_auto",
+      "@type": "xsd:boolean"
+    },
+    "trading_MarginAutoRequest": "hitbtc:trading_MarginAutoRequest",
+    "trading_ClosePosition": "hitbtc:trading_ClosePosition",
+    "close_position": {
+      "@id": "hitbtc:close_position",
+      "@type": "xsd:boolean"
+    },
+    "trading_ReduceOnly": "hitbtc:trading_ReduceOnly",
+    "reduce_only": {
+      "@id": "hitbtc:reduce_only",
+      "@type": "xsd:boolean"
+    },
+    "trading_PositionId": "hitbtc:trading_PositionId",
+    "position_id": {
+      "@id": "hitbtc:position_id",
+      "@type": "xsd:integer"
+    },
+    "trading_MarginTradeFields": "hitbtc:trading_MarginTradeFields",
+    "pnl": {
+      "@id": "hitbtc:pnl",
+      "@type": "xsd:string"
+    },
+    "fee_cumulative": {
+      "@id": "hitbtc:fee_cumulative",
+      "@type": "xsd:string"
+    },
+    "otc": {
+      "@id": "hitbtc:otc",
+      "@type": "xsd:boolean"
+    },
+    "liquidation": {
+      "@id": "hitbtc:liquidation",
+      "@type": "xsd:boolean"
+    },
+    "trading_PriceRequest": "hitbtc:trading_PriceRequest",
+    "trading_StrictValidateRequest": "hitbtc:trading_StrictValidateRequest",
+    "strict_validate": {
+      "@id": "hitbtc:strict_validate",
+      "@type": "xsd:boolean"
+    },
+    "trading_QuantityRequest": "hitbtc:trading_QuantityRequest",
+    "trading_StopPriceRequest": "hitbtc:trading_StopPriceRequest",
+    "trading_MarkupRateRequest": "hitbtc:trading_MarkupRateRequest",
+    "trading_LimitDefaultTIF": "hitbtc:trading_LimitDefaultTIF",
+    "trading_ClosePositionFieldRequest": "hitbtc:trading_ClosePositionFieldRequest",
+    "trading_ReduceOnlyRequest": "hitbtc:trading_ReduceOnlyRequest",
+    "trading_MarginModeRequest": "hitbtc:trading_MarginModeRequest",
+    "trading_NewOrderClientId": "hitbtc:trading_NewOrderClientId",
+    "new_client_order_id": {
+      "@id": "hitbtc:new_client_order_id",
+      "@type": "xsd:string"
+    },
+    "trading_OrderListId": "hitbtc:trading_OrderListId",
+    "trading_AccountBase": "hitbtc:trading_AccountBase",
+    "margin_call": {
+      "@id": "hitbtc:margin_call",
+      "@type": "xsd:boolean"
+    },
+    "amr": {
+      "@id": "hitbtc:amr",
+      "@type": "xsd:boolean"
+    },
+    "trading_Leverage": "hitbtc:trading_Leverage",
+    "leverage": {
+      "@id": "hitbtc:leverage",
+      "@type": "xsd:string"
+    },
+    "trading_IsolatedAccountBalance": "hitbtc:trading_IsolatedAccountBalance",
+    "code": {
+      "@id": "hitbtc:code",
+      "@type": "xsd:string"
+    },
+    "margin_balance": {
+      "@id": "hitbtc:margin_balance",
+      "@type": "xsd:string"
+    },
+    "reserved_orders": {
+      "@id": "hitbtc:reserved_orders",
+      "@type": "xsd:string"
+    },
+    "reserved_positions": {
+      "@id": "hitbtc:reserved_positions",
+      "@type": "xsd:string"
+    },
+    "trading_PositionBase": "hitbtc:trading_PositionBase",
+    "price_entry": {
+      "@id": "hitbtc:price_entry",
+      "@type": "xsd:string"
+    },
+    "price_margin_call": {
+      "@id": "hitbtc:price_margin_call",
+      "@type": "xsd:string"
+    },
+    "price_liquidation": {
+      "@id": "hitbtc:price_liquidation",
+      "@type": "xsd:string"
+    },
+    "required_margin": {
+      "@id": "hitbtc:required_margin",
+      "@type": "xsd:string"
+    },
+    "orders_margin": {
+      "@id": "hitbtc:orders_margin",
+      "@type": "xsd:string"
+    },
+    "trading_ReportReason": "hitbtc:trading_ReportReason",
+    "report_reason": {
+      "@id": "hitbtc:report_reason",
+      "@type": "xsd:string"
+    },
+    "trading_MarginSettings": "hitbtc:trading_MarginSettings",
+    "default_amm": {
+      "@id": "hitbtc:default_amm",
+      "@type": "xsd:boolean"
+    },
+    "user_can_change_amm": {
+      "@id": "hitbtc:user_can_change_amm",
+      "@type": "xsd:boolean"
+    },
+    "user_can_change_amr_isolated": {
+      "@id": "hitbtc:user_can_change_amr_isolated",
+      "@type": "xsd:boolean"
+    },
+    "user_can_change_amr_cross": {
+      "@id": "hitbtc:user_can_change_amr_cross",
+      "@type": "xsd:boolean"
+    },
+    "current_amm": {
+      "@id": "hitbtc:current_amm",
+      "@type": "xsd:boolean"
+    },
+    "amm_override_set": {
+      "@id": "hitbtc:amm_override_set",
+      "@type": "xsd:boolean"
+    },
+    "trading_SetAmmRequest": "hitbtc:trading_SetAmmRequest",
+    "amm": {
+      "@id": "hitbtc:amm",
+      "@type": "xsd:boolean"
+    },
+    "trading_SetAmm": "hitbtc:trading_SetAmm",
+    "trading_SetAmrRequest": "hitbtc:trading_SetAmrRequest",
+    "trading_SetAmr": "hitbtc:trading_SetAmr",
+    "trading_LeverageRequest": "hitbtc:trading_LeverageRequest",
+    "trading_ClosePositionRequest": "hitbtc:trading_ClosePositionRequest",
+    "trading_MarginParams": "hitbtc:trading_MarginParams",
+    "margin_call_leverage_mul": {
+      "@id": "hitbtc:margin_call_leverage_mul",
+      "@type": "xsd:string"
+    },
+    "liquidation_leverage_mul": {
+      "@id": "hitbtc:liquidation_leverage_mul",
+      "@type": "xsd:string"
+    },
+    "force_close_fee": {
+      "@id": "hitbtc:force_close_fee",
+      "@type": "xsd:string"
+    },
+    "enabled": {
+      "@id": "hitbtc:enabled",
+      "@type": "xsd:boolean"
+    },
+    "active": {
+      "@id": "hitbtc:active",
+      "@type": "xsd:boolean"
+    },
+    "limit_base": {
+      "@id": "hitbtc:limit_base",
+      "@type": "xsd:string"
+    },
+    "limit_power": {
+      "@id": "hitbtc:limit_power",
+      "@type": "xsd:string"
+    },
+    "unlimited_threshold": {
+      "@id": "hitbtc:unlimited_threshold",
+      "@type": "xsd:string"
+    },
+    "trading_Clearing": "hitbtc:trading_Clearing",
+    "position_quantity": {
+      "@id": "hitbtc:position_quantity",
+      "@type": "xsd:string"
+    },
+    "position_entry_value": {
+      "@id": "hitbtc:position_entry_value",
+      "@type": "xsd:string"
+    },
+    "rate": {
+      "@id": "hitbtc:rate",
+      "@type": "xsd:string"
+    },
+    "debt_delta": {
+      "@id": "hitbtc:debt_delta",
+      "@type": "xsd:string"
+    },
+    "trading_PositionHistory": "hitbtc:trading_PositionHistory",
+    "entry_value": {
+      "@id": "hitbtc:entry_value",
+      "@type": "xsd:string"
+    },
+    "entry_price": {
+      "@id": "hitbtc:entry_price",
+      "@type": "xsd:string"
+    },
+    "avg_buy_price": {
+      "@id": "hitbtc:avg_buy_price",
+      "@type": "xsd:string"
+    },
+    "avg_sell_price": {
+      "@id": "hitbtc:avg_sell_price",
+      "@type": "xsd:string"
+    },
+    "buy_quantity": {
+      "@id": "hitbtc:buy_quantity",
+      "@type": "xsd:string"
+    },
+    "sell_quantity": {
+      "@id": "hitbtc:sell_quantity",
+      "@type": "xsd:string"
+    },
+    "margin_call_price": {
+      "@id": "hitbtc:margin_call_price",
+      "@type": "xsd:string"
+    },
+    "liquidation_price": {
+      "@id": "hitbtc:liquidation_price",
+      "@type": "xsd:string"
+    },
+    "bankruptcy_price": {
+      "@id": "hitbtc:bankruptcy_price",
+      "@type": "xsd:string"
+    },
+    "margin": {
+      "@id": "hitbtc:margin",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "hitbtc:state",
+      "@type": "xsd:string"
+    },
+    "create_timestamp": {
+      "@id": "hitbtc:create_timestamp",
+      "@type": "xsd:integer"
+    },
+    "update_timestamp": {
+      "@id": "hitbtc:update_timestamp",
+      "@type": "xsd:integer"
+    },
+    "trading_Error": "hitbtc:trading_Error",
+    "marketData_Candle": "hitbtc:marketData_Candle",
+    "volumeQuote": {
+      "@id": "hitbtc:volumeQuote",
+      "@type": "xsd:string"
+    },
+    "marketData_Currency": "hitbtc:marketData_Currency",
+    "fullName": {
+      "@id": "hitbtc:fullName",
+      "@type": "xsd:string"
+    },
+    "crypto": {
+      "@id": "hitbtc:crypto",
+      "@type": "xsd:boolean"
+    },
+    "payinEnabled": {
+      "@id": "hitbtc:payinEnabled",
+      "@type": "xsd:boolean"
+    },
+    "payinPaymentId": {
+      "@id": "hitbtc:payinPaymentId",
+      "@type": "xsd:boolean"
+    },
+    "payoutEnabled": {
+      "@id": "hitbtc:payoutEnabled",
+      "@type": "xsd:boolean"
+    },
+    "payoutIsPaymentId": {
+      "@id": "hitbtc:payoutIsPaymentId",
+      "@type": "xsd:boolean"
+    },
+    "transferEnabled": {
+      "@id": "hitbtc:transferEnabled",
+      "@type": "xsd:boolean"
+    },
+    "delisted": {
+      "@id": "hitbtc:delisted",
+      "@type": "xsd:boolean"
+    },
+    "payinConfirmations": {
+      "@id": "hitbtc:payinConfirmations",
+      "@type": "xsd:decimal"
+    },
+    "payoutFee": {
+      "@id": "hitbtc:payoutFee",
+      "@type": "xsd:string"
+    },
+    "precisionPayout": {
+      "@id": "hitbtc:precisionPayout",
+      "@type": "xsd:decimal"
+    },
+    "precisionTransfer": {
+      "@id": "hitbtc:precisionTransfer",
+      "@type": "xsd:decimal"
+    },
+    "lowProcessingTime": {
+      "@id": "hitbtc:lowProcessingTime",
+      "@type": "xsd:string"
+    },
+    "highProcessingTime": {
+      "@id": "hitbtc:highProcessingTime",
+      "@type": "xsd:string"
+    },
+    "avgProcessingTime": {
+      "@id": "hitbtc:avgProcessingTime",
+      "@type": "xsd:string"
+    },
+    "tokenFamily": {
+      "@id": "hitbtc:tokenFamily",
+      "@type": "xsd:string"
+    },
+    "sign": {
+      "@id": "hitbtc:sign",
+      "@type": "xsd:string"
+    },
+    "cryptoPaymentIdName": {
+      "@id": "hitbtc:cryptoPaymentIdName",
+      "@type": "xsd:string"
+    },
+    "cryptoType": {
+      "@id": "hitbtc:cryptoType",
+      "@type": "xsd:string"
+    },
+    "qrPrefix": {
+      "@id": "hitbtc:qrPrefix",
+      "@type": "xsd:string"
+    },
+    "cryptoExplorer": {
+      "@id": "hitbtc:cryptoExplorer",
+      "@type": "xsd:string"
+    },
+    "category": {
+      "@id": "hitbtc:category",
+      "@type": "xsd:string"
+    },
+    "isInstrumentsStable": {
+      "@id": "hitbtc:isInstrumentsStable",
+      "@type": "xsd:boolean"
+    },
+    "accountTopOrder": {
+      "@id": "hitbtc:accountTopOrder",
+      "@type": "xsd:decimal"
+    },
+    "marketData_PriceHistory": "hitbtc:marketData_PriceHistory",
+    "marketData_CurrencyMapping": "hitbtc:marketData_CurrencyMapping",
+    "coreId": {
+      "@id": "hitbtc:coreId",
+      "@type": "xsd:string"
+    },
+    "marketData_SymbolMapping": "hitbtc:marketData_SymbolMapping",
+    "baseCurrency": {
+      "@id": "hitbtc:baseCurrency",
+      "@type": "xsd:string"
+    },
+    "coreBaseCurrency": {
+      "@id": "hitbtc:coreBaseCurrency",
+      "@type": "xsd:string"
+    },
+    "quoteCurrency": {
+      "@id": "hitbtc:quoteCurrency",
+      "@type": "xsd:string"
+    },
+    "coreQuoteCurrency": {
+      "@id": "hitbtc:coreQuoteCurrency",
+      "@type": "xsd:string"
+    },
+    "feeCurrency": {
+      "@id": "hitbtc:feeCurrency",
+      "@type": "xsd:string"
+    },
+    "coreFeeCurrency": {
+      "@id": "hitbtc:coreFeeCurrency",
+      "@type": "xsd:string"
+    },
+    "quantityIncrement": {
+      "@id": "hitbtc:quantityIncrement",
+      "@type": "xsd:string"
+    },
+    "tickSize": {
+      "@id": "hitbtc:tickSize",
+      "@type": "xsd:string"
+    },
+    "marketData_Orderbook": "hitbtc:marketData_Orderbook",
+    "batchingTime": {
+      "@id": "hitbtc:batchingTime",
+      "@type": "xsd:dateTime"
+    },
+    "marketData_Symbol": "hitbtc:marketData_Symbol",
+    "takeLiquidityRate": {
+      "@id": "hitbtc:takeLiquidityRate",
+      "@type": "xsd:string"
+    },
+    "provideLiquidityRate": {
+      "@id": "hitbtc:provideLiquidityRate",
+      "@type": "xsd:string"
+    },
+    "marginTrading": {
+      "@id": "hitbtc:marginTrading",
+      "@type": "xsd:boolean"
+    },
+    "maxInitialLeverage": {
+      "@id": "hitbtc:maxInitialLeverage",
+      "@type": "xsd:string"
+    },
+    "marketData_Ticker": "hitbtc:marketData_Ticker",
+    "last": {
+      "@id": "hitbtc:last",
+      "@type": "xsd:string"
+    },
+    "low": {
+      "@id": "hitbtc:low",
+      "@type": "xsd:string"
+    },
+    "high": {
+      "@id": "hitbtc:high",
+      "@type": "xsd:string"
+    },
+    "wallet_SubAccountResponse": "hitbtc:wallet_SubAccountResponse",
+    "wallet_SubAccTransfer": "hitbtc:wallet_SubAccTransfer",
+    "subAccountId": {
+      "@id": "hitbtc:subAccountId",
+      "@type": "xsd:integer"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "HitBTC API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects HitBTC's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-13) from openapi/hitbtc-openapi.yml, openapi/hitbtc-v2-openapi.yml.",
+  "dcterms:created": "2026-10-13",
+  "dcterms:source": [
+    "openapi/hitbtc-openapi.yml",
+    "openapi/hitbtc-v2-openapi.yml"
+  ]
+}

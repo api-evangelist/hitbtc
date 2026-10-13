@@ -1,0 +1,1044 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/hitbtc-openapi.yml
+- openapi/hitbtc-v2-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 382
+  entities_in_spec: 382
+  relationships: 38
+entities:
+- name: marketData_Candle
+  fields: 0
+- name: marketData_CandleBase
+  fields: 5
+- name: marketData_CandleMap
+  fields: 0
+- name: marketData_CashSettledFuturesInfo
+  fields: 0
+- name: marketData_CashSettledFuturesSymbol
+  fields: 0
+- name: marketData_ConvertedCandle
+  fields: 2
+- name: marketData_ConvertedCandles
+  fields: 2
+- name: marketData_Currency
+  fields: 0
+- name: marketData_CurrencyBase
+  fields: 0
+- name: marketData_CurrencyMap
+  fields: 0
+- name: marketData_CurrencyMapping
+  fields: 3
+- name: marketData_CurrencyNetworkBase
+  fields: 4
+- name: marketData_Error
+  fields: 4
+- name: marketData_FundingHistory
+  fields: 5
+- name: marketData_FundingHistoryMap
+  fields: 0
+- name: marketData_FuturesCandleMap
+  fields: 0
+- name: marketData_FuturesInfo
+  fields: 0
+- name: marketData_FuturesInfoBase
+  fields: 5
+- name: marketData_FuturesInfoMap
+  fields: 0
+- name: marketData_FuturesSymbol
+  fields: 0
+- name: marketData_FuturesSymbolBase
+  fields: 0
+- name: marketData_FuturesSymbolMap
+  fields: 0
+- name: marketData_InstrumentNotFound
+  fields: 0
+  description: Provided currency or symbol not found.
+- name: marketData_InternalCurrency
+  fields: 0
+- name: marketData_LastPrice
+  fields: 2
+- name: marketData_LastPriceHistory
+  fields: 2
+- name: marketData_LastPriceHistoryMap
+  fields: 0
+- name: marketData_LastPriceMap
+  fields: 0
+- name: marketData_Network
+  fields: 0
+- name: marketData_NetworkBase
+  fields: 8
+- name: marketData_OrderBook
+  fields: 3
+- name: marketData_OrderBookMap
+  fields: 0
+- name: marketData_Orderbook
+  fields: 5
+- name: marketData_PerpetualFuturesInfo
+  fields: 0
+- name: marketData_PerpetualFuturesSymbol
+  fields: 0
+- name: marketData_Price
+  fields: 3
+- name: marketData_PriceHistory
+  fields: 2
+- name: marketData_Quote
+  fields: 0
+- name: marketData_SpotSymbol
+  fields: 0
+- name: marketData_SpotSymbolMap
+  fields: 0
+- name: marketData_Symbol
+  fields: 10
+- name: marketData_SymbolBase
+  fields: 0
+- name: marketData_SymbolMapping
+  fields: 10
+- name: marketData_SymbolMarginFields
+  fields: 2
+- name: marketData_Ticker
+  fields: 0
+- name: marketData_TickerMap
+  fields: 0
+- name: marketData_Trade
+  fields: 5
+- name: marketData_TradeMap
+  fields: 0
+- name: marketData_Validation
+  fields: 0
+  description: 'Any of:'
+- name: marketData_VolumeBase
+  fields: 2
+- name: trading_Account
+  fields: 0
+- name: trading_AccountBase
+  fields: 7
+- name: trading_AccountCross
+  fields: 0
+- name: trading_AccountCrossReport
+  fields: 0
+  description: ⚠️ Values of `required_margin`, `margin_call_margin`,
+- name: trading_AccountIsolated
+  fields: 0
+- name: trading_AmmDisabled
+  fields: 0
+  description: AMM (auto margin management) is disabled on the platform.
+- name: trading_BadClosePosition
+  fields: 0
+  description: Invalid value of the `close_position` flag in a new order request.
+- name: trading_BadDisplayQuantity
+  fields: 0
+  description: '`display_quantity` in a hidden order is other than 0.'
+- name: trading_BadFlagsCombination
+  fields: 0
+  description: 'Any of:'
+- name: trading_BadFormat
+  fields: 0
+  description: Provided parameters do not meet any supported authentication scheme.
+- name: trading_BadFormatHS256
+  fields: 0
+  description: 'Any of:'
+- name: trading_BadOrderListSize
+  fields: 0
+  description: The number of order in the order list violates the conditions for its
+- name: trading_BadPrice
+  fields: 0
+  description: Invalid price format.
+- name: trading_BadSymbolsCombination
+  fields: 0
+  description: Orders in the order list are on symbols that are unacceptable in
+- name: trading_BadTimeInForce
+  fields: 0
+  description: Provided Time-In-Force instruction is invalid or the combination of the
+- name: trading_BadType
+  fields: 0
+  description: Provided order type is invalid.
+- name: trading_CcNoMoney
+  fields: 0
+  description: Order placing exceeds the central counterparty balance limit.
+- name: trading_Clearing
+  fields: 9
+- name: trading_ClosePosition
+  fields: 1
+- name: trading_ClosePositionFieldRequest
+  fields: 1
+- name: trading_ClosePositionRequest
+  fields: 2
+- name: trading_CrossAccountBalance
+  fields: 0
+- name: trading_Currency
+  fields: 1
+- name: trading_CurrencyNotFound
+  fields: 0
+  description: Provided currency has not been found.
+- name: trading_DuplicateClientOrderID
+  fields: 0
+  description: Provided client order identifier is user in an active order or has been
+- name: trading_Error
+  fields: 1
+- name: trading_ExceedsLimit
+  fields: 0
+  description: Available funds on the exchange balance are not sufficient.
+- name: trading_ExchangeBalance
+  fields: 0
+- name: trading_ExchangeClosed
+  fields: 0
+  description: Exchange is temporary closed.
+- name: trading_FatFingerLimitExceeded
+  fields: 0
+  description: Fat finger limit is exceeded.
+- name: trading_Fee
+  fields: 2
+- name: trading_Forbidden
+  fields: 0
+  description: 'Any of:'
+- name: trading_Funding
+  fields: 0
+- name: trading_FuturesAccount
+  fields: 0
+- name: trading_FuturesAccountCross
+  fields: 0
+- name: trading_FuturesAccountIsolated
+  fields: 0
+- name: trading_FuturesLimitOrder
+  fields: 0
+- name: trading_FuturesLimitOrderRequest
+  fields: 0
+- name: trading_FuturesMarketOrder
+  fields: 0
+- name: trading_FuturesMarketOrderRequest
+  fields: 0
+- name: trading_FuturesOrder
+  fields: 0
+- name: trading_FuturesOrderRequest
+  fields: 0
+- name: trading_FuturesPosition
+  fields: 0
+- name: trading_FuturesPositionBase
+  fields: 0
+- name: trading_FuturesStopLimitOrder
+  fields: 0
+- name: trading_FuturesStopLimitOrderRequest
+  fields: 0
+- name: trading_FuturesStopMarketOrder
+  fields: 0
+- name: trading_FuturesStopMarketOrderRequest
+  fields: 0
+- name: trading_HiddenOrderFields
+  fields: 1
+- name: trading_HistoryOrder
+  fields: 21
+- name: trading_HistoryTrade
+  fields: 15
+- name: trading_InsufficientFunds
+  fields: 0
+- name: trading_Interest
+  fields: 0
+- name: trading_Internal
+  fields: 0
+  description: Unclassified internal error.
+- name: trading_InvalidCancelRequestId
+  fields: 0
+  description: The client order ID provided during an order cancellation is invalid.
+- name: trading_InvalidPrice
+  fields: 0
+  description: Invalid price value.
+- name: trading_InvalidUserLeverage
+  fields: 0
+  description: Invalid leverage value.
+- name: trading_IsolatedAccountBalance
+  fields: 4
+- name: trading_Leverage
+  fields: 1
+- name: trading_LeverageRequest
+  fields: 1
+- name: trading_LimitDefaultTIF
+  fields: 1
+- name: trading_LimitOrder
+  fields: 0
+- name: trading_LimitOrderHistory
+  fields: 0
+- name: trading_LimitOrderRequest
+  fields: 0
+- name: trading_LimitReplaceOrderRequest
+  fields: 0
+- name: trading_MarginAuto
+  fields: 1
+- name: trading_MarginAutoRequest
+  fields: 1
+- name: trading_MarginBalanceFields
+  fields: 2
+- name: trading_MarginBalanceRequest
+  fields: 0
+- name: trading_MarginLimitOrder
+  fields: 0
+- name: trading_MarginLimitOrderHistory
+  fields: 0
+- name: trading_MarginLimitOrderRequest
+  fields: 0
+- name: trading_MarginMarketOrder
+  fields: 0
+- name: trading_MarginMarketOrderHistory
+  fields: 0
+- name: trading_MarginMarketOrderRequest
+  fields: 0
+- name: trading_MarginMode
+  fields: 1
+- name: trading_MarginModeRequest
+  fields: 1
+- name: trading_MarginOrder
+  fields: 0
+- name: trading_MarginOrderHistory
+  fields: 0
+- name: trading_MarginOrderListRequest
+  fields: 0
+- name: trading_MarginOrderRequest
+  fields: 0
+- name: trading_MarginOrderTrades
+  fields: 1
+- name: trading_MarginParams
+  fields: 11
+- name: trading_MarginSettings
+  fields: 6
+- name: trading_MarginStopLimitOrder
+  fields: 0
+- name: trading_MarginStopLimitOrderHistory
+  fields: 0
+- name: trading_MarginStopLimitOrderRequest
+  fields: 0
+- name: trading_MarginStopMarketOrder
+  fields: 0
+- name: trading_MarginStopMarketOrderHistory
+  fields: 0
+- name: trading_MarginStopMarketOrderRequest
+  fields: 0
+- name: trading_MarginTradeFields
+  fields: 6
+- name: trading_MarginTradeHistory
+  fields: 0
+- name: trading_MarginTradingForbidden
+  fields: 0
+  description: Margin trading is forbidden for the user.
+- name: trading_MarginTradingIsDisabled
+  fields: 0
+  description: Margin trading is forbidden for the user.
+- name: trading_MarketOrder
+  fields: 0
+- name: trading_MarketOrderHistory
+  fields: 0
+- name: trading_MarketOrderRequest
+  fields: 0
+- name: trading_MarketReplaceOrderRequest
+  fields: 0
+- name: trading_MarkupRateRequest
+  fields: 2
+- name: trading_NewFuturesLimitOrder
+  fields: 0
+- name: trading_NewFuturesMarketOrder
+  fields: 0
+- name: trading_NewFuturesOrder
+  fields: 0
+- name: trading_NewFuturesStopLimitOrder
+  fields: 0
+- name: trading_NewFuturesStopMarketOrder
+  fields: 0
+- name: trading_NewLimitOrder
+  fields: 0
+- name: trading_NewMarginLimitOrder
+  fields: 0
+- name: trading_NewMarginMarketOrder
+  fields: 0
+- name: trading_NewMarginOrder
+  fields: 0
+- name: trading_NewMarginStopLimitOrder
+  fields: 0
+- name: trading_NewMarginStopMarketOrder
+  fields: 0
+- name: trading_NewMarketOrder
+  fields: 0
+- name: trading_NewOrder
+  fields: 0
+- name: trading_NewOrderClientId
+  fields: 1
+- name: trading_NewOrderRequest
+  fields: 14
+- name: trading_NewStopLimitOrder
+  fields: 0
+- name: trading_NewStopMarketOrder
+  fields: 0
+- name: trading_NoAvailableMargin
+  fields: 0
+  description: Position does not have enough margin to remove (set margin request),
+- name: trading_NotAvailable
+  fields: 0
+  description: Trading on the requested market is not available.
+- name: trading_NotChanged
+  fields: 0
+  description: Provided parameters for a new order are the as of the replaced one.
+- name: trading_NotSupported
+  fields: 0
+  description: 'Any of:'
+- name: trading_Order
+  fields: 0
+- name: trading_OrderBase
+  fields: 0
+- name: trading_OrderCommon
+  fields: 13
+- name: trading_OrderHistory
+  fields: 0
+- name: trading_OrderListFields
+  fields: 2
+- name: trading_OrderListId
+  fields: 1
+- name: trading_OrderListRequest
+  fields: 0
+- name: trading_OrderNotFound
+  fields: 0
+  description: Canceled or replaced order has not been found, or the user has no active
+- name: trading_OrderRequest
+  fields: 0
+- name: trading_OrderRequestBase
+  fields: 0
+- name: trading_OrderTrades
+  fields: 1
+- name: trading_OrderTradesBase
+  fields: 6
+  description: The list of trades the order participated in.
+- name: trading_Position
+  fields: 0
+- name: trading_PositionBase
+  fields: 17
+- name: trading_PositionBlocked
+  fields: 0
+  description: Position has the `blocked` status.
+- name: trading_PositionChangeRequest
+  fields: 2
+- name: trading_PositionHistory
+  fields: 25
+- name: trading_PositionId
+  fields: 1
+- name: trading_PositionIsCloseOnly
+  fields: 0
+  description: The position price has reached the margin-call mark and open orders are
+- name: trading_PositionNotOpened
+  fields: 0
+  description: Requested position is not open (has `0` quantity).
+- name: trading_Price
+  fields: 1
+- name: trading_PriceRequest
+  fields: 1
+- name: trading_QuantityBad
+  fields: 0
+  description: Invalid quantity format.
+- name: trading_QuantityNotNumber
+  fields: 0
+  description: Invalid quantity value.
+- name: trading_QuantityRequest
+  fields: 1
+- name: trading_QuantityTooLow
+  fields: 0
+  description: Quantity is less or equal to zero or the quantity increment.
+- name: trading_ReduceOnly
+  fields: 1
+- name: trading_ReduceOnlyRequest
+  fields: 1
+- name: trading_ReplaceOrderRequestBase
+  fields: 0
+- name: trading_ReportReason
+  fields: 1
+- name: trading_RequestTimeout
+  fields: 0
+  description: Operation was canceled.
+- name: trading_ResponseFormatter
+  fields: 0
+  description: 'Any of:'
+- name: trading_RestTradingBalance
+  fields: 3
+- name: trading_SetAmm
+  fields: 1
+- name: trading_SetAmmRequest
+  fields: 1
+- name: trading_SetAmr
+  fields: 4
+- name: trading_SetAmrRequest
+  fields: 4
+- name: trading_SetLeverageRequest
+  fields: 0
+- name: trading_SpotBalance
+  fields: 2
+- name: trading_StopLimitOrder
+  fields: 0
+- name: trading_StopLimitOrderHistory
+  fields: 0
+- name: trading_StopLimitOrderRequest
+  fields: 0
+- name: trading_StopLimitReplaceOrderRequest
+  fields: 0
+- name: trading_StopMarketOrder
+  fields: 0
+- name: trading_StopMarketOrderHistory
+  fields: 0
+- name: trading_StopMarketOrderRequest
+  fields: 0
+- name: trading_StopMarketReplaceOrderRequest
+  fields: 0
+- name: trading_StopPrice
+  fields: 1
+- name: trading_StopPriceRequest
+  fields: 1
+- name: trading_StrictValidateRequest
+  fields: 1
+- name: trading_Symbol
+  fields: 1
+- name: trading_SymbolExpired
+  fields: 0
+  description: Trades on the given symbol are suspended.
+- name: trading_SymbolNotFound
+  fields: 0
+  description: The symbol featured in the request has not been found.
+- name: trading_SymbolOrdersCountExceeded
+  fields: 0
+  description: Maximum number of active or suspended for symbol is exceeded.
+- name: trading_TakeProfitLimitReplaceOrderRequest
+  fields: 0
+- name: trading_TakeProfitMarketReplaceOrderRequest
+  fields: 0
+- name: trading_TooLateToEnter
+  fields: 0
+  description: The order met its expiration time before it might be processed.
+- name: trading_TotalOrdersCountExceeded
+  fields: 0
+  description: Maximum number of active or suspended on the gateway is exceeded.
+- name: trading_Trade
+  fields: 0
+- name: trading_TradeFee
+  fields: 2
+- name: trading_TradesReport
+  fields: 6
+- name: trading_TradingForbidden
+  fields: 0
+  description: Placing new order is forbidden for this liquidity pool.
+- name: trading_UnauthorizedBasic
+  fields: 0
+  description: 'Any of:'
+- name: trading_UnauthorizedHS256
+  fields: 0
+  description: 'Any of:'
+- name: trading_UnauthorizedJWT
+  fields: 0
+  description: Invalid JWT.
+- name: trading_UnknownMarginAccount
+  fields: 0
+  description: No margin account for a given instrument is found.
+- name: trading_UnknownMarginMode
+  fields: 0
+  description: Invalid margin mode.
+- name: trading_UserMarginAccountInfo
+  fields: 8
+- name: trading_UserOrderInfo
+  fields: 17
+- name: trading_UserPositionInfo
+  fields: 10
+- name: trading_Validation
+  fields: 0
+  description: 'Any of:'
+- name: trading_WorseLiquidationExisted
+  fields: 0
+  description: The value of the existing order exceeds the margin isolated for the
+- name: trading_WorseLiquidationNew
+  fields: 0
+  description: The value of the order exceeds the margin isolated for the position.
+- name: wallet_AccountTransferInternalRequest
+  fields: 4
+- name: wallet_Address
+  fields: 1
+- name: wallet_AddressResponse
+  fields: 5
+- name: wallet_Airdrop
+  fields: 0
+- name: wallet_Amount
+  fields: 1
+- name: wallet_AmountLock
+  fields: 0
+- name: wallet_AmountLocked
+  fields: 0
+  description: Funds needed for execution of the operation are locked.
+- name: wallet_ApiKey
+  fields: 10
+- name: wallet_AuthInvalid
+  fields: 0
+  description: Invalid JWT.
+- name: wallet_BadFormat
+  fields: 0
+  description: Provided parameters do not meet any supported authentication scheme.
+- name: wallet_BadFormatHS256
+  fields: 0
+  description: 'Any of:'
+- name: wallet_BadGateway
+  fields: 0
+  description: Unclassified error while connecting the authentication service.
+- name: wallet_Balance
+  fields: 0
+- name: wallet_BalanceResponse
+  fields: 3
+- name: wallet_CheckOffchainRequest
+  fields: 3
+- name: wallet_CommitRisk
+  fields: 3
+- name: wallet_ConvertConfig
+  fields: 5
+- name: wallet_ConvertRequest
+  fields: 0
+- name: wallet_CreatedAt
+  fields: 1
+- name: wallet_CryptoAddress
+  fields: 3
+- name: wallet_CryptoProvider
+  fields: 3
+- name: wallet_Currency
+  fields: 1
+- name: wallet_CurrencyNotFound
+  fields: 0
+  description: Currency is not found.
+- name: wallet_DeletedAt
+  fields: 1
+- name: wallet_Deposit
+  fields: 0
+- name: wallet_DepositAddress
+  fields: 0
+- name: wallet_DepositAddressBase
+  fields: 0
+- name: wallet_DepositAddressRequest
+  fields: 0
+- name: wallet_Error
+  fields: 1
+- name: wallet_EstimatedFeeBulk
+  fields: 0
+- name: wallet_ExchangeBalance
+  fields: 0
+- name: wallet_Fee
+  fields: 1
+- name: wallet_FeeLevelIDCommon
+  fields: 0
+  description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder
+    so the document resolves; the shape is unknown and is NOT a claim about the API.
+- name: wallet_Forbidden
+  fields: 0
+  description: 'Any of:'
+- name: wallet_GatewayTimeout
+  fields: 0
+  description: Gateway timeout.
+- name: wallet_GetAccountEstimateWithdrawalLevelsResponse
+  fields: 4
+- name: wallet_Hash
+  fields: 1
+- name: wallet_IdempotencyKey
+  fields: 1
+- name: wallet_InsufficientFunds
+  fields: 0
+  description: Available balance is insufficient for execution of the operation.
+- name: wallet_Internal
+  fields: 0
+  description: Internal error.
+- name: wallet_InternalWithdrawalRequest
+  fields: 0
+- name: wallet_InternalWithdrawalRequestBase
+  fields: 0
+- name: wallet_InternalWithdrawalRequestEmail
+  fields: 0
+- name: wallet_InternalWithdrawalRequestExternalID
+  fields: 0
+- name: wallet_InternalWithdrawalRequestUsername
+  fields: 0
+- name: wallet_InternalWithdrawalRequestWalletID
+  fields: 0
+- name: wallet_LowAmount
+  fields: 0
+  description: Operation amount is too low.
+- name: wallet_MarginBalanceFields
+  fields: 1
+- name: wallet_NativeBase
+  fields: 0
+- name: wallet_NativeBlockchainFields
+  fields: 0
+- name: wallet_NativeWithdrawalFields
+  fields: 0
+- name: wallet_Network
+  fields: 1
+- name: wallet_NotAllowed
+  fields: 0
+  description: Operations on the requested currency are not allowed.
+- name: wallet_NotEnoughPermissions
+  fields: 0
+  description: Current permission scope in the authentication service is insufficient.
+- name: wallet_NotFound
+  fields: 0
+  description: 'Any of:'
+- name: wallet_OTCHighVolatility
+  fields: 0
+  description: OTC trade will be unlikely executed due to high market volatility.
+- name: wallet_OffChainRequest
+  fields: 0
+- name: wallet_OperationID
+  fields: 1
+- name: wallet_Order
+  fields: 10
+- name: wallet_PaymentID
+  fields: 1
+- name: wallet_PaymentMethod
+  fields: 0
+  description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder
+    so the document resolves; the shape is unknown and is NOT a claim about the API.
+- name: wallet_PaymentMethodCurrency
+  fields: 3
+- name: wallet_PayoutAmountLocked
+  fields: 0
+  description: Operation amount in total with locked amount exceeds available balance.
+- name: wallet_PayoutBlacklisted
+  fields: 0
+  description: User is in the blacklist and can no longer make withdrawals.
+- name: wallet_PayoutCommitted
+  fields: 0
+  description: Transaction associated with the operation was complete before being committed or rolled back.
+- name: wallet_PayoutDisabled
+  fields: 0
+  description: Withdrawals are unavailable due to the current configuration.
+- name: wallet_PayoutInvalidAddress
+  fields: 0
+  description: Receiver deposit address has an invalid format.
+- name: wallet_PayoutInvalidPaymentID
+  fields: 0
+  description: 'Any of:'
+- name: wallet_PayoutNotFound
+  fields: 0
+  description: The requested withdrawal is not found.
+- name: wallet_PayoutOffchainUnavailable
+  fields: 0
+  description: The internal transfer is directed to the sender of the request.
+- name: wallet_Price
+  fields: 9
+- name: wallet_PricesResponse
+  fields: 2
+- name: wallet_PrimeTrustMethod
+  fields: 0
+- name: wallet_PublicComment
+  fields: 1
+- name: wallet_RecentDepositAddress
+  fields: 0
+- name: wallet_RequestTimeout
+  fields: 0
+  description: The request has been canceled.
+- name: wallet_ResourceNotFound
+  fields: 0
+  description: Resource not found due to an internal error.
+- name: wallet_Result
+  fields: 1
+- name: wallet_ServiceUnavailable
+  fields: 0
+  description: 'Any of:'
+- name: wallet_ShouldUpgradePermission
+  fields: 0
+  description: Current permission scope in the authentication service is insufficient.
+- name: wallet_SpotBalance
+  fields: 2
+- name: wallet_SubAccACLRequest
+  fields: 2
+- name: wallet_SubAccACLResponse
+  fields: 0
+- name: wallet_SubAccTransfer
+  fields: 4
+- name: wallet_SubAccountAlreadyFrozenOrDisabled
+  fields: 0
+  description: A subaccount has already been frozen or disabled regardless of super account actions.
+- name: wallet_SubAccountBalanceResponse
+  fields: 2
+- name: wallet_SubAccountCallerNotSuper
+  fields: 0
+  description: A subaccount cannot create subaccounts of its own.
+- name: wallet_SubAccountCreationDisabled
+  fields: 0
+  description: Creation of subaccounts is switched off for the broker.
+- name: wallet_SubAccountEmailExists
+  fields: 0
+  description: The email address provided for a subaccount is already registered within the broker, the address
+    of the super account included.
+- name: wallet_SubAccountEmailNotConfirmed
+  fields: 0
+  description: At least one subaccount of the request has not confirmed its email address yet, therefore the whole
+    request is rejected.
+- name: wallet_SubAccountNotFound
+  fields: 0
+  description: 'Any of:'
+- name: wallet_SubAccountResponse
+  fields: 3
+- name: wallet_SubAccountTwoFactorRequired
+  fields: 0
+  description: The super account has no two-factor authentication enabled.
+- name: wallet_SubAccountWeakPassword
+  fields: 0
+  description: 'The password provided for a subaccount does not meet the requirements: at least 6 non-whitespaced
+    characters and at most 255 characters in total, including a number and a non-numeric letter or symbol.'
+- name: wallet_SubToSubTransferRequest
+  fields: 0
+- name: wallet_SubToSuperTransferRequest
+  fields: 0
+- name: wallet_Subaccount
+  fields: 3
+- name: wallet_SubaccountACL
+  fields: 0
+- name: wallet_SubaccountACLBase
+  fields: 3
+- name: wallet_SubaccountACLRequest
+  fields: 0
+- name: wallet_SubaccountBalance
+  fields: 0
+- name: wallet_SubaccountCreateRequest
+  fields: 2
+- name: wallet_SubaccountCreated
+  fields: 5
+  description: The result of the subaccount creation. Every field is known at the creation time, therefore all of
+    them are always present.
+- name: wallet_SubaccountID
+  fields: 1
+- name: wallet_SubaccountTransferRequest
+  fields: 0
+- name: wallet_SubaccountsIds
+  fields: 1
+- name: wallet_TooManyRequests
+  fields: 0
+  description: Rate limits are exceeded.
+- name: wallet_Transaction
+  fields: 0
+- name: wallet_TransactionBase
+  fields: 0
+- name: wallet_TransactionLimit
+  fields: 8
+- name: wallet_TransactionNotFound
+  fields: 0
+  description: 'Any of:'
+- name: wallet_TransactionResult
+  fields: 1
+- name: wallet_TransactionSubtypes
+  fields: 0
+- name: wallet_TransactionTypes
+  fields: 0
+- name: wallet_Transfer
+  fields: 0
+- name: wallet_TransferConvertRequest
+  fields: 3
+- name: wallet_TransferRequest
+  fields: 0
+- name: wallet_UnauthorizedBasic
+  fields: 0
+  description: 'Any of:'
+- name: wallet_UnauthorizedHS256
+  fields: 0
+  description: 'Any of:'
+- name: wallet_UpdatedAt
+  fields: 1
+- name: wallet_UserDisabled
+  fields: 0
+  description: A subaccount has not confirmed the registration or is disabled which is required for execution of
+    the operation.
+- name: wallet_UserFeatures
+  fields: 3
+- name: wallet_UserNotFound
+  fields: 0
+  description: User not found.
+- name: wallet_Validation
+  fields: 0
+  description: 'Any of:'
+- name: wallet_VerificationLevelTooLow
+  fields: 0
+  description: The verification level of the user is insufficient for the operation.
+- name: wallet_VerificationRequired
+  fields: 0
+  description: Verification level is insufficient for the given operation.
+- name: wallet_WhitelistedAddress
+  fields: 0
+  description: 'A whitelist entry. `currency` and `network` are optional independently of each other, and at least
+    one of them is always present:'
+- name: wallet_WithdrawRequest
+  fields: 0
+- name: wallet_Withdrawal
+  fields: 0
+- name: wallet_WithdrawalRequest
+  fields: 0
+- name: wallet_ptyDefaultLevelId
+  fields: 1
+- name: wallet_ptyFees
+  fields: 1
+- name: wallet_ptyHash-Fees
+  fields: 1
+- name: wallet_reqBulkEstimateFeeByLabel
+  fields: 0
+- name: wallet_resGetFeeHash
+  fields: 0
+- name: wallet_resGetFeeList
+  fields: 0
+- name: wallet_schFees
+  fields: 0
+- name: wallet_schLabels
+  fields: 0
+  description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder
+    so the document resolves; the shape is unknown and is NOT a claim about the API.
+- name: wallet_schLevels
+  fields: 0
+  description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder
+    so the document resolves; the shape is unknown and is NOT a claim about the API.
+relationships:
+- from: marketData_Currency
+  to: marketData_Network
+  type: has_many
+  via: networks
+- from: marketData_LastPriceHistory
+  to: marketData_CandleBase
+  type: has_many
+  via: history
+- from: marketData_ConvertedCandle
+  to: marketData_Candle
+  type: has_many
+  via: data
+- from: marketData_ConvertedCandles
+  to: marketData_CandleMap
+  type: has_one
+  via: data
+- from: wallet_schFees
+  to: wallet_schLevels
+  type: has_many
+  via: levels
+- from: wallet_ptyDefaultLevelId
+  to: wallet_FeeLevelIDCommon
+  type: has_one
+  via: default_level_id
+- from: wallet_ptyFees
+  to: wallet_schFees
+  type: has_many
+  via: fees
+- from: wallet_TransactionBase
+  to: wallet_TransactionTypes
+  type: has_one
+  via: type
+- from: wallet_TransactionBase
+  to: wallet_TransactionSubtypes
+  type: has_one
+  via: subtype
+- from: wallet_Deposit
+  to: wallet_NativeBase
+  type: has_one
+  via: native
+- from: wallet_Deposit
+  to: wallet_NativeBlockchainFields
+  type: has_one
+  via: native
+- from: wallet_Deposit
+  to: wallet_CommitRisk
+  type: has_one
+  via: commit_risk
+- from: wallet_Withdrawal
+  to: wallet_NativeBase
+  type: has_one
+  via: native
+- from: wallet_Withdrawal
+  to: wallet_NativeWithdrawalFields
+  type: has_one
+  via: native
+- from: wallet_Withdrawal
+  to: wallet_NativeBlockchainFields
+  type: has_one
+  via: native
+- from: wallet_Transfer
+  to: wallet_NativeBase
+  type: has_one
+  via: native
+- from: wallet_SubaccountBalance
+  to: wallet_Balance
+  type: has_one
+  via: wallet
+- from: wallet_SubaccountBalance
+  to: wallet_ExchangeBalance
+  type: has_one
+  via: spot
+- from: wallet_SubaccountBalance
+  to: wallet_ExchangeBalance
+  type: has_one
+  via: derivatives
+- from: trading_OrderTrades
+  to: trading_OrderTradesBase
+  type: has_many
+  via: trades
+- from: trading_MarginOrderTrades
+  to: trading_OrderTradesBase
+  type: has_many
+  via: trades
+- from: trading_MarginOrderTrades
+  to: trading_PositionId
+  type: has_many
+  via: trades
+- from: trading_OrderListRequest
+  to: trading_OrderRequest
+  type: has_many
+  via: orders
+- from: trading_MarginOrderListRequest
+  to: trading_MarginOrderRequest
+  type: has_many
+  via: orders
+- from: trading_FuturesAccountIsolated
+  to: trading_FuturesPositionBase
+  type: has_many
+  via: positions
+- from: trading_FuturesAccountIsolated
+  to: trading_IsolatedAccountBalance
+  type: has_many
+  via: currencies
+- from: trading_FuturesAccountCross
+  to: trading_FuturesPosition
+  type: has_many
+  via: positions
+- from: trading_FuturesAccountCross
+  to: trading_CrossAccountBalance
+  type: has_many
+  via: currencies
+- from: trading_AccountIsolated
+  to: trading_PositionBase
+  type: has_many
+  via: positions
+- from: trading_AccountIsolated
+  to: trading_IsolatedAccountBalance
+  type: has_many
+  via: currencies
+- from: trading_AccountCross
+  to: trading_Position
+  type: has_many
+  via: positions
+- from: trading_AccountCross
+  to: trading_IsolatedAccountBalance
+  type: has_many
+  via: currencies
+- from: wallet_SubAccountBalanceResponse
+  to: wallet_BalanceResponse
+  type: has_one
+  via: main
+- from: wallet_SubAccountBalanceResponse
+  to: wallet_BalanceResponse
+  type: has_one
+  via: trading
+- from: wallet_CryptoProvider
+  to: wallet_PaymentMethod
+  type: has_many
+  via: methods
+- from: wallet_PricesResponse
+  to: wallet_Price
+  type: has_many
+  via: prices
+- from: trading_UserOrderInfo
+  to: trading_TradesReport
+  type: has_many
+  via: tradesReport
+- from: trading_UserMarginAccountInfo
+  to: trading_UserPositionInfo
+  type: has_one
+  via: position

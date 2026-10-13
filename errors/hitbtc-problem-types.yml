@@ -1,0 +1,98 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/hitbtc-openapi.yml
+- openapi/hitbtc-v2-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: trading_Error
+coverage:
+  operations: 197
+  statuses_declared: 12
+problems:
+- status: 400
+  title: Bad Request
+  description: Bad Request
+  operations: 176
+  media_types:
+  - application/json
+  schema: wallet_Error
+- status: 401
+  title: Unauthorized
+  description: Unauthorized
+  operations: 152
+  media_types:
+  - application/json
+  schema: trading_Error
+- status: 403
+  title: Forbidden
+  description: Forbidden
+  operations: 152
+  media_types:
+  - application/json
+  schema: trading_Forbidden
+- status: 404
+  title: Not Found
+  description: Not Found
+  operations: 68
+  media_types:
+  - application/json
+  schema: wallet_UserNotFound
+- status: 406
+  title: Not Acceptable
+  description: Not Acceptable
+  operations: 36
+  media_types:
+  - application/json
+  schema: null
+- status: 408
+  title: Request Timeout
+  description: Request Timeout
+  operations: 25
+  media_types:
+  - application/json
+  schema: wallet_RequestTimeout
+- status: 429
+  title: Too Many Requests
+  description: Too Many Requests
+  operations: 39
+  media_types:
+  - application/json
+  schema: wallet_TooManyRequests
+- status: 500
+  title: Internal Server Error
+  description: Internal Server Error
+  operations: 150
+  media_types:
+  - application/json
+  schema: trading_Internal
+- status: 502
+  title: Bad Gateway
+  description: Bad Gateway
+  operations: 23
+  media_types:
+  - application/json
+  schema: wallet_BadGateway
+- status: 503
+  title: Service Unavailable
+  description: Service Unavailable
+  operations: 22
+  media_types:
+  - application/json
+  schema: wallet_ServiceUnavailable
+- status: 504
+  title: Gateway Timeout
+  description: Gateway Timeout
+  operations: 88
+  media_types:
+  - application/json
+  schema: trading_RequestTimeout
+- status: default
+  title: null
+  description: null
+  operations: 152
+  media_types:
+  - application/json
+  schema: trading_Error

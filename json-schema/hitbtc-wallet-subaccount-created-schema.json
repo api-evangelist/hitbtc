@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-wallet-subaccount-created-schema.json",
+  "title": "Subaccount created",
+  "description": "The result of the subaccount creation. Every field is known at the creation time, therefore all of them are always present.\n",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountCreated",
+  "required": [
+    "sub_account_id",
+    "email",
+    "status",
+    "sub_account_status",
+    "created_at"
+  ],
+  "type": "object",
+  "properties": {
+    "sub_account_id": {
+      "type": "string",
+      "description": "Subaccount external identifier."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User email address."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "active",
+        "disable"
+      ],
+      "description": "Account status. After the creation it is always `\"new\"`.\n\nValues:\n  * `new`—account is created, but not confirmed by email;\n  * `active`—account is fully functioning (it is normally accomplished after email confirmation);\n  * `disable`—account is disabled (the user cannot initiate account deactivation — it can only be done by the CRM operator).\n"
+    },
+    "sub_account_status": {
+      "type": "string",
+      "enum": [
+        "invited",
+        "active",
+        "frozen",
+        "frozen_invited"
+      ],
+      "description": "The lifecycle status of the subaccount itself, not of its holder. After the creation it is always `\"invited\"`.\n\nValues:\n  * `invited`—the subaccount is created, the invitation has not been accepted yet;\n  * `active`—the subaccount is active, the transition happens on its first sign-in;\n  * `frozen`—the subaccount is frozen by the super account;\n  * `frozen_invited`—the subaccount is frozen before the invitation was accepted.\n"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Date and time of the creation."
+    }
+  }
+}

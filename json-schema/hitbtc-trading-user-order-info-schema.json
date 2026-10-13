@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-user-order-info-schema.json",
+  "title": "trading_UserOrderInfo",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-v2-openapi.yml#/components/schemas/trading_UserOrderInfo",
+  "required": [
+    "id",
+    "clientOrderId",
+    "symbol",
+    "side",
+    "status",
+    "type",
+    "timeInForce",
+    "quantity",
+    "postOnly",
+    "cumQuantity",
+    "createdAt",
+    "updatedAt"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Order identifier."
+    },
+    "clientOrderId": {
+      "type": "string",
+      "description": "Unique order identifier as assigned by the trader."
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "sell",
+        "buy"
+      ],
+      "description": "Trade side."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "suspended",
+        "partiallyFilled",
+        "filled",
+        "canceled",
+        "rejected",
+        "expired"
+      ],
+      "description": "Order state:\n  * *new*—an order is placed in the order book.\n  * *suspended*—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book.\n  * *partiallyFilled*—an order is executed, but a part of its quantity is not filled yet.\n  * *filled*—order quantity filled completely.\n  * *canceled*—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances.\n  * *expired*—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements.\n  * *rejected*—an order has been rejected.\n"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "market",
+        "limit",
+        "stopMarket",
+        "stopLimit",
+        "takeProfitLimit",
+        "takeProfitMarket"
+      ],
+      "description": "Order type."
+    },
+    "timeInForce": {
+      "type": "string",
+      "enum": [
+        "GTC",
+        "IOC",
+        "FOK",
+        "Day",
+        "GTD"
+      ],
+      "description": "Order expiration mode:\n* *GTC* (\"Good-Till-Canceled\")—order will not be closed until it is filled.\n* *IOC* (\"Immediate-Or-Cancel\")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled.\n* *FOK* (\"Fill-Or-Kill\")—order must be executed immediately and completely or not executed at all.\n* *Day*—keeps the order active until the end of the trading day (23:59 UTC+0).\n* *GTD* (\"Good-Till-Date\")—order will be canceled on the specified date.\n"
+    },
+    "stopPrice": {
+      "type": "string",
+      "description": "The price level that triggers order activation. Specified if `\"type\"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or `takeProfitMarket`."
+    },
+    "expireTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order expiration. Specified if `\"timeInForce\"` is `GTD`."
+    },
+    "price": {
+      "type": "string",
+      "description": "Order price."
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Order quantity."
+    },
+    "postOnly": {
+      "type": "boolean",
+      "description": "A post-only order is an order that does not remove liquidity.\n\nIf the post-only order would cause a match with a pre-existing order as a taker, then the order will be canceled\n"
+    },
+    "closePosition": {
+      "type": "boolean",
+      "description": "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n"
+    },
+    "cumQuantity": {
+      "type": "string",
+      "description": "Executed order quantity."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order's creation."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order's last update."
+    },
+    "tradesReport": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trading_TradesReport"
+      }
+    }
+  },
+  "$defs": {
+    "trading_TradesReport": {
+      "required": [
+        "id",
+        "quantity",
+        "price",
+        "fee",
+        "timestamp"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "uint64",
+          "description": "Trade identifier."
+        },
+        "quantity": {
+          "type": "string",
+          "description": "Quantity of trade."
+        },
+        "price": {
+          "type": "string",
+          "description": "Trade price."
+        },
+        "fee": {
+          "type": "string",
+          "description": "Fee paid for trade."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Trade timestamp."
+        },
+        "positionId": {
+          "type": "integer",
+          "format": "uint64",
+          "description": "Position identifier."
+        }
+      }
+    }
+  }
+}

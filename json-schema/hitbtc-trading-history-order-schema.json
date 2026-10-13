@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-history-order-schema.json",
+  "title": "trading_HistoryOrder",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-v2-openapi.yml#/components/schemas/trading_HistoryOrder",
+  "required": [
+    "id",
+    "clientOrderId",
+    "symbol",
+    "side",
+    "status",
+    "type",
+    "timeInForce",
+    "quantity",
+    "cumQuantity",
+    "price",
+    "avgPrice",
+    "createdAt",
+    "updatedAt",
+    "margin_mode"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Unique order identifier as assigned by the exchange."
+    },
+    "clientOrderId": {
+      "type": "string",
+      "description": "Unique order identifier as assigned by the trader. The order history may list several orders with the same `\"clientOrderId\"`."
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Symbol code."
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "sell",
+        "buy"
+      ],
+      "description": "Trade side."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "suspended",
+        "partiallyFilled",
+        "filled",
+        "canceled",
+        "expired"
+      ],
+      "description": "Order state:\n* *new*—an order is placed in the order book.\n* *suspended*—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book.\n* *partiallyFilled*—an order is executed, but a part of its quantity is not filled yet.\n* *filled*—order quantity filled completely.\n* *canceled*—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances.\n* *expired*—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements.\n* *rejected*—an order has been rejected.\n"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "limit",
+        "market",
+        "stopLimit",
+        "stopMarket",
+        "takeProfitLimit",
+        "takeProfitMarket"
+      ],
+      "description": "Order type."
+    },
+    "timeInForce": {
+      "type": "string",
+      "enum": [
+        "GTC",
+        "IOC",
+        "FOK",
+        "Day",
+        "GTD"
+      ],
+      "description": "Order expiration mode.\n\nValues:\n* *GTC* (\"Good-Till-Canceled\")—order will not be closed until it is filled.\n* *IOC* (\"Immediate-Or-Cancel\")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled.\n* *FOK* (\"Fill-Or-Kill\")—order must be executed immediately and completely or not executed at all.\n* *Day*—keeps the order active until the end of the trading day (23:59 UTC+0).\n* *GTD* (\"Good-Till-Date\")—order will be canceled on the specified date.\n"
+    },
+    "quantity": {
+      "type": "string",
+      "description": "Order quantity."
+    },
+    "displayQuantity": {
+      "type": "string",
+      "description": "The visible part of the hidden order quantity. The only valid value is '0'."
+    },
+    "cumQuantity": {
+      "type": "string",
+      "description": "Executed order quantity."
+    },
+    "price": {
+      "type": "string",
+      "description": "Order price."
+    },
+    "avgPrice": {
+      "type": "string",
+      "description": "Average price of executed lots."
+    },
+    "expireTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order expiration. Specified if `\"timeInForce\"` is `GTD`."
+    },
+    "positionId": {
+      "type": "integer",
+      "format": "uint64",
+      "description": "Position identifier."
+    },
+    "stopPrice": {
+      "type": "string",
+      "description": "The price level that triggers order activation. Specified if `\"type\"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or `takeProfitMarket`."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order's creation."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of order's last update."
+    },
+    "orderListId": {
+      "type": "string",
+      "description": "Order list identifier. Returned only for an order list request."
+    },
+    "contingencyType": {
+      "type": "string",
+      "enum": [
+        "allOrNone",
+        "oneCancelOther",
+        "oneTriggerOther",
+        "oneTriggerOneCancelOther"
+      ],
+      "description": "Order list type. Returned only for an order list request."
+    },
+    "margin_mode": {
+      "type": "string",
+      "enum": [
+        "isolated",
+        "cross"
+      ],
+      "description": "Margin mode."
+    },
+    "closePosition": {
+      "type": "boolean",
+      "description": "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n"
+    }
+  }
+}

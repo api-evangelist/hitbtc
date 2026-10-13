@@ -1,0 +1,16 @@
+name: HitBTC packages
+generated: '2026-10-13'
+method: searched
+source: https://github.com/hitbtc-com
+packages:
+- name: hitbtc-php-sdk
+  registry: github
+  url: https://github.com/hitbtc-com/hitbtc-php-sdk
+  language: PHP
+  official: true
+  version: null
+  published: null
+  note: Source repo in the hitbtc-com GitHub org, last pushed 2018-07-05; no registry
+    release checked/found, predates API v3 (2021-07-28).
+note: npm "hitbtc" (maintainer lysunht) and PyPI "hitbtc" (Nils Diefenbach) are third-party
+  and excluded.

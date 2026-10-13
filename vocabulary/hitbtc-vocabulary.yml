@@ -1,0 +1,421 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/hitbtc-openapi.yml
+- openapi/hitbtc-v2-openapi.yml
+vocabulary:
+  name: HitBTC Domain Vocabulary
+  description: 'Terms declared by HitBTC''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-13'
+  terms:
+  - term: Currency
+    definition: Currency code.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_CurrencyCommon
+  - term: Network
+    definition: 'Object declared by the contract with fields: payin_enabled, payout_enabled, crypto_payment_id_name, crypto_explorer.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_CurrencyNetworkBase
+  - term: Network
+    definition: 'Object declared by the contract with fields: payout_fee, precision_payout, payout_is_payment_id, payin_payment_id, payin_confirmations,
+      low_processing_time, high_processing_time, avg_processing_time.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_NetworkBase
+  - term: Symbol
+    definition: Symbol code.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_SymbolCommon
+  - term: Symbol status
+    definition: Exchange status.
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_SymbolStatus
+  - term: Futures symbol status
+    definition: 'Enumeration declared by the contract with values: clearing.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_FuturesSymbolStatus
+  - term: Symbol types
+    definition: 'Enumeration declared by the contract with values: spot.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_SymbolTypeEnum
+  - term: Futures symbol types
+    definition: 'Enumeration declared by the contract with values: futures.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_FuturesSymbolTypeEnum
+  - term: Margin symbol
+    definition: 'Object declared by the contract with fields: margin_trading, max_initial_leverage.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_SymbolMarginFields
+  - term: marketData_Price
+    definition: 'Object declared by the contract with fields: currency, price, timestamp.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_Price
+  - term: Last price
+    definition: 'Object declared by the contract with fields: price, timestamp.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_LastPrice
+  - term: Candle
+    definition: 'Object declared by the contract with fields: timestamp, open, close, min, max.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_CandleBase
+  - term: Volume
+    definition: 'Object declared by the contract with fields: volume, volume_quote.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_VolumeBase
+  - term: Price history
+    definition: 'Object declared by the contract with fields: currency, history.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_LastPriceHistory
+  - term: Converted candle
+    definition: 'Object declared by the contract with fields: target_currency, data.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_ConvertedCandle
+  - term: Converted candle
+    definition: 'Object declared by the contract with fields: target_currency, data.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_ConvertedCandles
+  - term: Order book
+    definition: 'Object declared by the contract with fields: timestamp, ask, bid.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_OrderBook
+  - term: marketData_Trade
+    definition: 'Object declared by the contract with fields: id, price, qty, side, timestamp.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_Trade
+  - term: Funding history
+    definition: 'Object declared by the contract with fields: timestamp, funding_rate, avg_premium_index, next_funding_time, interest_rate.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_FundingHistory
+  - term: Futures info
+    definition: 'Object declared by the contract with fields: contract_type, mark_price, index_price, open_interest, timestamp.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_FuturesInfoBase
+  - term: marketData_Error
+    definition: 'Object declared by the contract with fields: timestamp, error, path, requestId.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_Error
+  - term: Instrument not found
+    definition: Provided currency or symbol not found.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_InstrumentNotFound
+  - term: marketData_Validation
+    definition: 'Any of: * missing required parameter; * invalid value of a numeric parameter.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/marketData_Validation
+  - term: Result
+    definition: 'Object declared by the contract with fields: result.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Result
+  - term: Cryptocurrency
+    definition: Cryptocurrency code.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_CurrencyCommon
+  - term: Fiat currency
+    definition: Fiat currency code.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_FiatCurrencyCommon
+  - term: Currency
+    definition: 'Object declared by the contract with fields: currency.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Currency
+  - term: Network
+    definition: 'Object declared by the contract with fields: network_code.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Network
+  - term: Network
+    definition: Network code.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_NetworkCommon
+  - term: Amount
+    definition: 'The amount of the operation. Format: currency precision Values: > 0 ℹ️ Call `GET /public/currency/{currency}` to get the currency
+      precision.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_AmountCommon
+  - term: Amount
+    definition: 'Object declared by the contract with fields: amount.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Amount
+  - term: Public comment
+    definition: 'Object declared by the contract with fields: public_comment.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_PublicComment
+  - term: Deposit address
+    definition: Deposit crypto address.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_AddressCommon
+  - term: Deposit address
+    definition: 'Object declared by the contract with fields: address.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Address
+  - term: Payment ID
+    definition: 'Object declared by the contract with fields: payment_id.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_PaymentID
+  - term: Withdrawal fee
+    definition: 'Object declared by the contract with fields: fee.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Fee
+  - term: Transaction hash
+    definition: Transaction blockchain hash.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_HashCommon
+  - term: Transaction hash
+    definition: 'Object declared by the contract with fields: tx_hash.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Hash
+  - term: Created at
+    definition: 'Object declared by the contract with fields: created_at.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_CreatedAt
+  - term: Updated at
+    definition: 'Object declared by the contract with fields: updated_at.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_UpdatedAt
+  - term: Deleted at
+    definition: 'Object declared by the contract with fields: deleted_at.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_DeletedAt
+  - term: Operation ID
+    definition: 'Object declared by the contract with fields: operation_id.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_OperationID
+  - term: IP address
+    definition: IP address of the request sender provided by the client or detected automatically.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_IPAddressCommon
+  - term: API key
+    definition: 'Object declared by the contract with fields: api_key_first_six, key_name, exchange_read, exchange_trade, bank_read, bank_withdraw,
+      allowed_ips, is_active, created_at, updated_at.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_ApiKey
+  - term: Transfer types
+    definition: 'Enumeration declared by the contract with values: wallet.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_TransferEnum
+  - term: Transfer types
+    definition: 'Enumeration declared by the contract with values: spot.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SpotTransferEnum
+  - term: Derivatives transfer types
+    definition: 'Enumeration declared by the contract with values: derivatives.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_DerivativesTransferEnum
+  - term: Whitelisted address
+    definition: 'A whitelist entry. `currency` and `network` are optional independently of each other, and at least one of them is always present:
+      * both present—the entry covers that currency in that network only; * `currency` omitted—the entry covers every currency of its network;
+      * `network` omitted—the entry is not bound to a network. `payment_id` is present only for the currencies that require an additional r'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_WhitelistedAddress
+  - term: Transaction ID
+    definition: Transaction UUID.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_TransactionID
+  - term: Wallet ↔ Exchange
+    definition: Transfer between a wallet and an exchange account.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SingleTransfer
+  - term: Exchange ↔ Exchange
+    definition: 'Operation made by 2 transactions: via an intermediate account.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_DoubleTransfer
+  - term: Conversion config
+    definition: 'Object declared by the contract with fields: currencyFrom, currencyTo, customTypeTo, customTypeFrom, comment.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_ConvertConfig
+  - term: Withdrawal targets
+    definition: 'Enumeration declared by the contract with values: email, username, external_id.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_InternalWithdrawalRequestByEnum
+  - term: Hash
+    definition: 'Object declared by the contract with fields: hash.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_ptyHash-Fees
+  - term: Default level ID
+    definition: 'Object declared by the contract with fields: default_level_id.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_ptyDefaultLevelId
+  - term: Fees
+    definition: 'Object declared by the contract with fields: fees.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_ptyFees
+  - term: Transaction statuses
+    definition: 'Transaction status. Values: * `CREATED`—the transaction has been created and needs to be approved. For withdrawals, the status
+      means that the transaction has been created but not committed. It remains in this status until manually validated or moved to a blockchain;
+      * `PENDING`—the transaction has been created and is queued until the fees are paid, and it can be processed further. Also, for withdr'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_TransactionStatuses
+  - term: Native transaction types
+    definition: 'Enumeration declared by the contract with values: DEPOSIT, WITHDRAW, TRANSFER.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_TransactionTypesBase
+  - term: OTC transaction types
+    definition: 'Enumeration declared by the contract with values: OTC.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_OTCTransactionTypes
+  - term: Native transaction subtypes
+    definition: 'Enumeration declared by the contract with values: UNCLASSIFIED, BLOCKCHAIN, OFFCHAIN, FIAT, WALLET_TO_SPOT, SPOT_TO_WALLET, CHAIN_SWITCH_FROM,
+      CHAIN_SWITCH_TO.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_TransactionSubtypesBase
+  - term: Derivatives transaction subtypes
+    definition: 'Enumeration declared by the contract with values: WALLET_TO_DERIVATIVES, DERIVATIVES_TO_WALLET.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_FuturesTransactionSubtypes
+  - term: Subaccounts transaction subtypes
+    definition: 'Enumeration declared by the contract with values: SUB_ACCOUNT.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountsTransactionSubtypes
+  - term: Airdrop transaction subtypes
+    definition: 'Enumeration declared by the contract with values: AIRDROP.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_AirdropTransactionSubtypes
+  - term: Swap operation types
+    definition: 'Enumeration declared by the contract with values: SWAP.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SwapOperationType
+  - term: OTC operation types
+    definition: 'Enumeration declared by the contract with values: OTC.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_OTCOperationType
+  - term: Attempt hashes
+    definition: Hash of the attempt to send a transaction to the blockchain.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_AttemptHashes
+  - term: Commit risk
+    definition: 'Object declared by the contract with fields: score, rbf, low_fee.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_CommitRisk
+  - term: Subaccount ID
+    definition: Subaccount external identifier.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountIdCommon
+  - term: Subaccount ID
+    definition: 'Object declared by the contract with fields: sub_account_id.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountID
+  - term: Subaccount
+    definition: 'Object declared by the contract with fields: sub_account_id, email, status.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Subaccount
+  - term: Subaccount create request
+    definition: 'Object declared by the contract with fields: email, password.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountCreateRequest
+  - term: Subaccount created
+    definition: The result of the subaccount creation. Every field is known at the creation time, therefore all of them are always present.
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountCreated
+  - term: Subaccount IDs
+    definition: 'Object declared by the contract with fields: sub_account_ids.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountsIds
+  - term: Subaccount ACL
+    definition: 'Object declared by the contract with fields: deposit_address_generation_enabled, withdraw_enabled, description.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SubaccountACLBase
+  - term: Spot balance
+    definition: 'Object declared by the contract with fields: available, reserved.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_SpotBalance
+  - term: Margin balance
+    definition: 'Object declared by the contract with fields: reserved_margin.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_MarginBalanceFields
+  - term: Airdrop status
+    definition: 'Airdrop status. Values: * `available`—the user can claim an airdrop; * `claimed`—an airdrop request is confirmed; * `pending`—the
+      user claimed airdrop. An airdrop request was sent; * `committed`—an airdrop transaction was successfully committed.'
+    tags:
+    - Enumeration
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_AirdropStatuses
+  - term: Idempotency key
+    definition: 'Object declared by the contract with fields: idempotency_key.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_IdempotencyKey
+  - term: Error
+    definition: 'Object declared by the contract with fields: error.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_Error
+  - term: Not Found
+    definition: 'Any of: * a subaccount is not found; * the user is not a super account.'
+    tags:
+    - Object
+    source: openapi/hitbtc-openapi.yml#/components/schemas/wallet_NotFound

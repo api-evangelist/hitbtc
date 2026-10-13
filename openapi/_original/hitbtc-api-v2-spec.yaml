@@ -1,0 +1,4696 @@
+openapi: 3.1.1
+info:
+  title: Public API
+  description: ''
+  version: ''
+servers:
+  - url: /api/2
+paths:
+  /public/candles:
+    get:
+      tags:
+        - Candles
+      summary: Get candles.
+      description: Returns candles for all or multiple symbols.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolsQuery'
+        - $ref: '#/components/parameters/marketData_sortAsc'
+        - $ref: '#/components/parameters/marketData_periodQuery'
+        - $ref: '#/components/parameters/marketData_from'
+        - $ref: '#/components/parameters/marketData_till'
+        - $ref: '#/components/parameters/marketData_limit10'
+        - $ref: '#/components/parameters/marketData_offset'
+        - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Candle'
+                example:
+                  BTCUSDT:
+                    - timestamp: '2021-07-01T20:00:00.000Z'
+                      open: '33079.93'
+                      close: '33236.53'
+                      min: '33079.93'
+                      max: '33295.73'
+                      volume: '146.86223'
+                      volumeQuote: '4877838.3025063'
+                  ETHBTC:
+                    - timestamp: '2021-07-01T20:00:00.000Z'
+                      open: '0.063420'
+                      close: '0.063767'
+                      min: '0.063403'
+                      max: '0.063782'
+                      volume: '866.6776'
+                      volumeQuote: '55.2132903904'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/candles/{symbol}:
+    get:
+      tags:
+        - Candles
+      summary: Get candles for a specific symbol.
+      description: Returns candles for a specific symbol.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolPath'
+        - $ref: '#/components/parameters/marketData_sortAsc'
+        - $ref: '#/components/parameters/marketData_periodQuery'
+        - $ref: '#/components/parameters/marketData_from'
+        - $ref: '#/components/parameters/marketData_till'
+        - $ref: '#/components/parameters/marketData_limit100'
+        - $ref: '#/components/parameters/marketData_offset'
+        - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Candle'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/currency:
+    get:
+      tags:
+        - Currency
+      summary: Get currencies.
+      description: Returns the actual list of available currencies, tokens, etc.
+      parameters:
+        - name: currencies
+          in: query
+          style: form
+          explode: false
+          description: A comma-separated list of currency codes.
+          schema:
+            type: array
+            items:
+              type: string
+        - $ref: '#/components/parameters/marketData_extended'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Currency'
+      security: []
+  /public/currency/{currency}:
+    get:
+      tags:
+        - Currency
+      summary: Get currency.
+      parameters:
+        - $ref: '#/components/parameters/marketData_currencyPath'
+        - $ref: '#/components/parameters/marketData_extended'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Currency'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/history:
+    get:
+      tags:
+        - Price History
+      summary: Get prices history.
+      description: Returns quotation prices history.
+      parameters:
+        - name: from
+          in: query
+          description: Source currency code.
+          schema:
+            type: string
+        - name: to
+          in: query
+          required: true
+          description: Target currency code.
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: Interval initial value.
+          schema:
+            type: string
+            format: date-time
+        - name: until
+          in: query
+          description: Interval end value.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: >
+            The number of items to return. The limit can range between *1* and
+            *1000*.
+          schema:
+            maximum: 1000
+            minimum: 1
+            type: integer
+            default: 1
+        - $ref: '#/components/parameters/marketData_periodQuery'
+        - $ref: '#/components/parameters/marketData_sortDesc'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_PriceHistory'
+                example:
+                  ETH:
+                    currency: BTC
+                    history:
+                      timestamp: '2021-07-01T20:00:00.000Z'
+                      open: '0.063420'
+                      close: '0.063767'
+                      min: '0.063403'
+                      max: '0.063782'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/mapping/currency:
+    get:
+      tags:
+        - Mapping
+      summary: Get currencies' mappings.
+      parameters:
+        - name: currencies
+          in: query
+          style: form
+          explode: false
+          description: A comma-separated list of currency codes.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_CurrencyMapping'
+      security: []
+  /public/mapping/symbol:
+    get:
+      tags:
+        - Mapping
+      summary: Get symbols' mappings.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_SymbolMapping'
+      security: []
+  /public/orderbook/{symbol}:
+    get:
+      tags:
+        - Orderbook
+      summary: Get order book by symbol.
+      description: The request returns an order book for a specific symbol.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolPath'
+        - name: limit
+          in: query
+          description: The number of items to return.
+          schema:
+            type: integer
+            default: 100
+        - name: volume
+          in: query
+          description: Desired volume for market depth search.
+          schema:
+            type: number
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Orderbook'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/rate:
+    get:
+      tags:
+        - Rate
+      summary: Get prices.
+      description: Returns currencies quotation prices.
+      parameters:
+        - name: from
+          in: query
+          description: Source currency code.
+          schema:
+            type: string
+        - name: to
+          in: query
+          required: true
+          description: Target currency code.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Price'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/symbol:
+    get:
+      tags:
+        - Symbol
+      summary: Get symbols.
+      description: >-
+        Returns the actual list of symbols (currency pairs) traded on the
+        exchange.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Symbol'
+      security: []
+  /public/symbol/{symbol}:
+    get:
+      tags:
+        - Symbol
+      summary: Get a specific symbol.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Symbol'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/ticker:
+    get:
+      tags:
+        - Ticker
+      summary: Get tickers.
+      description: Returns ticker information.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Ticker'
+      security: []
+  /public/ticker/{symbol}:
+    get:
+      tags:
+        - Ticker
+      summary: Get ticker by symbol.
+      description: Returns the ticker for a specific symbol.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Ticker'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/trades:
+    get:
+      tags:
+        - Trades
+      summary: Get trades.
+      description: Returns trades information for all or multiple symbols.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolsQuery'
+        - $ref: '#/components/parameters/marketData_byTimestamp'
+        - $ref: '#/components/parameters/marketData_sortDesc'
+        - $ref: '#/components/parameters/marketData_from'
+        - $ref: '#/components/parameters/marketData_till'
+        - $ref: '#/components/parameters/marketData_limit10'
+        - $ref: '#/components/parameters/marketData_offset'
+        - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Trades'
+                example:
+                  BTCUSDT:
+                    - id: 782135488
+                      price: '9793.94'
+                      quantity: '0.21469'
+                      side: sell
+                      timestamp: '2021-06-24T12:54:41.972Z'
+                  ETHBTC:
+                    - id: 782135414
+                      price: '0.027668'
+                      quantity: '0.069'
+                      side: buy
+                      timestamp: '2021-06-24T12:54:32.843Z'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /public/trades/{symbol}:
+    get:
+      tags:
+        - Trades
+      summary: Returns trades information for a specific symbol.
+      parameters:
+        - $ref: '#/components/parameters/marketData_symbolPath'
+        - $ref: '#/components/parameters/marketData_sortDesc'
+        - $ref: '#/components/parameters/marketData_byTimestamp'
+        - $ref: '#/components/parameters/marketData_from'
+        - $ref: '#/components/parameters/marketData_till'
+        - $ref: '#/components/parameters/marketData_limit100'
+        - $ref: '#/components/parameters/marketData_offset'
+        - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Trades'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+  /sub-acc:
+    get:
+      tags:
+        - Subaccounts
+      summary: Get subaccounts.
+      description: |
+        **Permission:** *SubAccReadWrite*
+
+        Returns a list of user's subaccounts.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccountResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/freeze:
+    post:
+      tags:
+        - Subaccounts
+      summary: Freeze subaccounts.
+      description: |
+        **Permission:** *SubAccReadWrite*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: uint64
+                  description: A comma-separated list of subaccounts to freeze.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/activate:
+    post:
+      tags:
+        - Subaccounts
+      summary: Activate subaccounts.
+      description: |
+        **Permission:** *SubAccReadWrite*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: uint64
+                  description: A comma-separated list of subaccounts to activate.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/transfer:
+    post:
+      tags:
+        - Subaccounts
+      summary: Transfer funds between a super account and a subaccount.
+      description: |
+        **Permission:** *BankWithdraw*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubAccTransfer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: string
+                    example: f4fa539f-627d-4ab9-b1aa-5f69c5ee197b
+                    description: Transaction unique identifier as assigned by the exchange.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/acl:
+    get:
+      tags:
+        - Subaccounts
+      summary: Get subaccounts' ACL.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: subAccountIds
+          in: query
+          style: form
+          explode: false
+          schema:
+            type: integer
+            format: uint64
+          description: A comma-separated list of subaccounts.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccACLResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/acl/{userId}:
+    put:
+      tags:
+        - Subaccounts
+      summary: Set an ACL for the subaccount.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - $ref: '#/components/parameters/wallet_userIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubAccACLRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccACLResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/balance/{userId}:
+    get:
+      tags:
+        - Subaccounts
+      summary: Get subaccount balance.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - $ref: '#/components/parameters/wallet_userIdPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_SubAccountBalanceResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /sub-acc/deposit-address/{userId}/{currency}:
+    get:
+      tags:
+        - Subaccounts
+      summary: Get subaccount deposit address.
+      description: |
+        **Permission:** *SubAccReadWrite*
+
+        Creates a deposit address if no existing address is found.
+      parameters:
+        - $ref: '#/components/parameters/wallet_userIdPath'
+        - $ref: '#/components/parameters/wallet_currencyPath'
+        - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/transfer/internal:
+    post:
+      tags:
+        - Account
+      summary: Create a new transfer by email or username.
+      description: |
+        **Permission:** *BankWithdraw*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_AccountTransferInternalRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: string
+                    example: f4fa539f-627d-4ab9-b1aa-5f69c5ee197b
+                    description: Transaction unique identifier as assigned by the exchange.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/addresses/{currency}:
+    get:
+      tags:
+        - Crypto Address
+      summary: Get the last 10 deposit crypto addresses.
+      description: |
+        **Permission:** *BankAccess*
+
+        Returns the last 10 unique addresses used for deposits (by currency).
+      parameters:
+        - $ref: '#/components/parameters/wallet_currencyPath'
+        - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/used-addresses/{currency}:
+    get:
+      tags:
+        - Crypto Address
+      summary: Get last 10 withdrawal crypto addresses.
+      description: |
+        **Permission:** *BankAccess*
+
+        Returns the last 10 unique addresses used for withdrawals (by currency).
+      parameters:
+        - $ref: '#/components/parameters/wallet_currencyPath'
+        - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/estimate-withdraw-levels:
+    get:
+      tags:
+        - Withdraw
+      summary: Get estimate levels for withdrawal.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: currency
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Currency code.
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The amount that will be withdrawn.
+        - name: networkCode
+          in: query
+          schema:
+            type: string
+          description: Network code.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: >-
+                    #/components/schemas/wallet_GetAccountEstimateWithdrawalLevelsResponse
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/features:
+    get:
+      tags:
+        - Account
+      summary: Get user's features.
+      description: |
+        **Permission:** *SubAccReadWrite*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserFeatures'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/balance:
+    get:
+      tags:
+        - Account
+      summary: Get user's main account balance.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: compact
+          in: query
+          schema:
+            type: boolean
+            default: false
+            nullable: true
+          description: A flag indicating whether to show only non-zero balance.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_BalanceResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/transactions:
+    get:
+      tags:
+        - Account
+      summary: Get user's transaction list.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+          description: |
+            Sort order:
+             * Ascending, from A to Z.
+             * Descending, from Z to A.
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            format: uint64
+          description: >-
+            The number of items to skip before starting to collect the result
+            set.
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: uint64
+            default: 100
+          description: The number of items to return.
+        - name: showSenders
+          in: query
+          schema:
+            type: boolean
+            default: false
+            nullable: true
+          description: >-
+            A flag indicating whether to show a list of senders' blockchain
+            addresses. Only for deposits.
+        - name: currency
+          in: query
+          schema:
+            type: string
+          description: Currency code.
+        - name: by
+          in: query
+          schema:
+            type: string
+            enum:
+              - index
+              - timestamp
+            default: timestamp
+          description: The name of the field to order the results by.
+        - name: from
+          in: query
+          schema:
+            type: string
+          description: Timestamp of transaction or transaction index to list from.
+        - name: till
+          in: query
+          schema:
+            type: string
+          description: Timestamp of transaction or transaction index to list till.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_Transaction'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/transactions/{id}:
+    get:
+      tags:
+        - Account
+      summary: Get user's transaction by Id.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Transaction identifier.
+        - name: showSenders
+          in: query
+          schema:
+            type: boolean
+            default: false
+            nullable: true
+          description: >-
+            A flag indicating whether to show a list of senders' blockchain
+            addresses. Only for deposits.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Transaction'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/withdraw:
+    post:
+      tags:
+        - Withdraw
+      summary: Withdraw crypto.
+      description: |
+        **Permission:** *BankWithdraw*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_WithdrawRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_TransactionResult'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/withdraw/{id}:
+    put:
+      tags:
+        - Withdraw
+      summary: Commit a withdrawal.
+      description: |
+        **Permission:** *BankWithdraw*
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            Transaction unique identifier returned to a `POST
+            /wallet/crypto/withdraw` request.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+    delete:
+      tags:
+        - Withdraw
+      summary: Roll back a withdrawal.
+      description: |
+        **Permission:** *BankWithdraw*
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            Transaction unique identifier returned to a `POST
+            /wallet/crypto/withdraw` request.
+      responses:
+        '200':
+          description: Rollback result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/transfer:
+    post:
+      tags:
+        - Account
+      summary: Transfer between trading and main accounts.
+      description: |
+        **Permission:** *BankAccess*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_TransferRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_TransactionResult'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/address:
+    get:
+      tags:
+        - Crypto Address
+      summary: Get all deposit crypto addresses.
+      description: |
+        **Permission:** *BankAccess*
+
+        Returns all deposit crypto addresses.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_AddressResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/address/{currency}:
+    get:
+      tags:
+        - Crypto Address
+      summary: Get deposit crypto address by currency.
+      description: |
+        **Permission:** *BankAccess*
+
+        Returns single deposit crypto address by currency.
+      parameters:
+        - $ref: '#/components/parameters/wallet_currencyPath'
+        - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_AddressResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+    post:
+      tags:
+        - Crypto Address
+      summary: Create deposit crypto address.
+      description: |
+        **Permission:** *BankAccess*
+
+        Creates a new deposit address.
+
+        Existing addresses may still receive funds.
+      parameters:
+        - $ref: '#/components/parameters/wallet_currencyPath'
+        - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_AddressResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/check-offchain-available:
+    post:
+      tags:
+        - Offchain And Commissions
+      summary: Check the offchain availability.
+      description: |
+        **Permission:** *BankAccess*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_CheckOffchainRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/estimate-withdraw:
+    get:
+      tags:
+        - Offchain And Commissions
+      summary: Estimate fee for withdrawal.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: currency
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Currency code.
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The amount that will be withdrawn.
+        - name: networkCode
+          in: query
+          schema:
+            type: string
+          description: Network code.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fee:
+                    type: string
+                    example: '0.000625'
+                    description: Estimated withdrawal fee.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/is-mine/{address}:
+    get:
+      tags:
+        - Offchain And Commissions
+      summary: Check whether a crypto address belongs to the current account.
+      description: |
+        **Permission:** *BankAccess*
+      parameters:
+        - name: address
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Crypto address.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /account/crypto/transfer-convert:
+    post:
+      tags:
+        - Offchain And Commissions
+      summary: Convert between currencies.
+      description: |
+        **Permission:** *BankAccess*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_TransferConvertRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - result
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+        - wallet_BearerAuth: []
+        - wallet_BasicAuth: []
+  /order:
+    get:
+      tags:
+        - Spot Orders
+      summary: Get all spot orders.
+      description: |
+        Returns a list of all spot orders.
+
+        **Permission:** *TradingRead*
+      parameters:
+        - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    post:
+      tags:
+        - Spot Orders
+      summary: Create a new spot order.
+      description: |
+        Creates a new spot order.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Spot Orders
+      summary: Cancel all spot orders.
+      description: |
+        Cancels all active spot orders.
+
+        **Permission:** *TradingTrade*
+      parameters:
+        - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /order/{clientOrderId}:
+    parameters:
+      - $ref: '#/components/parameters/trading_clOrderIdPath'
+    get:
+      tags:
+        - Spot Orders
+      summary: Get active spot order.
+      description: |
+        Returns an active spot order by its `"clientOrderId"`.
+
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    put:
+      tags:
+        - Spot Orders
+      summary: Create a new spot order.
+      description: |
+        Creates a new spot order with specified `"clientOrderId"`.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    patch:
+      tags:
+        - Spot Orders
+      summary: Replace spot order.
+      description: |
+        Replaces a spot order.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_ReplaceOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Spot Orders
+      summary: Cancel order.
+      description: |
+        Cancels a spot order with specified `"clientOrderId"`.
+
+        **Permission:** *TradingTrade*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/order:
+    get:
+      tags:
+        - Margin Orders
+      summary: Get all margin orders.
+      description: |
+        Returns a list of all margin orders.
+
+        **Permission:** *TradingRead*
+      parameters:
+        - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    post:
+      tags:
+        - Margin Orders
+      summary: Create a new margin order.
+      description: |
+        Creates a new margin order.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Orders
+      summary: Cancel all margin orders.
+      description: |
+        Cancels all active margin orders.
+
+        **Permission:** *TradingTrade*
+      parameters:
+        - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/order/{clientOrderId}:
+    parameters:
+      - $ref: '#/components/parameters/trading_clOrderIdPath'
+    get:
+      tags:
+        - Margin Orders
+      summary: Get active margin order.
+      description: |
+        Returns an active margin order by its `"clientOrderId"`.
+
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    put:
+      tags:
+        - Margin Orders
+      summary: Create a new margin order.
+      description: |
+        Creates a new margin order with specified `"clientOrderId"`.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    patch:
+      tags:
+        - Margin Orders
+      summary: Replace margin order.
+      description: |
+        Replaces a margin order.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_ReplaceOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Orders
+      summary: Cancel order.
+      description: |
+        Cancels a margin order with specified `"clientOrderId"`.
+
+        **Permission:** *TradingTrade*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/account:
+    get:
+      tags:
+        - Margin Account
+      summary: Get all margin accounts.
+      description: |
+        Returns a list of margin account details.
+
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Account
+      summary: Close all margin positions.
+      description: >
+        It will completely free up any balance reserved for margin purposes. All
+        open positions will be closed at the market price.
+
+
+        Returns a list of margin accounts with closed positions.
+
+
+        **Permission:** *TradingTrade*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/account/{symbol}:
+    parameters:
+      - $ref: '#/components/parameters/trading_symbolPath'
+    get:
+      tags:
+        - Margin Account
+      summary: Get margin account details by symbol.
+      description: |
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    put:
+      tags:
+        - Margin Account
+      summary: Update margin account by symbol.
+      description: |
+        Returns updated margin account details.
+
+        **Permission:** *TradingTrade*
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_PositionChangeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Account
+      summary: Close margin account by symbol.
+      description: >
+        It will completely free up any balance reserved for margin purposes. All
+        open positions will be closed at the market price.
+
+
+        Returns a list of the closed margin accounts.
+
+
+        **Permission:** *TradingTrade*
+      parameters:
+        - name: price
+          in: query
+          schema:
+            type: number
+            minimum: 0
+          description: Market price to close the position.
+        - name: strictValidate
+          in: query
+          schema:
+            type: boolean
+          description: >-
+            Price and quantity will be checked for incrementation within the
+            symbol’s tick size and quantity step.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/position:
+    get:
+      tags:
+        - Margin Positions
+      summary: Get all open positions.
+      description: |
+        Returns a list of open positions.
+
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserPositionInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Positions
+      summary: Close all margin positions.
+      description: |
+        Returns a list of the successfully closed margin positions.
+
+        **Permission:** *TradingTrade*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserPositionInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /margin/position/{symbol}:
+    parameters:
+      - $ref: '#/components/parameters/trading_symbolPath'
+    get:
+      tags:
+        - Margin Positions
+      summary: Get margin position by symbol.
+      description: |
+        Returns open position for the requested symbol.
+
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserPositionInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+    delete:
+      tags:
+        - Margin Positions
+      summary: Close open position by symbol.
+      description: |
+        Returns margin account details.
+
+        **Permission:** *TradingTrade*
+      parameters:
+        - name: price
+          in: query
+          schema:
+            type: number
+            minimum: 0
+          description: Market price to close the position.
+        - name: strictValidate
+          in: query
+          schema:
+            type: boolean
+          description: >-
+            Price and quantity will be checked for incrementation within the
+            symbol’s tick size and quantity step.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /trading/balance:
+    get:
+      tags:
+        - Trading
+      summary: Get user's balances.
+      description: |
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_RestTradingBalance'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /trading/fee/{symbol}:
+    parameters:
+      - $ref: '#/components/parameters/trading_symbolPath'
+    get:
+      tags:
+        - Trading
+      summary: Get user's trade rates.
+      description: |
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_TradeFee'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /history/order:
+    get:
+      tags:
+        - History
+      summary: Get the history of orders.
+      description: |
+        **Permission:** *TradingRead*
+      parameters:
+        - $ref: '#/components/parameters/trading_clientOrderIdQuery'
+        - $ref: '#/components/parameters/trading_symbolQuery'
+        - $ref: '#/components/parameters/trading_limitQuery'
+        - $ref: '#/components/parameters/trading_offsetQuery'
+        - $ref: '#/components/parameters/trading_fromQuery'
+        - $ref: '#/components/parameters/trading_tillQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_HistoryOrder'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /history/order/{id}/trades:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: uint64
+          minimum: 1
+        description: Order identifier.
+    get:
+      tags:
+        - History
+      summary: Get user's trade history by order.
+      description: |
+        **Permission:** *TradingRead*
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_HistoryTrade'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+  /history/trades:
+    get:
+      tags:
+        - History
+      summary: Get user's trade history.
+      description: |
+        **Permission:** *TradingRead*
+      parameters:
+        - $ref: '#/components/parameters/trading_limitQuery'
+        - $ref: '#/components/parameters/trading_offsetQuery'
+        - $ref: '#/components/parameters/trading_sortQuery'
+        - $ref: '#/components/parameters/trading_symbolQuery'
+        - name: from
+          in: query
+          schema:
+            oneOf:
+              - type: string
+                format: date-time
+              - type: integer
+                format: uint64
+          description: The earliest trade date or identifier.
+        - name: till
+          in: query
+          schema:
+            oneOf:
+              - type: string
+                format: date-time
+              - type: integer
+                format: uint64
+          description: The latest trade date or identifier.
+        - name: by
+          in: query
+          schema:
+            type: string
+            enum:
+              - id
+              - timestamp
+              - ts
+          description: The name of the field to order the results by.
+        - name: margin
+          in: query
+          schema:
+            type: string
+            enum:
+              - include
+              - only
+              - ignore
+          description: |
+            Margin filter:
+            * *include*—all trades.
+            * *only*—margin trades only.
+            * *ignore*—skip margin trades.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_HistoryTrade'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+        - trading_BasicAuth: []
+        - trading_BearerAuth: []
+components:
+  parameters:
+    marketData_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      description: Symbol code.
+      schema:
+        type: string
+    marketData_currencyPath:
+      name: currency
+      in: path
+      required: true
+      description: Currency code.
+      schema:
+        type: string
+    marketData_symbolsQuery:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      description: A comma-separated list of symbol codes.
+      schema:
+        type: array
+        items:
+          type: string
+    marketData_sortAsc:
+      name: sort
+      in: query
+      description: |
+        Sort order:
+         * Ascending, from A to Z.
+         * Descending, from Z to A.
+      schema:
+        type: string
+        default: ASC
+        enum:
+          - DESC
+          - ASC
+    marketData_sortDesc:
+      name: sort
+      in: query
+      description: |
+        Sort order:
+         * Ascending, from A to Z.
+         * Descending, from Z to A.
+      schema:
+        type: string
+        default: DESC
+        enum:
+          - DESC
+          - ASC
+    marketData_from:
+      name: from
+      in: query
+      description: Interval initial value.
+      schema:
+        type: string
+        format: date-time
+    marketData_till:
+      name: till
+      in: query
+      description: Interval end value.
+      schema:
+        type: string
+        format: date-time
+    marketData_periodQuery:
+      name: period
+      in: query
+      description: |
+        History time period:
+          * *M\** — minutes;
+          * *H\** — hours;
+          * *D\** — days;
+          * *1M* — one month.
+      schema:
+        type: string
+        default: M30
+        enum:
+          - M1
+          - M3
+          - M5
+          - M15
+          - M30
+          - H1
+          - H4
+          - D1
+          - D7
+          - 1M
+    marketData_limit10:
+      name: limit
+      in: query
+      description: >
+        The number of items to return. The limit can range between *1* and
+        *1000*.
+      schema:
+        maximum: 1000
+        minimum: 1
+        type: integer
+        default: 10
+    marketData_limit100:
+      name: limit
+      in: query
+      description: >
+        The number of items to return. The limit can range between *1* and
+        *1000*.
+      schema:
+        maximum: 1000
+        minimum: 1
+        type: integer
+        default: 100
+    marketData_offset:
+      name: offset
+      in: query
+      description: >
+        The number of items to skip before starting to collect the result set.
+        Offset can range between *0* and *100000*.
+      schema:
+        maximum: 100000
+        minimum: 0
+        type: integer
+        default: 0
+    marketData_pool:
+      name: exclude_pool
+      in: query
+      description: Flag indicating whether to return trades for a single broker.
+      schema:
+        type: boolean
+    marketData_byTimestamp:
+      name: by
+      in: query
+      description: The name of the field to order the results by.
+      schema:
+        type: string
+        default: timestamp
+        enum:
+          - timestamp
+          - id
+    marketData_extended:
+      name: extended
+      in: query
+      description: >
+        A flag indicating whether to display all fields. If `false`, only the
+        following fields will be returned:
+            - *id*
+            - *fullName*
+            - *crypto*
+            - *payinEnabled*
+            - *payinPaymentId*
+            - *payoutEnabled*
+            - *payoutIsPaymentId*
+            - *transferEnabled*
+            - *delisted*
+            - *payinConfirmations*
+            - *payoutFee*
+            - *precisionPayout*
+            - *precisionTransfer*
+            - *lowProcessingTime*
+            - *highProcessingTime*
+            - *avgProcessingTime*
+      schema:
+        type: boolean
+        default: false
+    wallet_userIdPath:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: uint64
+      description: User identifier.
+    wallet_currencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Currency code.
+    wallet_networkCode:
+      name: network_code
+      in: query
+      schema:
+        type: string
+      description: Network code.
+    wallet_providerIdPath:
+      name: providerId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: uint64
+      description: Provider identifier.
+    trading_symbolQuery:
+      name: symbol
+      in: query
+      schema:
+        type: string
+      description: Symbol code.
+    trading_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Symbol code.
+    trading_clOrderIdPath:
+      name: clientOrderId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique order identifier given by a trader or the system.
+    trading_clientOrderIdQuery:
+      name: clientOrderId
+      in: query
+      schema:
+        type: string
+      description: Unique order identifier given by a trader or the system.
+    trading_limitQuery:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+      description: The number of items to return.
+    trading_offsetQuery:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100000
+      description: The number of items to skip before starting to collect the result set.
+    trading_fromQuery:
+      name: from
+      in: query
+      schema:
+        type: integer
+        format: uint64
+      description: Date and time to start history with.
+    trading_tillQuery:
+      name: till
+      in: query
+      schema:
+        type: integer
+        format: uint64
+      description: Date and time to end history with.
+    trading_sortQuery:
+      name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+        default: ASC
+      description: Sort order.
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+    marketData_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    trading_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  schemas:
+    marketData_Candle:
+      required:
+        - close
+        - max
+        - min
+        - open
+        - timestamp
+        - volume
+        - volumeQuote
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-07-01T20:00:00.000Z'
+          description: Candle timestamp.
+        open:
+          type: string
+          example: '33079.93'
+          description: Open price.
+        close:
+          type: string
+          example: '33236.53'
+          description: Closing price.
+        min:
+          type: string
+          example: '33079.93'
+          description: The lowest price for the period.
+        max:
+          type: string
+          example: '33295.73'
+          description: The highest price for the period.
+        volume:
+          type: string
+          example: '146.86223'
+          description: Volume in base currency.
+        volumeQuote:
+          type: string
+          example: '4877838.3025063'
+          description: Volume in quote currency.
+    marketData_Currency:
+      required:
+        - id
+        - fullName
+        - crypto
+        - payinEnabled
+        - payinPaymentId
+        - payoutEnabled
+        - payoutIsPaymentId
+        - transferEnabled
+        - delisted
+        - payinConfirmations
+        - payoutFee
+        - precisionPayout
+        - precisionTransfer
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Currency identifier.
+        fullName:
+          type: string
+          nullable: true
+          description: Full currency name.
+        crypto:
+          type: boolean
+          description: Determines whether the currency belongs to a blockchain.
+        payinEnabled:
+          type: boolean
+          description: >-
+            Determines whether it is allowed to generate addresses for a
+            deposit.
+        payinPaymentId:
+          type: boolean
+          description: >-
+            Determines whether it is required to provide additional information
+            other than the address for a deposit.
+        payoutEnabled:
+          type: boolean
+          description: Determines whether the withdrawal is allowed.
+        payoutIsPaymentId:
+          type: boolean
+          description: >-
+            Determines whether providing additional information for the
+            withdrawal is allowed.
+        transferEnabled:
+          type: boolean
+          description: >-
+            Determines whether the transfer between trading account and wallet
+            account is allowed (may be disabled on a maintenance).
+        delisted:
+          type: boolean
+          default: false
+          description: An indication of whether the currency was delisted.
+        payinConfirmations:
+          type: number
+          description: Count of confirmations for the transaction.
+        payoutFee:
+          type: string
+          nullable: true
+          description: Default withdrawal fee.
+        precisionPayout:
+          type: number
+          description: >-
+            Currency precision for the payout (accepted number of digits after
+            the decimal point).
+        precisionTransfer:
+          type: number
+          description: >-
+            Currency precision for transfer (accepted number of digits after the
+            decimal point).
+        lowProcessingTime:
+          type: string
+          nullable: true
+          description: The lowest processing time in seconds for the payout operation.
+        highProcessingTime:
+          type: string
+          nullable: true
+          description: The highest processing time in seconds for the payout operation.
+        avgProcessingTime:
+          type: string
+          nullable: true
+          description: The average processing time in seconds for the payout operation.
+        tokenFamily:
+          type: string
+          nullable: true
+          description: Token group.
+        sign:
+          type: string
+          nullable: true
+          description: Currency sign.
+        cryptoPaymentIdName:
+          type: string
+          nullable: true
+          description: >-
+            Transaction identifier, e.g., comment, message, memo, attachment,
+            etc.
+        cryptoType:
+          type: string
+          nullable: true
+          description: Type of crypto platform.
+        qrPrefix:
+          type: string
+          nullable: true
+          description: >-
+            QR prefix. The prefix is used to indicate the currency in a deposit
+            address.
+        cryptoExplorer:
+          type: string
+          nullable: true
+          description: >-
+            Link to the currency explorer with "{tx}" placeholder instead of
+            hash.
+        category:
+          type: string
+          nullable: true
+          description: Currency category.
+        isInstrumentsStable:
+          type: boolean
+          description: >-
+            If `true`, the pairs of this currency are displayed on the Stable
+            tab.
+        accountTopOrder:
+          type: number
+          description: The order in which the user sees the currencies on the Account page.
+    marketData_PriceHistory:
+      required:
+        - currency
+        - history
+      type: object
+      properties:
+        currency:
+          type: string
+          nullable: true
+          example: BTC
+          description: Quote currency code.
+        history:
+          required:
+            - close
+            - max
+            - min
+            - open
+            - timestamp
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: '2021-07-01T20:00:00.000Z'
+              description: Last update or refresh price timestamp.
+            open:
+              type: string
+              nullable: true
+              example: '0.063420'
+              description: Open price.
+            close:
+              type: string
+              nullable: true
+              example: '0.063767'
+              description: Closing price.
+            min:
+              type: string
+              nullable: true
+              example: '0.063403'
+              description: The lowest price for the period.
+            max:
+              type: string
+              nullable: true
+              example: '0.063782'
+              description: The highest price for the period.
+    marketData_CurrencyMapping:
+      required:
+        - id
+        - coreId
+        - fullName
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Currency API code.
+        coreId:
+          type: string
+          nullable: true
+          description: Currency exchange code.
+        fullName:
+          type: string
+          nullable: true
+          description: Full currency name.
+    marketData_SymbolMapping:
+      required:
+        - id
+        - baseCurrency
+        - quoteCurrency
+        - feeCurrency
+        - quantityIncrement
+        - tickSize
+        - coreId
+        - coreBaseCurrency
+        - coreQuoteCurrency
+        - coreFeeCurrency
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Symbol identifier.
+        coreId:
+          type: integer
+          nullable: true
+          description: Symbol identifier in the Matching Engine.
+        baseCurrency:
+          type: string
+          nullable: true
+          description: Base currency code.
+        coreBaseCurrency:
+          type: string
+          nullable: true
+          description: Base currency code in the Matching Engine.
+        quoteCurrency:
+          type: string
+          nullable: true
+          description: Quote currency code.
+        coreQuoteCurrency:
+          type: string
+          nullable: true
+          description: Quote currency code in the Matching Engine.
+        feeCurrency:
+          type: string
+          nullable: true
+          description: Currency used for charging fees.
+        coreFeeCurrency:
+          type: string
+          nullable: true
+          description: Exchange code of currency used for charging fees.
+        quantityIncrement:
+          type: string
+          nullable: true
+          description: Quantity should be divided by this value with no remainder.
+        tickSize:
+          type: string
+          nullable: true
+          description: Price should be divided by this value with no remainder.
+    marketData_Orderbook:
+      required:
+        - symbol
+        - timestamp
+        - batchingTime
+        - ask
+        - bid
+      type: object
+      properties:
+        symbol:
+          type: string
+          nullable: true
+          description: Symbol code.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-11T11:18:03.857366871Z'
+          description: Order timestamp.
+        batchingTime:
+          type: string
+          format: date-time
+          description: Time the message was transmitted.
+        ask:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              example: '9777.5'
+          description: Ask side array of levels.
+        bid:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              example: '9777.5'
+          description: Bid side array of levels.
+    marketData_Price:
+      required:
+        - currency
+        - price
+        - timestamp
+      type: object
+      properties:
+        currency:
+          type: string
+          nullable: true
+          example: BTC
+          description: Quote currency code.
+        price:
+          type: string
+          nullable: true
+          example: '0.021084'
+          description: Quotation price.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-02T17:52:36.731Z'
+          description: Last update or refresh price timestamp.
+    marketData_Symbol:
+      required:
+        - id
+        - baseCurrency
+        - quoteCurrency
+        - quantityIncrement
+        - tickSize
+        - feeCurrency
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Symbol code.
+        baseCurrency:
+          type: string
+          nullable: true
+          example: ETH
+          description: Name (code) of the base currency.
+        quoteCurrency:
+          type: string
+          nullable: true
+          example: USDT
+          description: Name (code) of the quote currency.
+        quantityIncrement:
+          type: string
+          nullable: true
+          example: '0.00001'
+          description: Symbol quantity should be divided by this value with no remainder.
+        tickSize:
+          type: string
+          nullable: true
+          example: '0.01'
+          description: Symbol price should be divided by this value with no remainder.
+        takeLiquidityRate:
+          type: string
+          nullable: true
+          example: '0.002'
+          default: 0.002
+          description: Default fee rate.
+        provideLiquidityRate:
+          type: string
+          nullable: true
+          example: '0.001'
+          default: 0.001
+          description: Default fee rate for the market making trades.
+        feeCurrency:
+          type: string
+          nullable: true
+          example: USDT
+          description: Currency in which fees are determined.
+        marginTrading:
+          type: boolean
+          description: Determines whether the margin trading is available.
+        maxInitialLeverage:
+          type: string
+          nullable: true
+          example: '100.00'
+          description: >-
+            The maximum leverage available to the user for margin trading. Shown
+            only if `"margin_trading"` is `true`.
+    marketData_Ticker:
+      required:
+        - symbol
+        - ask
+        - bid
+        - high
+        - last
+        - low
+        - open
+        - timestamp
+        - volume
+        - volumeQuote
+      type: object
+      properties:
+        symbol:
+          type: string
+          nullable: true
+          description: Symbol code.
+        ask:
+          type: string
+          nullable: true
+          example: '0.050043'
+          description: Best ask price.
+        bid:
+          type: string
+          nullable: true
+          example: '0.050042'
+          description: Best bid price.
+        last:
+          type: string
+          nullable: true
+          example: '0.050042'
+          description: Last trade price.
+        low:
+          type: string
+          nullable: true
+          example: '0.047052'
+          description: The lowest trade price within 24 hours.
+        high:
+          type: string
+          nullable: true
+          example: '0.051679'
+          description: The highest trade price within 24 hours.
+        open:
+          type: string
+          nullable: true
+          example: '0.047800'
+          description: Last trade price 24 hours ago.
+        volume:
+          type: string
+          nullable: true
+          example: '36456.720'
+          description: Total trading amount within 24 hours in base currency.
+        volumeQuote:
+          type: string
+          nullable: true
+          example: '1782.625000'
+          description: Total trading amount within 24 hours in quote currency.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-12T14:57:19.999Z'
+          description: Last update or refresh ticker timestamp.
+    marketData_Trades:
+      type: array
+      items:
+        $ref: '#/components/schemas/marketData_Trade'
+    marketData_Trade:
+      required:
+        - id
+        - price
+        - quantity
+        - side
+        - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 782135488
+          description: Trade identifier.
+        price:
+          type: string
+          example: '9793.94'
+          description: Trade price.
+        quantity:
+          type: string
+          example: '0.21469'
+          description: Trade quantity.
+        side:
+          type: string
+          example: sell
+          enum:
+            - sell
+            - buy
+          description: Trade side.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-24T12:54:41.972Z'
+          description: Trade timestamp.
+    marketData_Error:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          required:
+            - code
+            - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    wallet_SubAccountResponse:
+      required:
+        - id
+        - email
+        - status
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: User identifier.
+        email:
+          type: string
+          description: User's email address.
+        status:
+          type: string
+          enum:
+            - new
+            - active
+            - disable
+          description: |
+            User account status:
+              * *new*—account is created, but not confirmed by email;
+              * *active*—account is fully functioning;
+              * *disable*—account is disabled.
+    wallet_SubAccTransfer:
+      required:
+        - subAccountId
+        - currency
+        - amount
+        - type
+      type: object
+      properties:
+        subAccountId:
+          type: integer
+          format: uint64
+          description: Subaccount identifier.
+        currency:
+          type: string
+          description: Currency code.
+        amount:
+          type: string
+          description: The amount that will be transferred.
+        type:
+          type: string
+          enum:
+            - deposit
+            - withdraw
+          description: Transfer type.
+    wallet_SubAccACLResponse:
+      allOf:
+        - properties:
+            subAccountId:
+              type: integer
+              format: uint64
+              description: Subaccount identifier.
+        - $ref: '#/components/schemas/wallet_SubAccACLRequest'
+        - required:
+            - subAccountId
+            - isPayoutEnabled
+            - description
+    wallet_SubAccACLRequest:
+      type: object
+      properties:
+        isPayoutEnabled:
+          type: boolean
+          description: Permission to create payout.
+        description:
+          type: string
+          description: Text description for the ACL setting.
+    wallet_SubAccountBalanceResponse:
+      required:
+        - main
+        - trading
+      type: object
+      properties:
+        main:
+          $ref: '#/components/schemas/wallet_BalanceResponse'
+        trading:
+          $ref: '#/components/schemas/wallet_BalanceResponse'
+    wallet_BalanceResponse:
+      required:
+        - currency
+        - available
+        - reserved
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        available:
+          type: string
+          description: Amount available for withdrawals or transfers.
+        reserved:
+          type: string
+          description: Amount reserved for incomplete transactions.
+    wallet_CryptoAddress:
+      required:
+        - address
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address.
+        paymentId:
+          type: string
+          description: Payment identifier.
+        publicKey:
+          type: string
+          description: Public key.
+    wallet_AccountTransferInternalRequest:
+      required:
+        - currency
+        - by
+        - identifier
+        - amount
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        by:
+          type: string
+          enum:
+            - email
+            - username
+          description: Type of the beneficiary identifier.
+        identifier:
+          type: string
+          description: Beneficiary identifier value. Either email or username.
+        amount:
+          type: string
+          description: The amount that will be transferred.
+    wallet_GetAccountEstimateWithdrawalLevelsResponse:
+      required:
+        - feeLevelId
+        - comment
+        - fee
+        - isDefault
+      type: object
+      properties:
+        feeLevelId:
+          type: integer
+          example: 5
+          description: Fee level number.
+        comment:
+          type: string
+          example: fast
+          description: Textual description.
+        fee:
+          type: string
+          example: '0.0005'
+          description: Fee rate.
+        isDefault:
+          type: boolean
+          description: An indication of whether the level is set by default.
+    wallet_UserFeatures:
+      required:
+        - fiatAllowed
+        - primeTrustAllowed
+        - hasPrimeTrust
+      type: object
+      properties:
+        fiatAllowed:
+          type: boolean
+          description: An indication of whether the wire transfers are allowed for a user.
+        primeTrustAllowed:
+          type: boolean
+          description: >-
+            An indication of whether the Prime Trust wire transfers are allowed
+            for a user.
+        hasPrimeTrust:
+          type: boolean
+          description: An indication of whether the user has a Prime Trust account.
+    wallet_CryptoProvider:
+      required:
+        - providerID
+        - providerName
+        - methods
+      type: object
+      properties:
+        providerID:
+          type: integer
+          format: uint64
+          description: Provider identifier.
+        providerName:
+          type: string
+          description: Provider name.
+        methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_PaymentMethod'
+    wallet_PaymentMethodCurrency:
+      required:
+        - code
+        - displayName
+      type: object
+      properties:
+        code:
+          type: string
+          description: Currency code.
+        displayName:
+          type: string
+          description: Displayed currency name.
+        networkCode:
+          type: string
+          description: Network code.
+    wallet_TransactionLimit:
+      required:
+        - currencyCode
+        - min
+        - max
+        - sourceCode
+        - targetCode
+        - sourceMin
+        - sourceMax
+      type: object
+      properties:
+        currencyCode:
+          type: string
+          description: Currency code of limits (fiat).
+        min:
+          type: string
+          description: Target currency minimum amount.
+        max:
+          type: string
+          description: Target currency maximum amount.
+        sourceCode:
+          type: string
+          description: Source currency code.
+        targetCode:
+          type: string
+          description: Target currency code.
+        sourceMin:
+          type: string
+          description: Source currency minimum amount.
+        sourceMax:
+          type: string
+          description: Source currency maximum amount.
+        networkCode:
+          type: string
+          description: Network code.
+    wallet_PricesResponse:
+      required:
+        - prices
+        - spotPrice
+      type: object
+      properties:
+        spotPrice:
+          type: number
+          example: '10268.74'
+          description: The spot price.
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_Price'
+    wallet_Price:
+      required:
+        - paymentMethodId
+        - sourceAmount
+        - targetCode
+        - targetAmount
+        - sourceCode
+        - type
+        - spotPriceFee
+        - spotPriceIncludingFee
+        - feeAmount
+      type: object
+      properties:
+        paymentMethodId:
+          type: integer
+          format: uint64
+          example: 6025
+          description: Payment method identifier.
+        type:
+          type: string
+          description: Payment method type.
+        spotPriceFee:
+          type: number
+          description: The fee charged on the spot price.
+        spotPriceIncludingFee:
+          type: number
+          description: The adjusted spot price including the fee.
+        targetCode:
+          type: string
+          example: BTC
+          description: Target currency code.
+        targetAmount:
+          type: number
+          example: '1'
+          description: Amount in the target currency.
+        sourceCode:
+          type: string
+          example: USD
+          description: Source currency code.
+        sourceAmount:
+          type: number
+          example: '10472.06'
+          description: Amount in the source currency.
+        feeAmount:
+          type: number
+          description: The fees calculated on the fiat amount.
+    wallet_Order:
+      type: object
+      required:
+        - id
+        - providerId
+        - orderType
+        - sourceCode
+        - targetCode
+        - walletAddress
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Order identifier.
+        providerId:
+          type: integer
+          format: uint64
+          description: Provider identifier.
+        orderType:
+          type: string
+          description: Order type.
+          example: buy
+        sourceCode:
+          type: string
+          description: Source currency code.
+        targetCode:
+          type: string
+          description: Target currency code.
+        walletAddress:
+          type: string
+          description: >-
+            The user will receive cryptocurrency from the crypto provider to
+            this address.
+        checkoutURL:
+          type: string
+          nullable: true
+          description: Checkout URL.
+        checkoutHTML:
+          type: string
+          nullable: true
+          description: Checkout HTML.
+        createdAt:
+          type: string
+          format: date-time
+          description: Order creation timestamp.
+        status:
+          type: string
+          description: Order status.
+          enum:
+            - initial
+            - in_progress
+            - completed
+            - failed
+            - expired
+    wallet_Transaction:
+      allOf:
+        - required:
+            - id
+            - index
+            - type
+            - status
+            - currency
+            - amount
+            - createdAt
+            - updatedAt
+          properties:
+            id:
+              type: string
+              description: Transaction identifier.
+            index:
+              type: integer
+              format: uint64
+              description: Last update sequence identifier.
+            type:
+              type: string
+              description: Transaction type.
+              enum:
+                - DEPOSIT
+                - WITHDRAW
+                - TRANSFER
+                - SWAP
+                - OTC
+                - PRIMETRUST_DEPOSIT
+                - PRIMETRUST_WITHDRAWAL
+                - PRIMETRUST_TRANSFER
+            subType:
+              type: string
+              description: Transaction subtype.
+              enum:
+                - UNCLASSIFIED
+                - BLOCKCHAIN
+                - AIRDROP
+                - AFFILIATE
+                - STAKING
+                - BUY_CRYPTO
+                - OFFCHAIN
+                - FIAT
+                - SUB_ACCOUNT
+                - WALLET_TO_SPOT
+                - SPOT_TO_WALLET
+                - WALLET_TO_DERIVATIVES
+                - DERIVATIVES_TO_WALLET
+                - CHAIN_SWITCH_FROM
+                - CHAIN_SWITCH_TO
+                - INSTANT_EXCHANGE
+            status:
+              type: string
+              description: Transaction status.
+            currency:
+              type: string
+              description: Currency code.
+            amount:
+              type: string
+              description: Amount of funds.
+            fee:
+              type: string
+              description: Payment commission value.
+            createdAt:
+              type: string
+              description: Date and time of the transaction creation.
+            updatedAt:
+              type: string
+              description: Date and time of the last transaction update.
+            hash:
+              type: string
+              description: Transaction blockchain hash.
+            attemptHashes:
+              type: array
+              description: >-
+                List of hashes of attempts to send a transaction to the
+                blockchain.
+              items:
+                type: string
+            address:
+              type: string
+              description: Address used by both blockchain and off-chain payouts.
+            paymentId:
+              type: string
+              description: >-
+                Payment identifier used by both blockchain and off-chain
+                payouts.
+            offchainId:
+              type: string
+              description: Transaction identifier of an external system.
+            confirmations:
+              type: integer
+              nullable: true
+              description: Current count of confirmations for transaction.
+            publicComment:
+              type: string
+              description: A text comment for the transaction.
+            errorCode:
+              type: string
+              enum:
+                - INVALID_ADDRESS
+                - INVALID_PAYMENT_ID
+                - BAD_PRECISION
+              description: Error reason.
+            senders:
+              type: array
+              items:
+                type: string
+              description: A list of senders' blockchain addresses.
+            commitRisk:
+              type: object
+              required:
+                - score
+                - rbf
+                - lowFee
+              properties:
+                score:
+                  type: integer
+                  format: uint64
+                  nullable: true
+                  minimum: 0
+                  maximum: 100
+                  description: >
+                    Risk score that decreases non-linearly when the transaction
+                    gains confirmations.
+
+
+                    ℹ️ Scores from 0 to 50 imply the transaction may be
+                    considered committed (but it is not guaranteed) or it may
+                    take at least half an hour otherwise.
+                rbf:
+                  type: boolean
+                  nullable: true
+                  description: >
+                    Flag indicating whether the transaction did not gain a
+                    sufficient number of confirmations and may be replaced by
+                    another one with different fees.
+
+
+                    ⚠️ This value indicates the transaction is complete and do
+                    not affect the score.
+
+
+                    ℹ️ `false` value along with a score above 50 gives a good
+                    chance that the transaction is irreversible.
+                lowFee:
+                  type: boolean
+                  nullable: true
+                  description: >
+                    Flag indicating whether the actual network fee is lower than
+                    the estimated one.
+
+
+                    ⚠️ This value indicates the difference between the estimated
+                    fee and the actual paid fee and does not affect the score.
+    wallet_WithdrawRequest:
+      allOf:
+        - required:
+            - address
+            - amount
+            - currency
+        - properties:
+            currency:
+              type: string
+              description: Currency code.
+            amount:
+              type: number
+              description: The amount that will be sent to the specified address.
+            address:
+              type: string
+              description: Address identifier.
+            paymentId:
+              type: string
+              description: >-
+                An additional identifier for specific currencies (for example,
+                "Memo").
+            includeFee:
+              type: boolean
+              description: >-
+                If `true`, the sender is willing to include fee expenses to the
+                amount of operation, so the beneficiary will receive the sum
+                reduced by fees.
+              nullable: true
+            autoCommit:
+              type: boolean
+              description: >-
+                If `false`, then you should commit or rollback a transaction in
+                an hour. After 1 hour, the transaction will automatically be
+                rolled back.
+              nullable: true
+            useOffchain:
+              type: string
+              description: >
+                Whether the withdrawal may be committed off-chain.
+
+                If "required" is selected, then only off-chain transaction can
+                be created.
+              enum:
+                - never
+                - optionally
+                - required
+              default: never
+            feeLevelId:
+              type: integer
+              description: Commission level (the level affects the speed of transactions).
+            publicComment:
+              type: string
+              description: Text comment to transaction.
+              maxLength: 255
+            networkCode:
+              type: string
+              description: Network code.
+    wallet_TransactionResult:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          example: d2ce578f-647d-4fa0-b1aa-4a27e5ee597b
+          description: Transaction unique identifier as assigned by the exchange.
+    wallet_Result:
+      type: object
+      required:
+        - result
+      properties:
+        result:
+          type: boolean
+    wallet_TransferRequest:
+      required:
+        - amount
+        - currency
+        - type
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        amount:
+          type: number
+          description: The amount that will be transferred between accounts.
+        type:
+          type: string
+          enum:
+            - exchangeToBank
+            - bankToExchange
+          description: |
+            Transfer type:
+              * *exchangeToBank*—from the trading account to the main account;
+              * *bankToExchange*—from the main account to the trading account.
+    wallet_AddressResponse:
+      required:
+        - address
+      type: object
+      properties:
+        address:
+          type: string
+          example: 3E8WKmTJzaTsBc4kvuEJVjPNtak6vQRcRv
+          description: Address for deposits.
+        paymentId:
+          type: string
+          description: >-
+            An additional identifier for specific currencies (for example,
+            "Memo").
+        publicKey:
+          type: string
+          description: Public key.
+        networkCode:
+          type: string
+          description: Network code.
+        currency:
+          type: string
+          example: BTC
+          description: Currency code.
+    wallet_CheckOffchainRequest:
+      required:
+        - address
+        - currency
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        address:
+          type: string
+          description: Address identifier.
+        paymentId:
+          type: string
+          description: >-
+            An additional identifier for specific currencies (for example,
+            "Memo").
+    wallet_TransferConvertRequest:
+      required:
+        - amount
+        - fromCurrency
+        - toCurrency
+      type: object
+      properties:
+        fromCurrency:
+          type: string
+          description: Source currency code.
+        toCurrency:
+          type: string
+          description: Target currency code.
+        amount:
+          type: number
+          description: The amount that will be sent to the specified address.
+    wallet_Error:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          required:
+            - code
+            - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UserOrderInfo:
+      required:
+        - id
+        - clientOrderId
+        - symbol
+        - side
+        - status
+        - type
+        - timeInForce
+        - quantity
+        - postOnly
+        - cumQuantity
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Order identifier.
+        clientOrderId:
+          type: string
+          description: Unique order identifier as assigned by the trader.
+        symbol:
+          type: string
+          description: Symbol code.
+        side:
+          type: string
+          enum:
+            - sell
+            - buy
+          description: Trade side.
+        status:
+          type: string
+          enum:
+            - new
+            - suspended
+            - partiallyFilled
+            - filled
+            - canceled
+            - rejected
+            - expired
+          description: |
+            Order state:
+              * *new*—an order is placed in the order book.
+              * *suspended*—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book.
+              * *partiallyFilled*—an order is executed, but a part of its quantity is not filled yet.
+              * *filled*—order quantity filled completely.
+              * *canceled*—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances.
+              * *expired*—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements.
+              * *rejected*—an order has been rejected.
+        type:
+          type: string
+          enum:
+            - market
+            - limit
+            - stopMarket
+            - stopLimit
+            - takeProfitLimit
+            - takeProfitMarket
+          description: Order type.
+        timeInForce:
+          type: string
+          enum:
+            - GTC
+            - IOC
+            - FOK
+            - Day
+            - GTD
+          description: >
+            Order expiration mode:
+
+            * *GTC* ("Good-Till-Canceled")—order will not be closed until it is
+            filled.
+
+            * *IOC* ("Immediate-Or-Cancel")—order must be executed immediately.
+            Any part of an IOC order that cannot be filled immediately will be
+            canceled.
+
+            * *FOK* ("Fill-Or-Kill")—order must be executed immediately and
+            completely or not executed at all.
+
+            * *Day*—keeps the order active until the end of the trading day
+            (23:59 UTC+0).
+
+            * *GTD* ("Good-Till-Date")—order will be canceled on the specified
+            date.
+        stopPrice:
+          type: string
+          description: >-
+            The price level that triggers order activation. Specified if
+            `"type"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or
+            `takeProfitMarket`.
+        expireTime:
+          type: string
+          format: date-time
+          description: Date of order expiration. Specified if `"timeInForce"` is `GTD`.
+        price:
+          type: string
+          description: Order price.
+        quantity:
+          type: string
+          description: Order quantity.
+        postOnly:
+          type: boolean
+          description: >
+            A post-only order is an order that does not remove liquidity.
+
+
+            If the post-only order would cause a match with a pre-existing order
+            as a taker, then the order will be canceled
+        closePosition:
+          type: boolean
+          description: |
+            Flag indicating a stop market order must close a margin position
+             when executed or be canceled otherwise.
+        cumQuantity:
+          type: string
+          description: Executed order quantity.
+        createdAt:
+          type: string
+          format: date-time
+          description: Date of order's creation.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date of order's last update.
+        tradesReport:
+          type: array
+          items:
+            $ref: '#/components/schemas/trading_TradesReport'
+    trading_TradesReport:
+      required:
+        - id
+        - quantity
+        - price
+        - fee
+        - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Trade identifier.
+        quantity:
+          type: string
+          description: Quantity of trade.
+        price:
+          type: string
+          description: Trade price.
+        fee:
+          type: string
+          description: Fee paid for trade.
+        timestamp:
+          type: string
+          format: date-time
+          description: Trade timestamp.
+        positionId:
+          type: integer
+          format: uint64
+          description: Position identifier.
+    trading_NewOrderRequest:
+      required:
+        - symbol
+        - side
+        - quantity
+      type: object
+      properties:
+        clientOrderId:
+          type: string
+          description: |
+            Unique order identifier as assigned by the trader.
+        symbol:
+          type: string
+          description: Symbol code.
+        side:
+          type: string
+          enum:
+            - sell
+            - buy
+          description: Trade side.
+        type:
+          type: string
+          enum:
+            - market
+            - limit
+            - stopMarket
+            - stopLimit
+            - takeProfitLimit
+            - takeProfitMarket
+          default: limit
+          description: Order type.
+        timeInForce:
+          type: string
+          enum:
+            - GTC
+            - IOC
+            - FOK
+            - Day
+            - GTD
+          description: >
+            Order expiration mode.
+
+
+            Default:
+
+            * `type` is `"market"`, `"stopMarket"`,
+            `"takeProfitMarket"`—`"FOK"`;
+
+            * `type` is `"limit"`, `"stopLimit"`, `"takeProfitLimit"`—`"GTC"`.
+
+
+            Values:
+
+            * *GTC* ("Good-Till-Canceled")—order will not be closed until it is
+            filled.
+
+            * *IOC* ("Immediate-Or-Cancel")—order must be executed immediately.
+            Any part of an IOC order that cannot be filled immediately will be
+            canceled.
+
+            * *FOK* ("Fill-Or-Kill")—order must be executed immediately and
+            completely or not executed at all.
+
+            * *Day*—keeps the order active until the end of the trading day
+            (23:59 UTC+0).
+
+            * *GTD* ("Good-Till-Date")—order will be canceled on the specified
+            date.
+        quantity:
+          type: number
+          description: Order quantity.
+        price:
+          type: number
+          description: Order price.
+        stopPrice:
+          type: number
+          description: >-
+            The price level that triggers order activation. Required if `"type"`
+            is `stopLimit`, `stopMarket`, `takeProfitLimit`, or
+            `takeProfitMarket`.
+        expireTime:
+          type: string
+          format: date-time
+          description: Date of order expiration. Required if `"timeInForce"` is `GTD`.
+        strictValidate:
+          type: boolean
+          description: >-
+            Price and quantity will be checked for incrementation within the
+            symbol’s tick size and quantity step.
+        postOnly:
+          type: boolean
+          description: >
+            A post-only order is an order that does not remove liquidity.
+
+            If the post-only order would cause a match with a pre-existing order
+            as a taker, then the order will be canceled
+        closePosition:
+          type: boolean
+          default: false
+          description: |
+            Flag indicating a stop market order must close a margin position
+             when executed or be canceled otherwise.
+
+            Conditions: `quantity` is omitted.
+        takeLiquidityMarkup:
+          type: number
+          description: Additional fee charged from a taker for high-risk operations.
+        provideLiquidityMarkup:
+          type: number
+          description: Additional fee charged from a maker for high-risk operations.
+    trading_ReplaceOrderRequest:
+      required:
+        - price
+        - quantity
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Order quantity.
+        strictValidate:
+          type: boolean
+          description: >-
+            Price and quantity will be checked for incrementation within the
+            symbol’s tick size and quantity step.
+        price:
+          type: number
+          description: Order price.
+        requestClientId:
+          type: string
+          description: Unique request identifier.
+    trading_UserMarginAccountInfo:
+      required:
+        - symbol
+        - leverage
+        - marginBalance
+        - marginBalanceOrders
+        - marginBalanceRequired
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: >-
+            Trading symbol, where base currency is the currency of funds
+            reserved on the trading account for positions and quote currency is
+            the currency of funds reserved on a margin account (e.g.,
+            "BTCUSDT").
+        leverage:
+          type: string
+          description: >-
+            Margin leverage. The ratio of the trader's own funds to funds
+            borrowed from the platform.
+        marginBalance:
+          type: string
+          description: The total value of funds reserved for margin.
+        marginBalanceOrders:
+          type: string
+          description: The value reserved for margin orders.
+        marginBalanceRequired:
+          type: string
+          description: The value reserved for margin position close.
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation date and time.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Account last update date and time.
+        position:
+          $ref: '#/components/schemas/trading_UserPositionInfo'
+    trading_UserPositionInfo:
+      required:
+        - id
+        - symbol
+        - quantity
+        - pnl
+        - priceEntry
+        - priceMarginCall
+        - priceLiquidation
+        - createdAt
+        - updatedAt
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+        symbol:
+          type: string
+          description: Symbol code.
+        quantity:
+          type: string
+          description: Position quantity.
+        pnl:
+          type: string
+          description: Unrealized profit and loss.
+        feeCumulative:
+          type: string
+          description: |
+            Total amount of fees paid throughout the position lifetime until it
+             is closed.
+
+            Format: Decimal
+
+            Values: `0` if a new position created
+
+            ⚠️ This value does zero out after the position closes  and does not
+             when it flips.
+        priceEntry:
+          type: string
+          description: Average weighted price of position's open orders.
+        priceMarginCall:
+          type: string
+          description: Margin call price.
+        priceLiquidation:
+          type: string
+          description: Liquidation Price.
+        createdAt:
+          type: string
+          format: date-time
+          description: Position creation date and time.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Position last update date and time.
+    trading_PositionChangeRequest:
+      type: object
+      properties:
+        marginBalance:
+          type: number
+          minimum: 0
+          description: >-
+            The total value of funds reserved for margin. Setting
+            `"marginBalance"` to zero will close the margin account.
+        strictValidate:
+          type: boolean
+          description: >-
+            Price and quantity will be checked for incrementation within the
+            symbol’s tick size and quantity step.
+    trading_RestTradingBalance:
+      required:
+        - currency
+        - available
+        - reserved
+      type: object
+      properties:
+        currency:
+          type: string
+          example: ETH
+          description: Currency code.
+        available:
+          type: string
+          example: '10.000000000'
+          description: Amount available for trading or transfer to wallet.
+        reserved:
+          type: string
+          example: '0.56'
+          description: >-
+            Total amount reserved for active orders and incomplete transfers to
+            wallet.
+    trading_TradeFee:
+      required:
+        - takeLiquidityRate
+        - provideLiquidityRate
+      type: object
+      properties:
+        takeLiquidityRate:
+          type: string
+          description: Take liquidity fee rate.
+        provideLiquidityRate:
+          type: string
+          description: Provide liquidity fee rate.
+    trading_HistoryOrder:
+      required:
+        - id
+        - clientOrderId
+        - symbol
+        - side
+        - status
+        - type
+        - timeInForce
+        - quantity
+        - cumQuantity
+        - price
+        - avgPrice
+        - createdAt
+        - updatedAt
+        - margin_mode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          example: 828680665
+          description: Unique order identifier as assigned by the exchange.
+        clientOrderId:
+          type: string
+          example: f4307c6e507e49019907c917b6d7a084
+          description: >-
+            Unique order identifier as assigned by the trader. The order history
+            may list several orders with the same `"clientOrderId"`.
+        symbol:
+          type: string
+          example: ETHBTC
+          description: Symbol code.
+        side:
+          type: string
+          example: sell
+          enum:
+            - sell
+            - buy
+          description: Trade side.
+        status:
+          type: string
+          example: partiallyFilled
+          enum:
+            - new
+            - suspended
+            - partiallyFilled
+            - filled
+            - canceled
+            - expired
+          description: >
+            Order state:
+
+            * *new*—an order is placed in the order book.
+
+            * *suspended*—a `stopLimit`, `stopMarket`, `takeProfitLimit` or
+            `takeProfitMarket` order is parked until it meets the conditions for
+            placement in the order book.
+
+            * *partiallyFilled*—an order is executed, but a part of its quantity
+            is not filled yet.
+
+            * *filled*—order quantity filled completely.
+
+            * *canceled*—an order is canceled. It can either be done by a user
+            through a cancel/replace request or by the system under specific
+            circumstances.
+
+            * *expired*—an order is deactivated after it no longer satisfies
+            Time in Force (IOC, FOK) or Post Only requirements.
+
+            * *rejected*—an order has been rejected.
+        type:
+          type: string
+          example: limit
+          enum:
+            - limit
+            - market
+            - stopLimit
+            - stopMarket
+            - takeProfitLimit
+            - takeProfitMarket
+          description: Order type.
+        timeInForce:
+          type: string
+          example: GTC
+          enum:
+            - GTC
+            - IOC
+            - FOK
+            - Day
+            - GTD
+          description: >
+            Order expiration mode.
+
+
+            Values:
+
+            * *GTC* ("Good-Till-Canceled")—order will not be closed until it is
+            filled.
+
+            * *IOC* ("Immediate-Or-Cancel")—order must be executed immediately.
+            Any part of an IOC order that cannot be filled immediately will be
+            canceled.
+
+            * *FOK* ("Fill-Or-Kill")—order must be executed immediately and
+            completely or not executed at all.
+
+            * *Day*—keeps the order active until the end of the trading day
+            (23:59 UTC+0).
+
+            * *GTD* ("Good-Till-Date")—order will be canceled on the specified
+            date.
+        quantity:
+          type: string
+          example: '13.942'
+          description: Order quantity.
+        displayQuantity:
+          type: string
+          example: '0'
+          description: >-
+            The visible part of the hidden order quantity. The only valid value
+            is '0'.
+        cumQuantity:
+          type: string
+          example: '5.240'
+          description: Executed order quantity.
+        price:
+          type: string
+          example: '0.011384'
+          description: Order price.
+        avgPrice:
+          type: string
+          description: Average price of executed lots.
+        expireTime:
+          type: string
+          format: date-time
+          description: Date of order expiration. Specified if `"timeInForce"` is `GTD`.
+        positionId:
+          type: integer
+          format: uint64
+          description: Position identifier.
+        stopPrice:
+          type: string
+          example: '0.030540'
+          description: >-
+            The price level that triggers order activation. Specified if
+            `"type"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or
+            `takeProfitMarket`.
+        createdAt:
+          type: string
+          format: date-time
+          example: '2021-06-16T14:18:47.321Z'
+          description: Date of order's creation.
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2021-06-19T15:23:56.876Z'
+          description: Date of order's last update.
+        orderListId:
+          type: string
+          description: Order list identifier. Returned only for an order list request.
+        contingencyType:
+          type: string
+          enum:
+            - allOrNone
+            - oneCancelOther
+            - oneTriggerOther
+            - oneTriggerOneCancelOther
+          description: Order list type. Returned only for an order list request.
+        margin_mode:
+          type: string
+          enum:
+            - isolated
+            - cross
+          description: Margin mode.
+        closePosition:
+          type: boolean
+          description: |
+            Flag indicating a stop market order must close a margin position
+             when executed or be canceled otherwise.
+    trading_HistoryTrade:
+      required:
+        - id
+        - orderId
+        - clientOrderId
+        - symbol
+        - side
+        - quantity
+        - price
+        - fee
+        - timestamp
+        - taker
+        - margin_mode
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          example: 9535486
+          description: Trade unique identifier as assigned by the exchange.
+        orderId:
+          type: integer
+          format: uint64
+          example: 816088377
+          description: Unique order identifier as assigned by the exchange.
+        clientOrderId:
+          type: string
+          example: f8dbaab336d44d5ba3ff578098a68454
+          description: Unique order identifier as assigned by the trader.
+        symbol:
+          type: string
+          example: ETHBTC
+          description: Symbol code.
+        side:
+          type: string
+          example: sell
+          enum:
+            - sell
+            - buy
+          description: Trade side.
+        quantity:
+          type: string
+          example: '5.457'
+          description: Quantity of trade.
+        price:
+          type: string
+          example: '0.012652'
+          description: Trade price.
+        fee:
+          type: string
+          example: '0.000097776600'
+          description: Fee paid for trade.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-05-12T12:45:37.888Z'
+          description: Trade timestamp.
+        taker:
+          type: boolean
+          description: Liquidity indicator.
+        positionId:
+          type: integer
+          format: uint64
+          description: Position identifier.
+        pnl:
+          type: string
+          description: Realized profit produced by the trade.
+        otc:
+          type: boolean
+          nullable: true
+          description: >-
+            Flag that indicated whether the trade was performed out the trading
+            venue.
+        liquidation:
+          type: boolean
+          nullable: true
+          description: Flag that indicated whether the trade was a close trade.
+        margin_mode:
+          type: string
+          enum:
+            - isolated
+            - cross
+          description: Margin mode.
+    trading_Error:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          required:
+            - code
+            - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: >-
+        You should use public API key as username and secret API key as password
+        to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: >-
+        You should use public API key as username and secret API key as password
+        to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

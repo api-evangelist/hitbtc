@@ -1,0 +1,215 @@
+generated: '2026-10-13'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/hitbtc-openapi.yml
+- openapi/hitbtc-v2-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: 'No MCP server was found. The pre-flight posted tools/list to /mcp on hitbtc.com, api.hitbtc.com; verdict opaque (https://hitbtc.com/mcp
+  answered 403: the edge authenticates before it routes, which proves nothing either way). Candidate tools below are derived from the 120 operation(s)
+  in the provider''s own OpenAPI (40 listed); they describe what a server WOULD expose, not one that exists.'
+tools:
+- name: get_public_currency
+  operationId: GET /public/currency
+  method: GET
+  path: /public/currency
+  description: Get currencies
+- name: get_public_history
+  operationId: GET /public/history
+  method: GET
+  path: /public/history
+  description: Get prices history.
+- name: get_public_symbol
+  operationId: GET /public/symbol
+  method: GET
+  path: /public/symbol
+  description: Get symbols
+- name: get_mapping_currency
+  operationId: GET /public/mapping/currency
+  method: GET
+  path: /public/mapping/currency
+  description: Get currencies' mappings.
+- name: get_price_rate
+  operationId: GET /public/price/rate
+  method: GET
+  path: /public/price/rate
+  description: Get a quote
+- name: get_mapping_symbol
+  operationId: GET /public/mapping/symbol
+  method: GET
+  path: /public/mapping/symbol
+  description: Get symbols' mappings.
+- name: get_price_ticker
+  operationId: GET /public/price/ticker
+  method: GET
+  path: /public/price/ticker
+  description: Get quote tickers
+- name: get_public_rate
+  operationId: GET /public/rate
+  method: GET
+  path: /public/rate
+  description: Get prices.
+- name: get_price_history
+  operationId: GET /public/price/history
+  method: GET
+  path: /public/price/history
+  description: Get quote history
+- name: get_sub-acc
+  operationId: GET /sub-acc
+  method: GET
+  path: /sub-acc
+  description: Get subaccounts.
+- name: get_public_ticker
+  operationId: GET /public/ticker
+  method: GET
+  path: /public/ticker
+  description: Get tickers
+- name: create_sub-acc_freeze
+  operationId: POST /sub-acc/freeze
+  method: POST
+  path: /sub-acc/freeze
+  description: Freeze subaccounts.
+- name: get_public_candles
+  operationId: GET /public/candles
+  method: GET
+  path: /public/candles
+  description: Get last price candles
+- name: create_sub-acc_activate
+  operationId: POST /sub-acc/activate
+  method: POST
+  path: /sub-acc/activate
+  description: Activate subaccounts.
+- name: get_converted_candles
+  operationId: GET /public/converted/candles
+  method: GET
+  path: /public/converted/candles
+  description: Get a rate candle
+- name: create_sub-acc_transfer
+  operationId: POST /sub-acc/transfer
+  method: POST
+  path: /sub-acc/transfer
+  description: Transfer funds between a super account and a subaccount.
+- name: get_public_orderbook
+  operationId: GET /public/orderbook
+  method: GET
+  path: /public/orderbook
+  description: Get order books
+- name: get_sub-acc_acl
+  operationId: GET /sub-acc/acl
+  method: GET
+  path: /sub-acc/acl
+  description: Get subaccounts' ACL.
+- name: get_public_trades
+  operationId: GET /public/trades
+  method: GET
+  path: /public/trades
+  description: Get trades history
+- name: update_sub-acc_acl
+  operationId: PUT /sub-acc/acl/{userId}
+  method: PUT
+  path: /sub-acc/acl/{userId}
+  description: Set an ACL for the subaccount.
+- name: get_candles_index_price
+  operationId: GET /public/futures/candles/index_price
+  method: GET
+  path: /public/futures/candles/index_price
+  description: Get index price candles
+- name: get_sub-acc_balance
+  operationId: GET /sub-acc/balance/{userId}
+  method: GET
+  path: /sub-acc/balance/{userId}
+  description: Get subaccount balance.
+- name: get_candles_mark_price
+  operationId: GET /public/futures/candles/mark_price
+  method: GET
+  path: /public/futures/candles/mark_price
+  description: Get mark price candles
+- name: get_sub-acc_deposit-address
+  operationId: GET /sub-acc/deposit-address/{userId}/{currency}
+  method: GET
+  path: /sub-acc/deposit-address/{userId}/{currency}
+  description: Get subaccount deposit address.
+- name: get_candles_open_interest
+  operationId: GET /public/futures/candles/open_interest
+  method: GET
+  path: /public/futures/candles/open_interest
+  description: Get open interest candles
+- name: create_transfer_internal
+  operationId: POST /account/transfer/internal
+  method: POST
+  path: /account/transfer/internal
+  description: Create a new transfer by email or username.
+- name: get_candles_premium_index
+  operationId: GET /public/futures/candles/premium_index
+  method: GET
+  path: /public/futures/candles/premium_index
+  description: Get premium index candles
+- name: get_crypto_addresses
+  operationId: GET /account/crypto/addresses/{currency}
+  method: GET
+  path: /account/crypto/addresses/{currency}
+  description: Get the last 10 deposit crypto addresses.
+- name: get_futures_info
+  operationId: GET /public/futures/info
+  method: GET
+  path: /public/futures/info
+  description: Get futures info
+- name: get_crypto_used-addresses
+  operationId: GET /account/crypto/used-addresses/{currency}
+  method: GET
+  path: /account/crypto/used-addresses/{currency}
+  description: Get last 10 withdrawal crypto addresses.
+- name: get_history_funding
+  operationId: GET /public/futures/history/funding
+  method: GET
+  path: /public/futures/history/funding
+  description: Get funding history
+- name: get_crypto_estimate-withdraw-levels
+  operationId: GET /account/crypto/estimate-withdraw-levels
+  method: GET
+  path: /account/crypto/estimate-withdraw-levels
+  description: Get estimate levels for withdrawal.
+- name: get_user_api-keys
+  operationId: GET /user/api-keys
+  method: GET
+  path: /user/api-keys
+  description: Get API keys
+- name: get_account_features
+  operationId: GET /account/features
+  method: GET
+  path: /account/features
+  description: Get user's features.
+- name: get_wallet_balance
+  operationId: GET /wallet/balance
+  method: GET
+  path: /wallet/balance
+  description: Get balances
+- name: get_account_balance
+  operationId: GET /account/balance
+  method: GET
+  path: /account/balance
+  description: Get user's main account balance.
+- name: get_wallet_amount-locks
+  operationId: GET /wallet/amount-locks
+  method: GET
+  path: /wallet/amount-locks
+  description: Get amount locks
+- name: get_account_transactions
+  operationId: GET /account/transactions
+  method: GET
+  path: /account/transactions
+  description: Get user's transaction list.
+- name: get_crypto_address
+  operationId: GET /wallet/crypto/address
+  method: GET
+  path: /wallet/crypto/address
+  description: Get addresses
+- name: create_account_transfer
+  operationId: POST /account/transfer
+  method: POST
+  path: /account/transfer
+  description: Transfer between trading and main accounts.

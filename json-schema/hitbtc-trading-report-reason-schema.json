@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-report-reason-schema.json",
+  "title": "Report reason",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/trading_ReportReason",
+  "required": [
+    "report_reason"
+  ],
+  "properties": {
+    "report_reason": {
+      "type": "string",
+      "enum": [
+        "created",
+        "openTrade",
+        "closeTrade",
+        "flipTrade",
+        "updated",
+        "marginChanged",
+        "closed",
+        "status",
+        "liquidated",
+        "interestTaken",
+        "liquidationTrade",
+        "fundingTaken",
+        "deleveraged",
+        "deleverageTrade",
+        "leverageChanged",
+        "amrChanged"
+      ],
+      "description": "Position report reason.\n\nValues:\n* `created`—new position has been created as a result of the first\n  set margin request;\n* `openTrade`—opening trade has been executed;\n* `closeTrade`—closing trade has been executed;\n* `flipTrade`—position has been flipped as a result of an opposite\n  order execution with quantity exceeding the position quantity;\n* `updated`—position has been changed as a result of either order\n  placing, canceling, position status changing, or a \"margin call\";\n* `marginChanged`—position margin has been added or withdrawn as a\n  result of any subsequent set margin request (refer to `created`);\n* `closed`—position quantity has zeroed as a result of a close\n  trade;\n* `status`—response to a position request;\n* `liquidated`—position has been closed as a result of a liquidation\n  trade (including one during auto-deleveraging);\n* `interestTaken`—interest rate has been paid;\n* `liquidationTrade`—liquidation order has been placed;\n* `fundingTaken`—funding has been paid/taken;\n* `deleveraged`—position has been deleveraged;\n* `deleverageTrade`—a part of position quantity has been\n  deleveraged;\n* `leverageChanged`—leverage of a futures position has been changed;\n* `amrChanged`—the value of the AMR (auto margin replenishment) flag\n  has changed.\n"
+    }
+  }
+}

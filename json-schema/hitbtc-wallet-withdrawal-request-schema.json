@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-wallet-withdrawal-request-schema.json",
+  "title": "Withdrawal request",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/wallet_WithdrawalRequest",
+  "allOf": [
+    {
+      "$ref": "#/$defs/wallet_Currency"
+    },
+    {
+      "$ref": "#/$defs/wallet_Amount"
+    },
+    {
+      "$ref": "#/$defs/wallet_PublicComment"
+    },
+    {
+      "$ref": "#/$defs/wallet_Address"
+    },
+    {
+      "type": "object",
+      "required": [
+        "currency",
+        "amount",
+        "address"
+      ],
+      "properties": {
+        "network_code": {
+          "type": "string",
+          "description": "Network code.\n\nConditions: if omitted, the currency default network will be\nused\n"
+        },
+        "payment_id": {
+          "type": "string",
+          "pattern": "^[\\w@\\-.:<>]+$",
+          "description": "An additional recipient identifier (for example, \"Memo\") required for specific currencies.\n\nℹ️ Call `GET /public/currency/{currency}` and check `payout_is_payment_id` value to determine if a payment ID is needed.\n"
+        },
+        "include_fee": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": false,
+          "description": "Flag indicating whether fees will be included in the final amount of the resulting transaction.\n\nValues:\n  * `true`—fees will reduce the amount sent to the receiver. The amount written-off from the sender will be exactly equal to `amount`;\n  * `false`—fees will increase the amount written-off from the sender. The amount sent to the receiver will be exactly equal to `amount`.\n\n⚠️ If set to `true`, make sure that the amount exceeds fees.\n\nℹ️ Call `GET /wallet/crypto/fee/estimate` to get an estimated fee amount before creating a transaction.\n"
+        },
+        "auto_commit": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": false,
+          "description": "Flag indicating whether the sender should commit the transaction within 1 hour after it is created—the transaction will be rolled back otherwise.\n\nValues:\n  * `true`—one-phase scheme, the transaction will be committed automatically shortly after its creation;\n  * `false`—two-phase scheme, the transaction must be committed or rolled back.\n"
+        },
+        "use_offchain": {
+          "type": "string",
+          "enum": [
+            "never",
+            "optionally",
+            "required"
+          ],
+          "default": "never",
+          "description": "The instruction specifying whether it is allowed, needed, or forbidden to process the transaction off chain.\n\nValues:\n  * `never`—a transaction must be committed to the blockchain;\n  * `optionally`—the resulting transaction will be processed off chain if it is a viable option for the given address and the current configuration state;\n  * `required`—the request will be rejected if a withdrawal cannot be processed off chain.\n\nℹ️ Call `GET /wallet/crypto/check-offchain-available` to check if the given operation may be processed off chain.\n"
+        },
+        "wallet_id": {
+          "type": "string",
+          "pattern": "^*\\..*$",
+          "description": "Wallet ID in an external network."
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "wallet_Address": {
+      "title": "Deposit address",
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/$defs/wallet_AddressCommon"
+        }
+      }
+    },
+    "wallet_AddressCommon": {
+      "title": "Deposit address",
+      "type": "string",
+      "pattern": "^([\\w@\\-.:<>]+|[0-9A-Z]{4}( ?[0-9A-Z]{4}){8}|(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?)$",
+      "description": "Deposit crypto address."
+    },
+    "wallet_Amount": {
+      "title": "Amount",
+      "type": "object",
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/wallet_AmountCommon"
+        }
+      }
+    },
+    "wallet_AmountCommon": {
+      "title": "Amount",
+      "type": "string",
+      "description": "The amount of the operation.\n\nFormat: currency precision\n\nValues: > 0\n\nℹ️ Call `GET /public/currency/{currency}` to get the currency precision.\n"
+    },
+    "wallet_Currency": {
+      "title": "Currency",
+      "properties": {
+        "currency": {
+          "$ref": "#/$defs/wallet_CurrencyCommon"
+        }
+      }
+    },
+    "wallet_CurrencyCommon": {
+      "title": "Cryptocurrency",
+      "type": "string",
+      "description": "Cryptocurrency code."
+    },
+    "wallet_PublicComment": {
+      "title": "Public comment",
+      "type": "object",
+      "properties": {
+        "public_comment": {
+          "type": "string",
+          "maxLength": 255,
+          "pattern": "^[\\w@\\-\\.:<>]+( [\\w@\\-\\.:<>]+)*$",
+          "description": "Custom text comment for external use.\n\nℹ️ The specified value will be displayed in the transaction history and may help in identification of the transaction.\n\nℹ️ Avoid the following characters: `&`, `'`, `<`, `>`, `\"`.\n"
+        }
+      }
+    }
+  }
+}

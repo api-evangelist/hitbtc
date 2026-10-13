@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hitbtc/main/json-schema/hitbtc-trading-margin-settings-schema.json",
+  "title": "Margin settings",
+  "x-generated": "2026-10-13",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/hitbtc-openapi.yml#/components/schemas/trading_MarginSettings",
+  "type": "object",
+  "required": [
+    "default_amm",
+    "user_can_change_amm",
+    "user_can_change_amr_isolated",
+    "user_can_change_amr_cross",
+    "current_amm",
+    "amm_override_set"
+  ],
+  "properties": {
+    "default_amm": {
+      "type": "boolean",
+      "description": "Default value of the AMM (auto margin management) flag on the\n platform.\n"
+    },
+    "user_can_change_amm": {
+      "type": "boolean",
+      "description": "Flag indicating whether the user is allowed to change the AMM (auto\n margin management) flag.\n"
+    },
+    "user_can_change_amr_isolated": {
+      "type": "boolean",
+      "description": "Flag indicating whether the user is allowed to change the AMR (auto\n margin replenishment) flag of isolated margin accounts.\n"
+    },
+    "user_can_change_amr_cross": {
+      "type": "boolean",
+      "description": "Flag indicating whether the user is allowed to change the AMR (auto\n margin replenishment) flag of cross-margin accounts.\n"
+    },
+    "current_amm": {
+      "type": "boolean",
+      "description": "Effective value of the AMM (auto margin management) flag of the user:\n either the value set by the user or the default one.\n\nℹ️ This is the value the exchange web interface puts into\n `margin_auto` of every new order.\n"
+    },
+    "amm_override_set": {
+      "type": "boolean",
+      "description": "Flag indicating whether the user has set an own value of the AMM\n (auto margin management) flag instead of the default one.\n"
+    }
+  }
+}
