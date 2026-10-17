@@ -1,0 +1,595 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Spot Orders API
+  version: ''
+  description: 'Operations tagged Spot Orders across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Spot Orders
+paths:
+  /order:
+    get:
+      tags:
+      - Spot Orders
+      summary: Get all spot orders
+      description: 'Returns a list of all spot orders.
+
+
+        **Permission:** *TradingRead*'
+      parameters:
+      - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getOrder
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Spot Orders
+      summary: Create a new spot order
+      description: 'Creates a new spot order.
+
+
+        **Permission:** *TradingTrade*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: postOrder
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Spot Orders
+      summary: Cancel all spot orders
+      description: 'Cancels all active spot orders.
+
+
+        **Permission:** *TradingTrade*'
+      parameters:
+      - $ref: '#/components/parameters/trading_symbolQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteOrder
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /order/{clientOrderId}:
+    parameters:
+    - $ref: '#/components/parameters/trading_clOrderIdPath'
+    get:
+      tags:
+      - Spot Orders
+      summary: Get active spot order
+      description: 'Returns an active spot order by its `"clientOrderId"`.
+
+
+        **Permission:** *TradingRead*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getOrderByClientOrderId
+      x-operation-id-source: derived
+    put:
+      tags:
+      - Spot Orders
+      summary: Create a new spot order
+      description: 'Creates a new spot order with specified `"clientOrderId"`.
+
+
+        **Permission:** *TradingTrade*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_NewOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: putOrderByClientOrderId
+      x-operation-id-source: derived
+    patch:
+      tags:
+      - Spot Orders
+      summary: Replace spot order
+      description: 'Replaces a spot order.
+
+
+        **Permission:** *TradingTrade*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_ReplaceOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: patchOrderByClientOrderId
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Spot Orders
+      summary: Cancel order
+      description: 'Cancels a spot order with specified `"clientOrderId"`.
+
+
+        **Permission:** *TradingTrade*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserOrderInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteOrderByClientOrderId
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  parameters:
+    trading_clOrderIdPath:
+      name: clientOrderId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Unique order identifier given by a trader or the system.
+    trading_symbolQuery:
+      name: symbol
+      in: query
+      schema:
+        type: string
+      description: Symbol code.
+  schemas:
+    trading_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_ReplaceOrderRequest:
+      required:
+      - price
+      - quantity
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Order quantity.
+        strictValidate:
+          type: boolean
+          description: Price and quantity will be checked for incrementation within the symbol’s tick size and quantity step.
+        price:
+          type: number
+          description: Order price.
+        requestClientId:
+          type: string
+          description: Unique request identifier.
+    trading_TradesReport:
+      required:
+      - id
+      - quantity
+      - price
+      - fee
+      - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Trade identifier.
+        quantity:
+          type: string
+          description: Quantity of trade.
+        price:
+          type: string
+          description: Trade price.
+        fee:
+          type: string
+          description: Fee paid for trade.
+        timestamp:
+          type: string
+          format: date-time
+          description: Trade timestamp.
+        positionId:
+          type: integer
+          format: uint64
+          description: Position identifier.
+    trading_NewOrderRequest:
+      required:
+      - symbol
+      - side
+      - quantity
+      type: object
+      properties:
+        clientOrderId:
+          type: string
+          description: 'Unique order identifier as assigned by the trader.
+
+            '
+        symbol:
+          type: string
+          description: Symbol code.
+        side:
+          type: string
+          enum:
+          - sell
+          - buy
+          description: Trade side.
+        type:
+          type: string
+          enum:
+          - market
+          - limit
+          - stopMarket
+          - stopLimit
+          - takeProfitLimit
+          - takeProfitMarket
+          default: limit
+          description: Order type.
+        timeInForce:
+          type: string
+          enum:
+          - GTC
+          - IOC
+          - FOK
+          - Day
+          - GTD
+          description: 'Order expiration mode.
+
+
+            Default:
+
+            * `type` is `"market"`, `"stopMarket"`, `"takeProfitMarket"`—`"FOK"`;
+
+            * `type` is `"limit"`, `"stopLimit"`, `"takeProfitLimit"`—`"GTC"`.
+
+
+            Values:
+
+            * *GTC* ("Good-Till-Canceled")—order will not be closed until it is filled.
+
+            * *IOC* ("Immediate-Or-Cancel")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled.
+
+            * *FOK* ("Fill-Or-Kill")—order must be executed immediately and completely or not executed at all.
+
+            * *Day*—keeps the order active until the end of the trading day (23:59 UTC+0).
+
+            * *GTD* ("Good-Till-Date")—order will be canceled on the specified date.
+
+            '
+        quantity:
+          type: number
+          description: Order quantity.
+        price:
+          type: number
+          description: Order price.
+        stopPrice:
+          type: number
+          description: The price level that triggers order activation. Required if `"type"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or `takeProfitMarket`.
+        expireTime:
+          type: string
+          format: date-time
+          description: Date of order expiration. Required if `"timeInForce"` is `GTD`.
+        strictValidate:
+          type: boolean
+          description: Price and quantity will be checked for incrementation within the symbol’s tick size and quantity step.
+        postOnly:
+          type: boolean
+          description: 'A post-only order is an order that does not remove liquidity.
+
+            If the post-only order would cause a match with a pre-existing order as a taker, then the order will be canceled
+
+            '
+        closePosition:
+          type: boolean
+          default: false
+          description: "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n\nConditions: `quantity` is omitted.\n"
+        takeLiquidityMarkup:
+          type: number
+          description: Additional fee charged from a taker for high-risk operations.
+        provideLiquidityMarkup:
+          type: number
+          description: Additional fee charged from a maker for high-risk operations.
+    trading_UserOrderInfo:
+      required:
+      - id
+      - clientOrderId
+      - symbol
+      - side
+      - status
+      - type
+      - timeInForce
+      - quantity
+      - postOnly
+      - cumQuantity
+      - createdAt
+      - updatedAt
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Order identifier.
+        clientOrderId:
+          type: string
+          description: Unique order identifier as assigned by the trader.
+        symbol:
+          type: string
+          description: Symbol code.
+        side:
+          type: string
+          enum:
+          - sell
+          - buy
+          description: Trade side.
+        status:
+          type: string
+          enum:
+          - new
+          - suspended
+          - partiallyFilled
+          - filled
+          - canceled
+          - rejected
+          - expired
+          description: "Order state:\n  * *new*—an order is placed in the order book.\n  * *suspended*—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book.\n  * *partiallyFilled*—an order is executed, but a part of its quantity is not filled yet.\n  * *filled*—order quantity filled completely.\n  * *canceled*—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances.\n  * *expired*—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements.\n  * *rejected*—an order has been rejected.\n"
+        type:
+          type: string
+          enum:
+          - market
+          - limit
+          - stopMarket
+          - stopLimit
+          - takeProfitLimit
+          - takeProfitMarket
+          description: Order type.
+        timeInForce:
+          type: string
+          enum:
+          - GTC
+          - IOC
+          - FOK
+          - Day
+          - GTD
+          description: 'Order expiration mode:
+
+            * *GTC* ("Good-Till-Canceled")—order will not be closed until it is filled.
+
+            * *IOC* ("Immediate-Or-Cancel")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled.
+
+            * *FOK* ("Fill-Or-Kill")—order must be executed immediately and completely or not executed at all.
+
+            * *Day*—keeps the order active until the end of the trading day (23:59 UTC+0).
+
+            * *GTD* ("Good-Till-Date")—order will be canceled on the specified date.
+
+            '
+        stopPrice:
+          type: string
+          description: The price level that triggers order activation. Specified if `"type"` is `stopLimit`, `stopMarket`, `takeProfitLimit`, or `takeProfitMarket`.
+        expireTime:
+          type: string
+          format: date-time
+          description: Date of order expiration. Specified if `"timeInForce"` is `GTD`.
+        price:
+          type: string
+          description: Order price.
+        quantity:
+          type: string
+          description: Order quantity.
+        postOnly:
+          type: boolean
+          description: 'A post-only order is an order that does not remove liquidity.
+
+
+            If the post-only order would cause a match with a pre-existing order as a taker, then the order will be canceled
+
+            '
+        closePosition:
+          type: boolean
+          description: "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n"
+        cumQuantity:
+          type: string
+          description: Executed order quantity.
+        createdAt:
+          type: string
+          format: date-time
+          description: Date of order's creation.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date of order's last update.
+        tradesReport:
+          type: array
+          items:
+            $ref: '#/components/schemas/trading_TradesReport'
+  responses:
+    trading_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

@@ -1,0 +1,200 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Price History API
+  version: ''
+  description: 'Operations tagged Price History across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Price History
+paths:
+  /public/history:
+    get:
+      tags:
+      - Price History
+      summary: Get prices history
+      description: Returns quotation prices history.
+      parameters:
+      - name: from
+        in: query
+        description: Source currency code.
+        schema:
+          type: string
+      - name: to
+        in: query
+        required: true
+        description: Target currency code.
+        schema:
+          type: string
+      - name: since
+        in: query
+        description: Interval initial value.
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        description: Interval end value.
+        schema:
+          type: string
+          format: date-time
+      - name: limit
+        in: query
+        description: 'The number of items to return. The limit can range between *1* and *1000*.
+
+          '
+        schema:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          default: 1
+      - $ref: '#/components/parameters/marketData_periodQuery'
+      - $ref: '#/components/parameters/marketData_sortDesc'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_PriceHistory'
+                example:
+                  ETH:
+                    currency: BTC
+                    history:
+                      timestamp: '2021-07-01T20:00:00.000Z'
+                      open: '0.063420'
+                      close: '0.063767'
+                      min: '0.063403'
+                      max: '0.063782'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicHistory
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  schemas:
+    marketData_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    marketData_PriceHistory:
+      required:
+      - currency
+      - history
+      type: object
+      properties:
+        currency:
+          type: string
+          nullable: true
+          example: BTC
+          description: Quote currency code.
+        history:
+          required:
+          - close
+          - max
+          - min
+          - open
+          - timestamp
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              example: '2021-07-01T20:00:00.000Z'
+              description: Last update or refresh price timestamp.
+            open:
+              type: string
+              nullable: true
+              example: '0.063420'
+              description: Open price.
+            close:
+              type: string
+              nullable: true
+              example: '0.063767'
+              description: Closing price.
+            min:
+              type: string
+              nullable: true
+              example: '0.063403'
+              description: The lowest price for the period.
+            max:
+              type: string
+              nullable: true
+              example: '0.063782'
+              description: The highest price for the period.
+  parameters:
+    marketData_periodQuery:
+      name: period
+      in: query
+      description: "History time period:\n  * *M\\** — minutes;\n  * *H\\** — hours;\n  * *D\\** — days;\n  * *1M* — one month.\n"
+      schema:
+        type: string
+        default: M30
+        enum:
+        - M1
+        - M3
+        - M5
+        - M15
+        - M30
+        - H1
+        - H4
+        - D1
+        - D7
+        - 1M
+    marketData_sortDesc:
+      name: sort
+      in: query
+      description: "Sort order:\n * Ascending, from A to Z.\n * Descending, from Z to A.\n"
+      schema:
+        type: string
+        default: DESC
+        enum:
+        - DESC
+        - ASC
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

@@ -1,0 +1,324 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Crypto Address API
+  version: ''
+  description: 'Operations tagged Crypto Address across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Crypto Address
+paths:
+  /account/crypto/addresses/{currency}:
+    get:
+      tags:
+      - Crypto Address
+      summary: Get the last 10 deposit crypto addresses
+      description: '**Permission:** *BankAccess*
+
+
+        Returns the last 10 unique addresses used for deposits (by currency).'
+      parameters:
+      - $ref: '#/components/parameters/wallet_currencyPath'
+      - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoAddressesByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/used-addresses/{currency}:
+    get:
+      tags:
+      - Crypto Address
+      summary: Get last 10 withdrawal crypto addresses
+      description: '**Permission:** *BankAccess*
+
+
+        Returns the last 10 unique addresses used for withdrawals (by currency).'
+      parameters:
+      - $ref: '#/components/parameters/wallet_currencyPath'
+      - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoUsedAddressesByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/address:
+    get:
+      tags:
+      - Crypto Address
+      summary: Get all deposit crypto addresses
+      description: '**Permission:** *BankAccess*
+
+
+        Returns all deposit crypto addresses.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_AddressResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoAddress
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/address/{currency}:
+    get:
+      tags:
+      - Crypto Address
+      summary: Get deposit crypto address by currency
+      description: '**Permission:** *BankAccess*
+
+
+        Returns single deposit crypto address by currency.'
+      parameters:
+      - $ref: '#/components/parameters/wallet_currencyPath'
+      - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_AddressResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoAddressByCurrency
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Crypto Address
+      summary: Create deposit crypto address
+      description: '**Permission:** *BankAccess*
+
+
+        Creates a new deposit address.
+
+
+        Existing addresses may still receive funds.'
+      parameters:
+      - $ref: '#/components/parameters/wallet_currencyPath'
+      - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_AddressResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountCryptoAddressByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  responses:
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+  parameters:
+    wallet_currencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Currency code.
+    wallet_networkCode:
+      name: network_code
+      in: query
+      schema:
+        type: string
+      description: Network code.
+  schemas:
+    wallet_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    wallet_CryptoAddress:
+      required:
+      - address
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address.
+        paymentId:
+          type: string
+          description: Payment identifier.
+        publicKey:
+          type: string
+          description: Public key.
+    wallet_AddressResponse:
+      required:
+      - address
+      type: object
+      properties:
+        address:
+          type: string
+          example: 3E8WKmTJzaTsBc4kvuEJVjPNtak6vQRcRv
+          description: Address for deposits.
+        paymentId:
+          type: string
+          description: An additional identifier for specific currencies (for example, "Memo").
+        publicKey:
+          type: string
+          description: Public key.
+        networkCode:
+          type: string
+          description: Network code.
+        currency:
+          type: string
+          example: BTC
+          description: Currency code.
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

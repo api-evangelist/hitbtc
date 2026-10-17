@@ -1,0 +1,167 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Mapping API
+  version: ''
+  description: 'Operations tagged Mapping across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Mapping
+paths:
+  /public/mapping/currency:
+    get:
+      tags:
+      - Mapping
+      summary: Get currencies' mappings
+      parameters:
+      - name: currencies
+        in: query
+        style: form
+        explode: false
+        description: A comma-separated list of currency codes.
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_CurrencyMapping'
+      security: []
+      operationId: getPublicMappingCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /public/mapping/symbol:
+    get:
+      tags:
+      - Mapping
+      summary: Get symbols' mappings
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_SymbolMapping'
+      security: []
+      operationId: getPublicMappingSymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  parameters:
+    marketData_symbolsQuery:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      description: A comma-separated list of symbol codes.
+      schema:
+        type: array
+        items:
+          type: string
+  schemas:
+    marketData_CurrencyMapping:
+      required:
+      - id
+      - coreId
+      - fullName
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Currency API code.
+        coreId:
+          type: string
+          nullable: true
+          description: Currency exchange code.
+        fullName:
+          type: string
+          nullable: true
+          description: Full currency name.
+    marketData_SymbolMapping:
+      required:
+      - id
+      - baseCurrency
+      - quoteCurrency
+      - feeCurrency
+      - quantityIncrement
+      - tickSize
+      - coreId
+      - coreBaseCurrency
+      - coreQuoteCurrency
+      - coreFeeCurrency
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Symbol identifier.
+        coreId:
+          type: integer
+          nullable: true
+          description: Symbol identifier in the Matching Engine.
+        baseCurrency:
+          type: string
+          nullable: true
+          description: Base currency code.
+        coreBaseCurrency:
+          type: string
+          nullable: true
+          description: Base currency code in the Matching Engine.
+        quoteCurrency:
+          type: string
+          nullable: true
+          description: Quote currency code.
+        coreQuoteCurrency:
+          type: string
+          nullable: true
+          description: Quote currency code in the Matching Engine.
+        feeCurrency:
+          type: string
+          nullable: true
+          description: Currency used for charging fees.
+        coreFeeCurrency:
+          type: string
+          nullable: true
+          description: Exchange code of currency used for charging fees.
+        quantityIncrement:
+          type: string
+          nullable: true
+          description: Quantity should be divided by this value with no remainder.
+        tickSize:
+          type: string
+          nullable: true
+          description: Price should be divided by this value with no remainder.
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

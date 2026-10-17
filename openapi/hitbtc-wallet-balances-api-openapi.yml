@@ -1,0 +1,389 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Wallet Balances API
+  version: ''
+  description: 'Operations tagged Wallet Balances across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Wallet Balances
+paths:
+  /wallet/balance:
+    get:
+      tags:
+      - Wallet Balances
+      summary: Get balances
+      description: 'Returns non-zero wallet balances.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_Balance'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletBalance
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/balance/{currency}:
+    get:
+      tags:
+      - Wallet Balances
+      summary: Get a balance
+      parameters:
+      - $ref: '#/components/parameters/wallet_CurrencyPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Balance'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      operationId: getWalletBalanceByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    wallet_NotEnoughPermissions:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Currency is not found.\n\nAny of:\n  * requested network is not found;\n  * requested currency is not found;\n  * no currency provided while the network is specified;\n  * requested network is disabled;\n  * operations relating to the request are disabled for the currency;\n  * currencies featured in an operation are not found.\n"
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    wallet_ShouldUpgradePermission:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_AuthInvalid:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_TooManyRequests:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_Balance:
+      title: Wallet balance
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - type: object
+        required:
+        - available
+        - currency
+        - reserved
+        properties:
+          available:
+            type: string
+            description: Amount available for withdrawals and transfers to the exchange account.
+            example: '14.08'
+          reserved:
+            type: string
+            description: Total amount reserved for withdrawals, withdrawal fees, and transfers to the exchange account.
+            example: '2.37'
+    wallet_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_Currency:
+      title: Currency
+      properties:
+        currency:
+          $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: The request has been canceled.
+      example:
+        error:
+          code: 408
+          message: Request timeout
+    wallet_BadGateway:
+      title: Bad Gateway
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Unclassified error while connecting the authentication service.
+      example:
+        error:
+          code: 502
+          message: Bad gateway
+    wallet_ServiceUnavailable:
+      title: Service Unavailable
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * withdrawals are disabled;\n  * unclassified internal error.\n"
+      example:
+        error:
+          code: 503
+          message: Service unavailable
+    wallet_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_CurrencyCommon:
+      title: Cryptocurrency
+      type: string
+      description: Cryptocurrency code.
+      example: USDT
+    wallet_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_BadFormat:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_408:
+      description: Request Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_RequestTimeout'
+    wallet_429:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_TooManyRequests'
+    wallet_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Internal'
+    wallet_502:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_BadGateway'
+    wallet_503:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_ServiceUnavailable'
+    wallet_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_Forbidden'
+            - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+            - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+    wallet_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_UnauthorizedBasic'
+            - $ref: '#/components/schemas/wallet_UnauthorizedHS256'
+            - $ref: '#/components/schemas/wallet_BadFormatHS256'
+            - $ref: '#/components/schemas/wallet_AuthInvalid'
+            - $ref: '#/components/schemas/wallet_BadFormat'
+  parameters:
+    wallet_CurrencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_CurrencyCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

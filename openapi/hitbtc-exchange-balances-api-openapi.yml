@@ -1,0 +1,391 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Exchange Balances API
+  version: ''
+  description: 'Operations tagged Exchange Balances across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Exchange Balances
+paths:
+  /spot/balance:
+    get:
+      tags:
+      - Exchange Balances
+      summary: Get balances
+      description: 'Returns non-zero exchange balances.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/trading_ExchangeBalance'
+                  - $ref: '#/components/schemas/trading_Currency'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getSpotBalance
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /spot/balance/{currency}:
+    get:
+      tags:
+      - Exchange Balances
+      summary: Get a balance
+      parameters:
+      - $ref: '#/components/parameters/trading_CurrencyPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_ExchangeBalance'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getSpotBalanceByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_ExchangeBalance:
+      title: Exchange balance
+      allOf:
+      - $ref: '#/components/schemas/trading_SpotBalance'
+      - $ref: '#/components/schemas/trading_MarginBalanceFields'
+    trading_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided currency has not been found.
+
+
+        Any of:
+
+        * the currency is disabled;
+
+        * the currency is unavailable for a given market.
+
+        '
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_MarginBalanceFields:
+      title: Margin balance
+      required:
+      - reserved_margin
+      - cross_margin_reserved
+      type: object
+      properties:
+        reserved_margin:
+          type: string
+          description: Amount reserved for margin trading with funds backed by an isolated margin account.
+          example: '0'
+        cross_margin_reserved:
+          type: string
+          description: Amount reserved for margin trading with funds backed by a cross-margin account.
+          example: '0'
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_Currency:
+      title: Currency
+      type: object
+      required:
+      - currency
+      properties:
+        currency:
+          $ref: '#/components/schemas/trading_CurrencyCommon'
+    trading_SpotBalance:
+      title: Spot Balance
+      required:
+      - available
+      - reserved
+      type: object
+      properties:
+        available:
+          type: string
+          description: Amount available for trading or transferring to a wallet.
+          example: '23.7'
+        reserved:
+          type: string
+          description: Total amount reserved for active orders and incomplete transfers to a wallet.
+          example: '2.37'
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  parameters:
+    trading_CurrencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_CurrencyCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

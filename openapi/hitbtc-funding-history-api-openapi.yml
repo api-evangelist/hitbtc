@@ -1,0 +1,358 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Funding History API
+  version: ''
+  description: 'Operations tagged Funding History across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Funding History
+paths:
+  /public/futures/history/funding:
+    get:
+      tags:
+      - Funding History
+      summary: Get funding history
+      parameters:
+      - $ref: '#/components/parameters/marketData_Symbols'
+      - $ref: '#/components/parameters/marketData_SortDesc'
+      - $ref: '#/components/parameters/marketData_From'
+      - $ref: '#/components/parameters/marketData_Till'
+      - $ref: '#/components/parameters/marketData_Limit10'
+      - $ref: '#/components/parameters/marketData_Offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_FundingHistoryMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicFuturesHistoryFunding
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /public/futures/history/funding/{symbol}:
+    get:
+      tags:
+      - Funding History
+      summary: Get contract funding history
+      parameters:
+      - $ref: '#/components/parameters/marketData_SymbolPath'
+      - $ref: '#/components/parameters/marketData_SortDesc'
+      - $ref: '#/components/parameters/marketData_From'
+      - $ref: '#/components/parameters/marketData_Till'
+      - $ref: '#/components/parameters/marketData_Limit100'
+      - $ref: '#/components/parameters/marketData_Offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_FundingHistory'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicFuturesHistoryFundingBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  parameters:
+    marketData_SortDesc:
+      name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+        - DESC
+        - ASC
+        default: DESC
+      description: "Sort order.\n\nValues:\n  * `ASC`—ascending;\n  * `DESC`—descending.\n"
+    marketData_Symbols:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_SymbolCommon'
+      description: A comma-separated list of symbol codes.
+    marketData_Limit100:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+      description: The number of items to return.
+    marketData_Till:
+      name: till
+      in: query
+      schema:
+        allOf:
+        - $ref: '#/components/schemas/marketData_TimestampCommon'
+        - default: 1000
+      description: Interval end value.
+    marketData_Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100000
+        default: 0
+      description: The number of items to skip before starting to collect the result set.
+    marketData_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/marketData_SymbolCommon'
+    marketData_From:
+      name: from
+      in: query
+      schema:
+        allOf:
+        - $ref: '#/components/schemas/marketData_TimestampCommon'
+        - default: 1
+      description: Interval start value.
+    marketData_Limit10:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 10
+      description: The number of items to return.
+  schemas:
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_FundingHistory:
+      title: Funding history
+      type: object
+      required:
+      - timestamp
+      - funding_rate
+      - avg_premium_index
+      - next_funding_time
+      - interest_rate
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Date and time of the clearing.
+          example: '2024-06-26T12:32:01.636Z'
+        funding_rate:
+          type: string
+          description: Percentage of the contract mark value paid after the end of the current funding interval.
+          example: '0.00025'
+        avg_premium_index:
+          type: string
+          description: Time-weighted average over premium indexes for *previous* funding period. Used during calculation of `funding_rate` for adjusting it to the deviation of contract market price from the mark price.
+          example: '-0.000016478878555706'
+        next_funding_time:
+          type: string
+          description: Date and time of the next clearing.
+          example: '2024-06-26T20:32:01.636Z'
+        interest_rate:
+          type: string
+          description: Contract interest rate for one funding period.
+          example: '0.001'
+    marketData_FundingHistoryMap:
+      title: Fundings history
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: symbol
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_FundingHistory'
+      example:
+        BTCUSDT_PERP:
+        - timestamp: '2024-06-26T12:32:01.636Z'
+          funding_rate: '0.00025'
+          avg_premium_index: '-0.000016478878555706'
+          next_funding_time: '2024-06-26T20:32:01.636Z'
+          interest_rate: '0.001'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_Validation:
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: "Any of:\n  * missing required parameter;\n  * invalid value of a numeric parameter.\n"
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Validation error. Please, check request parameters and try again.
+          code: 10001
+          message: Bad request parameter [PARAMETER] ISSUE
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    marketData_TimestampCommon:
+      title: Timestamp
+      oneOf:
+      - title: ISO 8601
+        type: string
+        format: date-time
+        description: 'Format: ISO 8601
+
+          '
+        example: '2024-03-22T15:04:05.590Z'
+      - title: UNIX seconds
+        type: integer
+        description: 'Format: UNIX timestamp in seconds
+
+          '
+        example: 1687778487
+      - title: UNIX milliseconds
+        type: integer
+        description: 'Format: UNIX timestamp in milliseconds
+
+          '
+        example: 1687778556151
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

@@ -1,0 +1,323 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Quote History API
+  version: ''
+  description: 'Operations tagged Quote History across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Quote History
+paths:
+  /public/price/history:
+    get:
+      tags:
+      - Quote History
+      summary: Get quote history
+      description: 'Returns the last trade price history.
+
+
+        **Permission**: None
+
+
+        **IP limit**: 30/50'
+      parameters:
+      - name: from
+        in: query
+        description: Base currency code.
+        schema:
+          $ref: '#/components/schemas/marketData_CurrencyCommon'
+      - name: to
+        in: query
+        required: true
+        description: Quote currency code.
+        schema:
+          $ref: '#/components/schemas/marketData_CurrencyCommon'
+      - name: since
+        in: query
+        description: Interval start value.
+        schema:
+          $ref: '#/components/schemas/marketData_TimestampCommon'
+      - name: until
+        in: query
+        description: Interval end value.
+        schema:
+          $ref: '#/components/schemas/marketData_TimestampCommon'
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 1
+        description: The number of items to return.
+      - $ref: '#/components/parameters/marketData_Period'
+      - $ref: '#/components/parameters/marketData_SortDesc'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_LastPriceHistoryMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      operationId: getPublicPriceHistory
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    marketData_CandleBase:
+      title: Candle
+      type: object
+      required:
+      - timestamp
+      - open
+      - close
+      - min
+      - max
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2024-03-22T15:04:05.590Z'
+          description: Candle timestamp.
+        open:
+          type: string
+          example: '0.063420'
+          description: Open value.
+        close:
+          type: string
+          example: '0.063767'
+          description: Closing value.
+        min:
+          type: string
+          example: '0.063403'
+          description: The lowest value for the period.
+        max:
+          type: string
+          example: '0.063782'
+          description: The highest value for the period.
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_LastPriceHistory:
+      title: Price history
+      required:
+      - currency
+      - history
+      type: object
+      properties:
+        currency:
+          type: string
+          example: BTC
+          description: Quote currency code.
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/marketData_CandleBase'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_Validation:
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: "Any of:\n  * missing required parameter;\n  * invalid value of a numeric parameter.\n"
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Validation error. Please, check request parameters and try again.
+          code: 10001
+          message: Bad request parameter [PARAMETER] ISSUE
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_TimestampCommon:
+      title: Timestamp
+      oneOf:
+      - title: ISO 8601
+        type: string
+        format: date-time
+        description: 'Format: ISO 8601
+
+          '
+        example: '2024-03-22T15:04:05.590Z'
+      - title: UNIX seconds
+        type: integer
+        description: 'Format: UNIX timestamp in seconds
+
+          '
+        example: 1687778487
+      - title: UNIX milliseconds
+        type: integer
+        description: 'Format: UNIX timestamp in milliseconds
+
+          '
+        example: 1687778556151
+    marketData_LastPriceHistoryMap:
+      title: Prices history
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: currency
+        $ref: '#/components/schemas/marketData_LastPriceHistory'
+      example:
+        BTC:
+          currency: USDT
+          history:
+          - timestamp: '2024-03-22T15:04:05.590Z'
+            open: '30320.16'
+            close: '30289.45'
+            min: '30269.59'
+            max: '30370.84'
+    marketData_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  parameters:
+    marketData_SortDesc:
+      name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+        - DESC
+        - ASC
+        default: DESC
+      description: "Sort order.\n\nValues:\n  * `ASC`—ascending;\n  * `DESC`—descending.\n"
+    marketData_Period:
+      name: period
+      in: query
+      schema:
+        type: string
+        enum:
+        - M1
+        - M3
+        - M5
+        - M15
+        - M30
+        - H1
+        - H4
+        - D1
+        - D7
+        - 1M
+        default: M30
+      description: "History time period.\n\nValues:\n  * `M*`—minutes;\n  * `H*`—hours;\n  * `D*`—days;\n  * `1M`—one month.\n"
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

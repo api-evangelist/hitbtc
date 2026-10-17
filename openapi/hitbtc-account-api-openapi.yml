@@ -1,0 +1,589 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Account API
+  version: ''
+  description: 'Operations tagged Account across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Account
+paths:
+  /account/transfer/internal:
+    post:
+      tags:
+      - Account
+      summary: Create a new transfer by email or username
+      description: '**Permission:** *BankWithdraw*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_AccountTransferInternalRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: string
+                    example: f4fa539f-627d-4ab9-b1aa-5f69c5ee197b
+                    description: Transaction unique identifier as assigned by the exchange.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountTransferInternal
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/features:
+    get:
+      tags:
+      - Account
+      summary: Get user's features
+      description: '**Permission:** *SubAccReadWrite*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserFeatures'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountFeatures
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/balance:
+    get:
+      tags:
+      - Account
+      summary: Get user's main account balance
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: compact
+        in: query
+        schema:
+          type: boolean
+          default: false
+          nullable: true
+        description: A flag indicating whether to show only non-zero balance.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_BalanceResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountBalance
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/transactions:
+    get:
+      tags:
+      - Account
+      summary: Get user's transaction list
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: "Sort order:\n * Ascending, from A to Z.\n * Descending, from Z to A.\n"
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          format: uint64
+        description: The number of items to skip before starting to collect the result set.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: uint64
+          default: 100
+        description: The number of items to return.
+      - name: showSenders
+        in: query
+        schema:
+          type: boolean
+          default: false
+          nullable: true
+        description: A flag indicating whether to show a list of senders' blockchain addresses. Only for deposits.
+      - name: currency
+        in: query
+        schema:
+          type: string
+        description: Currency code.
+      - name: by
+        in: query
+        schema:
+          type: string
+          enum:
+          - index
+          - timestamp
+          default: timestamp
+        description: The name of the field to order the results by.
+      - name: from
+        in: query
+        schema:
+          type: string
+        description: Timestamp of transaction or transaction index to list from.
+      - name: till
+        in: query
+        schema:
+          type: string
+        description: Timestamp of transaction or transaction index to list till.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_Transaction'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountTransactions
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/transactions/{id}:
+    get:
+      tags:
+      - Account
+      summary: Get user's transaction by Id
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Transaction identifier.
+      - name: showSenders
+        in: query
+        schema:
+          type: boolean
+          default: false
+          nullable: true
+        description: A flag indicating whether to show a list of senders' blockchain addresses. Only for deposits.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Transaction'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountTransactionsById
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/transfer:
+    post:
+      tags:
+      - Account
+      summary: Transfer between trading and main accounts
+      description: '**Permission:** *BankAccess*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_TransferRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_TransactionResult'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountTransfer
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  responses:
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+  schemas:
+    wallet_UserFeatures:
+      required:
+      - fiatAllowed
+      - primeTrustAllowed
+      - hasPrimeTrust
+      type: object
+      properties:
+        fiatAllowed:
+          type: boolean
+          description: An indication of whether the wire transfers are allowed for a user.
+        primeTrustAllowed:
+          type: boolean
+          description: An indication of whether the Prime Trust wire transfers are allowed for a user.
+        hasPrimeTrust:
+          type: boolean
+          description: An indication of whether the user has a Prime Trust account.
+    wallet_AccountTransferInternalRequest:
+      required:
+      - currency
+      - by
+      - identifier
+      - amount
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        by:
+          type: string
+          enum:
+          - email
+          - username
+          description: Type of the beneficiary identifier.
+        identifier:
+          type: string
+          description: Beneficiary identifier value. Either email or username.
+        amount:
+          type: string
+          description: The amount that will be transferred.
+    wallet_TransactionResult:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          example: d2ce578f-647d-4fa0-b1aa-4a27e5ee597b
+          description: Transaction unique identifier as assigned by the exchange.
+    wallet_Transaction:
+      allOf:
+      - required:
+        - id
+        - index
+        - type
+        - status
+        - currency
+        - amount
+        - createdAt
+        - updatedAt
+        properties:
+          id:
+            type: string
+            description: Transaction identifier.
+          index:
+            type: integer
+            format: uint64
+            description: Last update sequence identifier.
+          type:
+            type: string
+            description: Transaction type.
+            enum:
+            - DEPOSIT
+            - WITHDRAW
+            - TRANSFER
+            - SWAP
+            - OTC
+            - PRIMETRUST_DEPOSIT
+            - PRIMETRUST_WITHDRAWAL
+            - PRIMETRUST_TRANSFER
+          subType:
+            type: string
+            description: Transaction subtype.
+            enum:
+            - UNCLASSIFIED
+            - BLOCKCHAIN
+            - AIRDROP
+            - AFFILIATE
+            - STAKING
+            - BUY_CRYPTO
+            - OFFCHAIN
+            - FIAT
+            - SUB_ACCOUNT
+            - WALLET_TO_SPOT
+            - SPOT_TO_WALLET
+            - WALLET_TO_DERIVATIVES
+            - DERIVATIVES_TO_WALLET
+            - CHAIN_SWITCH_FROM
+            - CHAIN_SWITCH_TO
+            - INSTANT_EXCHANGE
+          status:
+            type: string
+            description: Transaction status.
+          currency:
+            type: string
+            description: Currency code.
+          amount:
+            type: string
+            description: Amount of funds.
+          fee:
+            type: string
+            description: Payment commission value.
+          createdAt:
+            type: string
+            description: Date and time of the transaction creation.
+          updatedAt:
+            type: string
+            description: Date and time of the last transaction update.
+          hash:
+            type: string
+            description: Transaction blockchain hash.
+          attemptHashes:
+            type: array
+            description: List of hashes of attempts to send a transaction to the blockchain.
+            items:
+              type: string
+          address:
+            type: string
+            description: Address used by both blockchain and off-chain payouts.
+          paymentId:
+            type: string
+            description: Payment identifier used by both blockchain and off-chain payouts.
+          offchainId:
+            type: string
+            description: Transaction identifier of an external system.
+          confirmations:
+            type: integer
+            nullable: true
+            description: Current count of confirmations for transaction.
+          publicComment:
+            type: string
+            description: A text comment for the transaction.
+          errorCode:
+            type: string
+            enum:
+            - INVALID_ADDRESS
+            - INVALID_PAYMENT_ID
+            - BAD_PRECISION
+            description: Error reason.
+          senders:
+            type: array
+            items:
+              type: string
+            description: A list of senders' blockchain addresses.
+          commitRisk:
+            type: object
+            required:
+            - score
+            - rbf
+            - lowFee
+            properties:
+              score:
+                type: integer
+                format: uint64
+                nullable: true
+                minimum: 0
+                maximum: 100
+                description: 'Risk score that decreases non-linearly when the transaction gains confirmations.
+
+
+                  ℹ️ Scores from 0 to 50 imply the transaction may be considered committed (but it is not guaranteed) or it may take at least half an hour otherwise.
+
+                  '
+              rbf:
+                type: boolean
+                nullable: true
+                description: 'Flag indicating whether the transaction did not gain a sufficient number of confirmations and may be replaced by another one with different fees.
+
+
+                  ⚠️ This value indicates the transaction is complete and do not affect the score.
+
+
+                  ℹ️ `false` value along with a score above 50 gives a good chance that the transaction is irreversible.
+
+                  '
+              lowFee:
+                type: boolean
+                nullable: true
+                description: 'Flag indicating whether the actual network fee is lower than the estimated one.
+
+
+                  ⚠️ This value indicates the difference between the estimated fee and the actual paid fee and does not affect the score.
+
+                  '
+    wallet_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    wallet_BalanceResponse:
+      required:
+      - currency
+      - available
+      - reserved
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        available:
+          type: string
+          description: Amount available for withdrawals or transfers.
+        reserved:
+          type: string
+          description: Amount reserved for incomplete transactions.
+    wallet_TransferRequest:
+      required:
+      - amount
+      - currency
+      - type
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        amount:
+          type: number
+          description: The amount that will be transferred between accounts.
+        type:
+          type: string
+          enum:
+          - exchangeToBank
+          - bankToExchange
+          description: "Transfer type:\n  * *exchangeToBank*—from the trading account to the main account;\n  * *bankToExchange*—from the main account to the trading account.\n"
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Trading API
+  version: ''
+  description: 'Operations tagged Trading across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Trading
+paths:
+  /trading/balance:
+    get:
+      tags:
+      - Trading
+      summary: Get user's balances
+      description: '**Permission:** *TradingRead*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_RestTradingBalance'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getTradingBalance
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /trading/fee/{symbol}:
+    parameters:
+    - $ref: '#/components/parameters/trading_symbolPath'
+    get:
+      tags:
+      - Trading
+      summary: Get user's trade rates
+      description: '**Permission:** *TradingRead*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_TradeFee'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getTradingFeeBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  schemas:
+    trading_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_RestTradingBalance:
+      required:
+      - currency
+      - available
+      - reserved
+      type: object
+      properties:
+        currency:
+          type: string
+          example: ETH
+          description: Currency code.
+        available:
+          type: string
+          example: '10.000000000'
+          description: Amount available for trading or transfer to wallet.
+        reserved:
+          type: string
+          example: '0.56'
+          description: Total amount reserved for active orders and incomplete transfers to wallet.
+    trading_TradeFee:
+      required:
+      - takeLiquidityRate
+      - provideLiquidityRate
+      type: object
+      properties:
+        takeLiquidityRate:
+          type: string
+          description: Take liquidity fee rate.
+        provideLiquidityRate:
+          type: string
+          description: Provide liquidity fee rate.
+  responses:
+    trading_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  parameters:
+    trading_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Symbol code.
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

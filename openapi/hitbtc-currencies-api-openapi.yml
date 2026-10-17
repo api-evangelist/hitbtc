@@ -1,0 +1,450 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Currencies API
+  version: ''
+  description: 'Operations tagged Currencies across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Currencies
+paths:
+  /public/currency:
+    get:
+      tags:
+      - Currencies
+      summary: Get currencies
+      parameters:
+      - $ref: '#/components/parameters/marketData_Currencies'
+      - name: preferred_network
+        in: query
+        schema:
+          type: string
+        description: Default network.
+        example: ETH
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_CurrencyMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /public/currency/{currency}:
+    get:
+      tags:
+      - Currencies
+      summary: Get a currency
+      parameters:
+      - $ref: '#/components/parameters/marketData_CurrencyPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Currency'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicCurrencyByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  schemas:
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_Currency:
+      allOf:
+      - $ref: '#/components/schemas/marketData_CurrencyBase'
+      - type: object
+        required:
+        - full_name
+        - crypto
+        - payin_enabled
+        - payout_enabled
+        - transfer_enabled
+        - transfer_to_wallet_enabled
+        - transfer_to_exchange_enabled
+        - precision_transfer
+        - delisted
+        - networks
+        properties:
+          networks:
+            type: array
+            items:
+              $ref: '#/components/schemas/marketData_Network'
+            description: Networks that may host operations on the currency.
+          transfer_to_wallet_enabled:
+            type: boolean
+            description: 'Flag indicating whether transfers to the bank account are
+
+              allowed for the currency (may be disabled on maintenance).
+
+              '
+          transfer_to_exchange_enabled:
+            type: boolean
+            description: 'Flag indicating whether transfers to the exchange account are
+
+              allowed for the currency (may be disabled on maintenance).
+
+              '
+    marketData_NetworkBase:
+      title: Network
+      type: object
+      properties:
+        payout_fee:
+          type: string
+          description: 'The minimal possible fee value constituted of the network fee charged by a blockchain and the maintenance fee charged by the exchange.
+
+
+            ⚠️ This fee is valid only if both network and maintenance fees fell below its minimal absolute values given the withdrawal amount.
+
+
+            ℹ️ Call `GET /wallet/crypto/fee/estimate` to see the exact value of fees based on the amount.
+
+
+            Format: decimal
+
+            '
+          example: '0.001050000000'
+        precision_payout:
+          type: string
+          description: The minimum amount of a withdrawal.
+          example: '0.00000001'
+        payout_is_payment_id:
+          type: boolean
+          description: Flag indicating whether providing additional information for withdrawals is needed.
+        payin_payment_id:
+          type: boolean
+          description: Flag indicating whether providing additional information for deposits is needed.
+        payin_confirmations:
+          type: integer
+          description: The number of confirmation required for a transaction to be accepted in the network.
+          example: 1
+        low_processing_time:
+          type: string
+          description: The lowest processing time in seconds for a withdrawal.
+          example: '11.443'
+        high_processing_time:
+          type: string
+          description: The highest processing time in seconds for a withdrawal.
+          example: '54.165'
+        avg_processing_time:
+          type: string
+          description: The average processing time in seconds for a withdrawal.
+          example: '30.355375'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_CurrencyMap:
+      title: Currencies
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: currency
+        $ref: '#/components/schemas/marketData_Currency'
+      example:
+        USDT:
+          full_name: Tether Omni
+          crypto: true
+          payin_enabled: true
+          payout_enabled: true
+          transfer_enabled: true
+          transfer_to_wallet_enabled: true
+          transfer_to_exchange_enabled: true
+          sign: ₮
+          account_top_order: 3
+          crypto_payment_id_name: ''
+          crypto_explorer: http://omniexplorer.info/lookuptx.aspx?txid={tx}
+          precision_transfer: '0.01'
+          delisted: false
+          networks:
+          - code: BTC
+            network_name: BTC
+            network: BTC
+            protocol: OMNI
+            default: true
+            is_ens_available: true
+            payin_enabled: true
+            payout_enabled: true
+            precision_payout: '0.01'
+            payout_fee: '50.000000000000'
+            payout_is_payment_id: false
+            payin_payment_id: false
+            payin_confirmations: 2
+            low_processing_time: '11.443'
+            high_processing_time: '54.165'
+            avg_processing_time: '30.355375'
+            is_multichain: false
+    marketData_CurrencyNetworkBase:
+      title: Network
+      type: object
+      properties:
+        payin_enabled:
+          type: boolean
+          description: Flag indicating whether generating deposit addresses is allowed for the currency.
+        payout_enabled:
+          type: boolean
+          description: Flag indicating whether withdrawals are allowed for the currency.
+        crypto_payment_id_name:
+          type: string
+          description: The name of an additional account identifier for the protocol used.
+          example: ''
+        crypto_explorer:
+          type: string
+          description: The link to the currency explorer with `{tx}` placeholder instead of a hash.
+          example: https://blockchair.com/bitcoin/transaction/{tx}
+    marketData_CurrencyBase:
+      title: Currency
+      allOf:
+      - $ref: '#/components/schemas/marketData_CurrencyNetworkBase'
+      - type: object
+        properties:
+          full_name:
+            type: string
+            description: Currency full name.
+            example: Tether Omni
+          crypto:
+            type: boolean
+            description: Flag indicating whether the currency is a cryptocurrency.
+          transfer_enabled:
+            type: boolean
+            description: Flag indicating whether transfers between the bank and the exchange accounts are allowed for the currency (may be disabled on maintenance).
+          sign:
+            type: string
+            description: Currency sign.
+            example: ₮
+          account_top_order:
+            type: integer
+            minimum: 1
+            description: The absolute position of the currency in the currency list.
+            example: 3
+          qr_prefix:
+            type: string
+            description: The QR prefix used for indication of the currency in a deposit address.
+          precision_transfer:
+            type: string
+            description: The minimum amount of a transfer.
+            example: '0.00000001'
+          delisted:
+            type: boolean
+            description: Flag indicating whether the currency has been delisted.
+    marketData_Network:
+      allOf:
+      - $ref: '#/components/schemas/marketData_CurrencyNetworkBase'
+      - $ref: '#/components/schemas/marketData_NetworkBase'
+      - type: object
+        required:
+        - code
+        - network_name
+        - network
+        - is_ens_available
+        - default
+        - payin_enabled
+        - payout_enabled
+        - precision_payout
+        - payout_is_payment_id
+        - payin_payment_id
+        - payin_confirmations
+        - is_multichain
+        properties:
+          code:
+            type: string
+            description: Currency code.
+            example: BTC
+          network_name:
+            type: string
+            description: Network full name.
+            example: BTC
+          network:
+            type: string
+            description: Code of the currency of the hosting network.
+            example: BTC
+          protocol:
+            type: string
+            description: "The standard or protocol underlying network operations or smart\n contracts.\n\nℹ️ If equals `code`, the currency is the network native\n currency.\n\nℹ️ If `TOKEN`, the currency is a token build on top of this\n layer-2 network.\n"
+            example: BTC
+          default:
+            type: boolean
+            description: "Flag indicating whether the network is the default for the\n currency.\n"
+          is_ens_available:
+            type: boolean
+            description: "Flag indicating whether the network supports ENS (Ethereum Name\n Service).\n"
+          address_regex:
+            type: string
+            description: Regular expression for a deposit address.
+          payment_id_regex:
+            type: string
+            description: Regular expression for the payment identifier string.
+          contract_address:
+            type: string
+            description: Token contract address.
+            example: '0xdac17f958d2ee523a2206206994597c13d831ec7'
+          is_multichain:
+            type: boolean
+            description: 'Flag indicating whether multichain is active for the network.
+
+              '
+          asset_id:
+            type: object
+            nullable: true
+            description: "A unique arbitrary object that identifies a coin.\n\nℹ️ Each network has own set of properties returned inside an\n object.\n"
+    marketData_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+  parameters:
+    marketData_Currencies:
+      name: currencies
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_CurrencyCommon'
+      description: A comma-separated list of currency codes.
+    marketData_CurrencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/marketData_CurrencyCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

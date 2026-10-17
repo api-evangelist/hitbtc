@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc API Keys API
+  version: ''
+  description: 'Operations tagged API Keys across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: API Keys
+paths:
+  /user/api-keys:
+    get:
+      tags:
+      - API Keys
+      summary: Get API keys
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_ApiKey'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**IP limit**: 20/30'
+      operationId: getUserApiKeys
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    wallet_NotEnoughPermissions:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_ShouldUpgradePermission:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_AuthInvalid:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_TooManyRequests:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_GatewayTimeout:
+      title: Gateway Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Gateway timeout.
+      example:
+        error:
+          code: 22008
+          message: Gateway timeout. Please, try again later.
+    wallet_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_IPAddressCommon:
+      title: IP address
+      oneOf:
+      - type: string
+        format: ipv4
+      - type: string
+        format: ipv6
+      description: IP address of the request sender provided by the client or detected automatically.
+      example: 127.0.0.1
+    wallet_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_BadFormat:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_ApiKey:
+      title: API key
+      type: object
+      required:
+      - api_key_first_six
+      - key_name
+      - exchange_read
+      - exchange_trade
+      - bank_read
+      - bank_withdraw
+      - is_active
+      - created_at
+      - updated_at
+      properties:
+        api_key_first_six:
+          type: string
+          description: 'First 6 symbols of the public key.
+
+            '
+          example: va5-9V
+        key_name:
+          type: string
+          description: 'Name of the key.
+
+            '
+          example: User Key 1
+        exchange_read:
+          type: boolean
+          description: '"Orderbook, History, Trading balance" API key access right.
+
+            '
+        exchange_trade:
+          type: boolean
+          description: '"Place/cancel orders" API key access right.
+
+            '
+        bank_read:
+          type: boolean
+          description: '"Payment information" API key access right.
+
+            '
+        bank_withdraw:
+          type: boolean
+          description: '"Withdraw cryptocurrencies" API key access right.
+
+            '
+        allowed_ips:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_IPAddressCommon'
+          description: 'A list of whitelisted IPs.
+
+            '
+        is_active:
+          type: boolean
+          description: 'Flag indicating the API key is active.
+
+            '
+        created_at:
+          type: string
+          description: 'The date and time the key was created.
+
+            '
+          example: '2024-03-22T15:04:05'
+        updated_at:
+          type: string
+          description: 'The date and time the key was updated.
+
+            '
+          example: '2024-03-22T15:04:05'
+    wallet_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_429:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_TooManyRequests'
+    wallet_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Internal'
+    wallet_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_Forbidden'
+            - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+            - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+    wallet_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_UnauthorizedBasic'
+            - $ref: '#/components/schemas/wallet_UnauthorizedHS256'
+            - $ref: '#/components/schemas/wallet_BadFormatHS256'
+            - $ref: '#/components/schemas/wallet_AuthInvalid'
+            - $ref: '#/components/schemas/wallet_BadFormat'
+    wallet_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_GatewayTimeout'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

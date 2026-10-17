@@ -1,0 +1,244 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Quote Tickers API
+  version: ''
+  description: 'Operations tagged Quote Tickers across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Quote Tickers
+paths:
+  /public/price/ticker:
+    get:
+      tags:
+      - Quote Tickers
+      summary: Get quote tickers
+      description: 'Returns last prices on symbols.
+
+
+        **Permission**: None
+
+
+        **IP limit**: 30/50'
+      parameters:
+      - $ref: '#/components/parameters/marketData_Symbols'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_LastPriceMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      operationId: getPublicPriceTicker
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /public/price/ticker/{symbol}:
+    get:
+      tags:
+      - Quote Tickers
+      summary: Get a quote ticker
+      description: 'Returns the last price on a symbol.
+
+
+        **Permission**: None
+
+
+        **IP limit**: 30/50'
+      parameters:
+      - $ref: '#/components/parameters/marketData_SymbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_LastPrice'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      operationId: getPublicPriceTickerBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    marketData_LastPrice:
+      title: Last price
+      type: object
+      required:
+      - price
+      - timestamp
+      properties:
+        price:
+          type: string
+          nullable: true
+          description: The last trade price.
+          example: '30271.04'
+        timestamp:
+          type: string
+          format: date-time
+          description: Date and time of the trade.
+          example: '2024-03-22T15:04:05.590Z'
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_LastPriceMap:
+      title: Last prices
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: symbol
+        $ref: '#/components/schemas/marketData_LastPrice'
+      example:
+        BTCUSDT:
+          price: '30271.04'
+          timestamp: '2024-03-22T15:04:05.590Z'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  parameters:
+    marketData_Symbols:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_SymbolCommon'
+      description: A comma-separated list of symbol codes.
+    marketData_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/marketData_SymbolCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

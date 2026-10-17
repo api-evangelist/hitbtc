@@ -1,0 +1,854 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Network Fees API
+  version: ''
+  description: 'Operations tagged Network Fees across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Network Fees
+paths:
+  /wallet/crypto/fees/estimate:
+    post:
+      tags:
+      - Network Fees
+      summary: Get estimated fees
+      description: 'Returns estimated fees charged for processing of on-chain withdrawals
+
+        for provided combination of currency and network.
+
+
+        ⚠️ In some cases, fee rates cannot be deduced from public info being
+
+        affected by the user personal configuration.
+
+
+        ⚠️ The fee value is guaranteed not to change until the transaction
+
+        is committed.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_FeesEstimateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_FeesEstimateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_EstimatedFee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postWalletCryptoFeesEstimate
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/fee/estimate:
+    get:
+      tags:
+      - Network Fees
+      summary: Get an estimated fee
+      description: 'Returns estimated fee charged for processing on-chain withdrawals for
+
+        provided combination of currency and network.
+
+
+        ⚠️ In some cases, fee rates cannot be deduced from public info being
+
+        affected by the user personal configuration.
+
+
+        ⚠️ The fee value is guaranteed not to change until the transaction is
+
+        committed.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/wallet_CurrencyReq'
+      - $ref: '#/components/parameters/wallet_Network'
+      - $ref: '#/components/parameters/wallet_AmountReq'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/wallet_Fee'
+                - type: object
+                  required:
+                  - fee
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoFeeEstimate
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/fee/estimate/bulk:
+    post:
+      tags:
+      - Network Fees
+      summary: Bulk get estimated fees
+      description: 'Returns estimated fees charged for processing on-chain withdrawals
+
+        for provided combinations of currencies and networks.
+
+
+        ⚠️ In some cases, fee rates cannot be deduced from public info being
+
+        affected by the user personal configuration.
+
+
+        ⚠️ The fee value is guaranteed not to change until the transaction
+
+        is committed.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_FeesEstimateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_FeesEstimateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_EstimatedFeeBulk'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postWalletCryptoFeeEstimateBulk
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/fee/withdraw/list:
+    get:
+      tags:
+      - Network Fees
+      summary: Get fixed withdrawal fees
+      description: 'Returns withdraw fees for each coin with a fixed fee, if any.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_resGetFeeList'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+                - $ref: '#/components/schemas/wallet_ResourceNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoFeeWithdrawList
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/fee/withdraw/hash:
+    get:
+      tags:
+      - Network Fees
+      summary: Get withdrawal fees hash
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_resGetFeeHash'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+                - $ref: '#/components/schemas/wallet_ResourceNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      operationId: getWalletCryptoFeeWithdrawHash
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    wallet_NotEnoughPermissions:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_resGetFeeHash:
+      title: Get fee hash response
+      allOf:
+      - $ref: '#/components/schemas/wallet_ptyHash-Fees'
+      - required:
+        - hash
+    wallet_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Currency is not found.\n\nAny of:\n  * requested network is not found;\n  * requested currency is not found;\n  * no currency provided while the network is specified;\n  * requested network is disabled;\n  * operations relating to the request are disabled for the currency;\n  * currencies featured in an operation are not found.\n"
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    wallet_EstimatedFeeBulk:
+      title: Estimated fee
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Network'
+      - $ref: '#/components/schemas/wallet_Amount'
+      - $ref: '#/components/schemas/wallet_Fee'
+      - required:
+        - currency
+        - amount
+        - fee
+    wallet_ShouldUpgradePermission:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_ptyDefaultLevelId:
+      title: Default level ID
+      type: object
+      properties:
+        default_level_id:
+          $ref: '#/components/schemas/wallet_FeeLevelIDCommon'
+          description: 'Default fee level.
+
+            '
+    wallet_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_AuthInvalid:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_TooManyRequests:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_LowAmount:
+      title: Low amount
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Operation amount is too low.\n\nAny of:\n  * provided amount is lesser than the currency precision (bit depth);\n  * fees are included in the final amount, and the amount is lesser than fees.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+          description: Amount too low
+    wallet_AmountCommon:
+      title: Amount
+      type: string
+      description: 'The amount of the operation.
+
+
+        Format: currency precision
+
+
+        Values: > 0
+
+
+        ℹ️ Call `GET /public/currency/{currency}` to get the currency precision.
+
+        '
+      example: '2.37'
+    wallet_resGetFeeList:
+      title: Get fee list response
+      allOf:
+      - $ref: '#/components/schemas/wallet_ptyHash-Fees'
+      - $ref: '#/components/schemas/wallet_ptyDefaultLevelId'
+      - $ref: '#/components/schemas/wallet_ptyFees'
+      - required:
+        - hash
+        - default_level_id
+        - fees
+    wallet_NetworkCommon:
+      title: Network
+      type: string
+      description: Network code.
+      example: ETH
+    wallet_Network:
+      title: Network
+      type: object
+      properties:
+        network_code:
+          $ref: '#/components/schemas/wallet_NetworkCommon'
+    wallet_FeesEstimateRequest:
+      title: Fee estimate request
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/wallet_Amount'
+        - $ref: '#/components/schemas/wallet_Currency'
+        - $ref: '#/components/schemas/wallet_Network'
+        - type: object
+          required:
+          - amount
+          - currency
+    wallet_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid JSON payload;\n  * invalid form payload;\n  * invalid payload format;\n  * invalid parameter value;\n  * invalid parameter format;\n  * specified parameters are mutually exclusive;\n  * a required parameter is missing;\n  * the value of a parameter is invalid;\n  * provided value is not unique;\n  * in an update request, no parameters provided.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    wallet_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_Amount:
+      title: Amount
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/wallet_AmountCommon'
+    wallet_ptyHash-Fees:
+      title: Hash
+      properties:
+        hash:
+          type: string
+          description: 'Fee hash.
+
+            '
+          example: '3982183395978'
+    wallet_GatewayTimeout:
+      title: Gateway Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Gateway timeout.
+      example:
+        error:
+          code: 22008
+          message: Gateway timeout. Please, try again later.
+    wallet_Currency:
+      title: Currency
+      properties:
+        currency:
+          $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: The request has been canceled.
+      example:
+        error:
+          code: 408
+          message: Request timeout
+    wallet_BadGateway:
+      title: Bad Gateway
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Unclassified error while connecting the authentication service.
+      example:
+        error:
+          code: 502
+          message: Bad gateway
+    wallet_ServiceUnavailable:
+      title: Service Unavailable
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * withdrawals are disabled;\n  * unclassified internal error.\n"
+      example:
+        error:
+          code: 503
+          message: Service unavailable
+    wallet_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_ptyFees:
+      title: Fees
+      type: object
+      properties:
+        fees:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_schFees'
+    wallet_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_CurrencyCommon:
+      title: Cryptocurrency
+      type: string
+      description: Cryptocurrency code.
+      example: USDT
+    wallet_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_BadFormat:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_UserNotFound:
+      title: User not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: User not found.
+      example:
+        error:
+          code: 22004
+          message: User not found
+    wallet_EstimatedFee:
+      title: Estimated fee
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/wallet_Fee'
+        - $ref: '#/components/schemas/wallet_Amount'
+        - $ref: '#/components/schemas/wallet_Currency'
+        - type: object
+          required:
+          - fee
+          - networkFee
+          - amount
+          - currency
+          properties:
+            networkFee:
+              type: string
+              description: Network fee.
+            networkCode:
+              $ref: '#/components/schemas/wallet_NetworkCommon'
+          example:
+            fee: '0.02'
+            networkFee: '0'
+            networkCode: ETH
+    wallet_schFees:
+      title: Fees
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Network'
+      - properties:
+          levels:
+            type: array
+            items:
+              $ref: '#/components/schemas/wallet_schLevels'
+    wallet_Fee:
+      title: Withdrawal fee
+      type: object
+      properties:
+        fee:
+          type: string
+          description: 'Fee amount.
+
+
+            Format: currency precision
+
+            '
+          example: '0'
+    wallet_ResourceNotFound:
+      title: Resource not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: 'Resource not found due to an internal error.
+
+        '
+      example:
+        error:
+          code: 800
+          message: Resource Not Found
+    wallet_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_FeeLevelIDCommon:
+      type: object
+      description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder so the document resolves; the shape is unknown and is NOT a claim about the API.
+      x-ae-placeholder: true
+    wallet_schLevels:
+      type: object
+      description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder so the document resolves; the shape is unknown and is NOT a claim about the API.
+      x-ae-placeholder: true
+  responses:
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_408:
+      description: Request Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_RequestTimeout'
+    wallet_429:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_TooManyRequests'
+    wallet_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Internal'
+    wallet_502:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_BadGateway'
+    wallet_503:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_ServiceUnavailable'
+    wallet_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_Forbidden'
+            - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+            - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+    wallet_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_UnauthorizedBasic'
+            - $ref: '#/components/schemas/wallet_UnauthorizedHS256'
+            - $ref: '#/components/schemas/wallet_BadFormatHS256'
+            - $ref: '#/components/schemas/wallet_AuthInvalid'
+            - $ref: '#/components/schemas/wallet_BadFormat'
+    wallet_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_GatewayTimeout'
+  parameters:
+    wallet_CurrencyReq:
+      name: currency
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_AmountReq:
+      name: amount
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_AmountCommon'
+    wallet_Network:
+      name: network_code
+      in: query
+      schema:
+        $ref: '#/components/schemas/wallet_NetworkCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

@@ -1,0 +1,288 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Offchain And Commissions API
+  version: ''
+  description: 'Operations tagged Offchain And Commissions across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Offchain And Commissions
+paths:
+  /account/crypto/check-offchain-available:
+    post:
+      tags:
+      - Offchain And Commissions
+      summary: Check the offchain availability
+      description: '**Permission:** *BankAccess*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_CheckOffchainRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountCryptoCheckOffchainAvailable
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/estimate-withdraw:
+    get:
+      tags:
+      - Offchain And Commissions
+      summary: Estimate fee for withdrawal
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: currency
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Currency code.
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The amount that will be withdrawn.
+      - name: networkCode
+        in: query
+        schema:
+          type: string
+        description: Network code.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fee:
+                    type: string
+                    example: '0.000625'
+                    description: Estimated withdrawal fee.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoEstimateWithdraw
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/is-mine/{address}:
+    get:
+      tags:
+      - Offchain And Commissions
+      summary: Check whether a crypto address belongs to the current account
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: address
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Crypto address.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoIsMineByAddress
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/transfer-convert:
+    post:
+      tags:
+      - Offchain And Commissions
+      summary: Convert between currencies
+      description: '**Permission:** *BankAccess*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_TransferConvertRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountCryptoTransferConvert
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  responses:
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+  schemas:
+    wallet_TransferConvertRequest:
+      required:
+      - amount
+      - fromCurrency
+      - toCurrency
+      type: object
+      properties:
+        fromCurrency:
+          type: string
+          description: Source currency code.
+        toCurrency:
+          type: string
+          description: Target currency code.
+        amount:
+          type: number
+          description: The amount that will be sent to the specified address.
+    wallet_Result:
+      type: object
+      required:
+      - result
+      properties:
+        result:
+          type: boolean
+    wallet_CheckOffchainRequest:
+      required:
+      - address
+      - currency
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        address:
+          type: string
+          description: Address identifier.
+        paymentId:
+          type: string
+          description: An additional identifier for specific currencies (for example, "Memo").
+    wallet_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

@@ -1,0 +1,259 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Trades API
+  version: ''
+  description: 'Operations tagged Trades across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Trades
+paths:
+  /public/trades:
+    get:
+      tags:
+      - Trades
+      summary: Get trades
+      description: Returns trades information for all or multiple symbols.
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolsQuery'
+      - $ref: '#/components/parameters/marketData_byTimestamp'
+      - $ref: '#/components/parameters/marketData_sortDesc'
+      - $ref: '#/components/parameters/marketData_from'
+      - $ref: '#/components/parameters/marketData_till'
+      - $ref: '#/components/parameters/marketData_limit10'
+      - $ref: '#/components/parameters/marketData_offset'
+      - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Trades'
+                example:
+                  BTCUSDT:
+                  - id: 782135488
+                    price: '9793.94'
+                    quantity: '0.21469'
+                    side: sell
+                    timestamp: '2021-06-24T12:54:41.972Z'
+                  ETHBTC:
+                  - id: 782135414
+                    price: '0.027668'
+                    quantity: '0.069'
+                    side: buy
+                    timestamp: '2021-06-24T12:54:32.843Z'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicTrades
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /public/trades/{symbol}:
+    get:
+      tags:
+      - Trades
+      summary: Returns trades information for a specific symbol
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolPath'
+      - $ref: '#/components/parameters/marketData_sortDesc'
+      - $ref: '#/components/parameters/marketData_byTimestamp'
+      - $ref: '#/components/parameters/marketData_from'
+      - $ref: '#/components/parameters/marketData_till'
+      - $ref: '#/components/parameters/marketData_limit100'
+      - $ref: '#/components/parameters/marketData_offset'
+      - $ref: '#/components/parameters/marketData_pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Trades'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicTradesBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  parameters:
+    marketData_pool:
+      name: exclude_pool
+      in: query
+      description: Flag indicating whether to return trades for a single broker.
+      schema:
+        type: boolean
+    marketData_from:
+      name: from
+      in: query
+      description: Interval initial value.
+      schema:
+        type: string
+        format: date-time
+    marketData_offset:
+      name: offset
+      in: query
+      description: 'The number of items to skip before starting to collect the result set. Offset can range between *0* and *100000*.
+
+        '
+      schema:
+        maximum: 100000
+        minimum: 0
+        type: integer
+        default: 0
+    marketData_sortDesc:
+      name: sort
+      in: query
+      description: "Sort order:\n * Ascending, from A to Z.\n * Descending, from Z to A.\n"
+      schema:
+        type: string
+        default: DESC
+        enum:
+        - DESC
+        - ASC
+    marketData_till:
+      name: till
+      in: query
+      description: Interval end value.
+      schema:
+        type: string
+        format: date-time
+    marketData_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      description: Symbol code.
+      schema:
+        type: string
+    marketData_limit100:
+      name: limit
+      in: query
+      description: 'The number of items to return. The limit can range between *1* and *1000*.
+
+        '
+      schema:
+        maximum: 1000
+        minimum: 1
+        type: integer
+        default: 100
+    marketData_symbolsQuery:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      description: A comma-separated list of symbol codes.
+      schema:
+        type: array
+        items:
+          type: string
+    marketData_limit10:
+      name: limit
+      in: query
+      description: 'The number of items to return. The limit can range between *1* and *1000*.
+
+        '
+      schema:
+        maximum: 1000
+        minimum: 1
+        type: integer
+        default: 10
+    marketData_byTimestamp:
+      name: by
+      in: query
+      description: The name of the field to order the results by.
+      schema:
+        type: string
+        default: timestamp
+        enum:
+        - timestamp
+        - id
+  schemas:
+    marketData_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    marketData_Trades:
+      type: array
+      items:
+        $ref: '#/components/schemas/marketData_Trade'
+    marketData_Trade:
+      required:
+      - id
+      - price
+      - quantity
+      - side
+      - timestamp
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 782135488
+          description: Trade identifier.
+        price:
+          type: string
+          example: '9793.94'
+          description: Trade price.
+        quantity:
+          type: string
+          example: '0.21469'
+          description: Trade quantity.
+        side:
+          type: string
+          example: sell
+          enum:
+          - sell
+          - buy
+          description: Trade side.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-24T12:54:41.972Z'
+          description: Trade timestamp.
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

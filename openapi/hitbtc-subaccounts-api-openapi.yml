@@ -1,0 +1,2447 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Subaccounts API
+  version: ''
+  description: 'Operations tagged Subaccounts across 4 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Subaccounts
+paths:
+  /sub-acc:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts
+      description: '**Permission:** *SubAccReadWrite*
+
+
+        Returns a list of user''s subaccounts.'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccountResponse'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getSubAcc
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/freeze:
+    post:
+      tags:
+      - Subaccounts
+      summary: Freeze subaccounts
+      description: '**Permission:** *SubAccReadWrite*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: uint64
+                  description: A comma-separated list of subaccounts to freeze.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccFreeze
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/activate:
+    post:
+      tags:
+      - Subaccounts
+      summary: Activate subaccounts
+      description: '**Permission:** *SubAccReadWrite*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: integer
+                    format: uint64
+                  description: A comma-separated list of subaccounts to activate.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: boolean
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccActivate
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/transfer:
+    post:
+      tags:
+      - Subaccounts
+      summary: Transfer funds between a super account and a subaccount
+      description: '**Permission:** *BankWithdraw*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubAccTransfer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: string
+                    example: f4fa539f-627d-4ab9-b1aa-5f69c5ee197b
+                    description: Transaction unique identifier as assigned by the exchange.
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccTransfer
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/acl:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts' ACL
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: subAccountIds
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: integer
+          format: uint64
+        description: A comma-separated list of subaccounts.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccACLResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getSubAccAcl
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/acl/{userId}:
+    put:
+      tags:
+      - Subaccounts
+      summary: Set an ACL for the subaccount
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - $ref: '#/components/parameters/wallet_userIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubAccACLRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubAccACLResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: putSubAccAclByUserId
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/balance/{userId}:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccount balance
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - $ref: '#/components/parameters/wallet_userIdPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_SubAccountBalanceResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getSubAccBalanceByUserId
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-acc/deposit-address/{userId}/{currency}:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccount deposit address
+      description: '**Permission:** *SubAccReadWrite*
+
+
+        Creates a deposit address if no existing address is found.'
+      parameters:
+      - $ref: '#/components/parameters/wallet_userIdPath'
+      - $ref: '#/components/parameters/wallet_currencyPath'
+      - $ref: '#/components/parameters/wallet_networkCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_CryptoAddress'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getSubAccDepositAddressByUserIdByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /sub-account:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts
+      description: 'Returns subaccounts tied to the user (a super account).
+
+
+        **Permission**: None
+
+
+        **Account limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_Subaccount'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Validation'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getSubAccount
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Subaccounts
+      summary: Create a subaccount
+      description: 'Creates a subaccount tied to the user (a super account) taken from the session.
+
+
+        ⚠️ The method is available under a user session only. A call authenticated with an API key is rejected with code `1003` regardless of the key permissions.
+
+
+        ⚠️ The method is enabled per broker. While subaccount creation is switched off for the broker, every call is rejected with code `21010`.
+
+
+        The request is rejected when:
+
+        * subaccount creation is switched off for the broker—`21010`;
+
+        * the caller is a subaccount itself—`21007`;
+
+        * the caller has no two-factor authentication enabled—`21008`;
+
+        * the verification level of the caller is insufficient—`22011`;
+
+        * the email address is already registered, the address of the super account included—`21005`;
+
+        * the password does not meet the requirements—`21006`.
+
+
+        A created subaccount has the `"new"` status and the `"invited"` subaccount status: signing in is not possible until the email address is confirmed with the code from the invitation letter. Until the confirmation, the bank and the trading accounts of the subaccount are temporary, real ones are issued on the confirmation.
+
+
+        **Permission**: None'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountCreateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_SubaccountCreated'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_SubAccountEmailExists'
+                - $ref: '#/components/schemas/wallet_SubAccountWeakPassword'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Forbidden'
+                - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+                - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+                - $ref: '#/components/schemas/wallet_SubAccountCallerNotSuper'
+                - $ref: '#/components/schemas/wallet_SubAccountTwoFactorRequired'
+                - $ref: '#/components/schemas/wallet_SubAccountCreationDisabled'
+                - $ref: '#/components/schemas/wallet_VerificationLevelTooLow'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccount
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/freeze:
+    post:
+      tags:
+      - Subaccounts
+      summary: Freeze subaccounts
+      description: '⚠️ A subaccount cannot be frozen being in the `"disable"` status.
+
+
+        **Permission**: None
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+            encoding:
+              sub_account_ids:
+                style: form
+                explode: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_SubAccountAlreadyFrozenOrDisabled'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_SubAccountNotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccountFreeze
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/activate:
+    post:
+      tags:
+      - Subaccounts
+      summary: Activate subaccounts
+      description: '⚠️ Activation is applicable if the only reason a subaccount has `"disable"` status is it was frozen. If there are other reasons underlying the status change, rolling back it is beyond control of the super account.
+
+
+        ⚠️ A subaccount that has not confirmed its email address yet (the `"invited"` subaccount status while its holder is still in the `"new"` status) cannot be activated. If the request contains at least one such subaccount, the whole request is rejected with code `21009`, and the `description` field of the error lists the identifiers of the subaccounts to drop from the request. Unfreezing a frozen subaccount stays available regardless of the confirmation.
+
+
+        **Permission**: None
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Validation'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Forbidden'
+                - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+                - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+                - $ref: '#/components/schemas/wallet_SubAccountEmailNotConfirmed'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_SubAccountNotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccountActivate
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/transfer:
+    post:
+      tags:
+      - Subaccounts
+      summary: Commit a transfer to a subaccount
+      description: 'Creates and commits a transfer between the user (super account) and a subaccount.
+
+
+        ⚠️ Call is being sent by a super account.
+
+
+        ⚠️ Created but not committed transfer will reserve pending amount on the sender wallet affecting their ability to withdraw or transfer crypto to a subaccount. Incomplete withdrawals affect subaccount transfers the same way.
+
+
+        **Permission**: Withdraw cryptocurrencies
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountTransferRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountTransferRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_TransactionID'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_InsufficientFunds'
+                - $ref: '#/components/schemas/wallet_TransactionNotFound'
+                - $ref: '#/components/schemas/wallet_PayoutCommitted'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserDisabled'
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Internal'
+                - $ref: '#/components/schemas/wallet_AmountLocked'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccountTransfer
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/transfer/sub-to-super:
+    post:
+      tags:
+      - Subaccounts
+      summary: Commit a transfer to the super account
+      description: 'Creates and commits a transfer from a subaccount to its super account.
+
+
+        ⚠️ Call is being sent by a subaccount.
+
+
+        ⚠️ Created but not committed transfer will reserve pending amount on the
+
+        sender wallet affecting their ability to withdraw or transfer crypto to
+
+        a subaccount. Incomplete withdrawals affect subaccount transfers the
+
+        same way.
+
+
+        **Permission**: Withdraw cryptocurrencies
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubToSuperTransferRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubToSuperTransferRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_TransactionID'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_InsufficientFunds'
+                - $ref: '#/components/schemas/wallet_TransactionNotFound'
+                - $ref: '#/components/schemas/wallet_PayoutCommitted'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserDisabled'
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Internal'
+                - $ref: '#/components/schemas/wallet_AmountLocked'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccountTransferSubToSuper
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/transfer/sub-to-sub:
+    post:
+      tags:
+      - Subaccounts
+      summary: Commit a transfer across subaccounts
+      description: 'Creates and commits a transfer between the user (subaccount) and
+
+        another subaccount.
+
+
+        ⚠️ Call is being sent by a subaccount.
+
+
+        ⚠️ Created but not committed transfer will reserve pending amount on the
+
+        sender wallet affecting their ability to withdraw or transfer crypto to
+
+        a subaccount. Incomplete withdrawals affect subaccount transfers the
+
+        same way.
+
+
+        **Permission**: Withdraw cryptocurrencies
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubToSubTransferRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubToSubTransferRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_TransactionID'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_LowAmount'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+                - $ref: '#/components/schemas/wallet_InsufficientFunds'
+                - $ref: '#/components/schemas/wallet_TransactionNotFound'
+                - $ref: '#/components/schemas/wallet_PayoutCommitted'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserDisabled'
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Internal'
+                - $ref: '#/components/schemas/wallet_AmountLocked'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postSubAccountTransferSubToSub
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/acl:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts ACL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountsIds'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_SubaccountACL'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **Account limit**: 20/30'
+      operationId: getSubAccountAcl
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Subaccounts
+      summary: Update subaccounts ACL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountACLRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_SubaccountACLRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_SubaccountACL'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+                - $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **Account limit**: 20/30'
+      operationId: postSubAccountAcl
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/balance/{sub_account_id}:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts balances
+      parameters:
+      - $ref: '#/components/parameters/wallet_SubaccountIdPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_SubaccountBalance'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Validation'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_NotFound'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **Account limit**: 20/30'
+      operationId: getSubAccountBalanceBySubAccountId
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /sub-account/crypto/address/{sub_account_id}/{currency}:
+    get:
+      tags:
+      - Subaccounts
+      summary: Get subaccounts addresses
+      parameters:
+      - $ref: '#/components/parameters/wallet_SubaccountIdPath'
+      - $ref: '#/components/parameters/wallet_CurrencyPath'
+      - $ref: '#/components/parameters/wallet_Network'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    $ref: '#/components/schemas/wallet_DepositAddressBase'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Validation'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_NotFound'
+                - $ref: '#/components/schemas/wallet_UserDisabled'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '504':
+          $ref: '#/components/responses/wallet_504'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **Account limit**: 20/30'
+      operationId: getSubAccountCryptoAddressBySubAccountIdByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  responses:
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_408:
+      description: Request Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_RequestTimeout'
+    wallet_429:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_TooManyRequests'
+    wallet_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Internal'
+    wallet_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_Forbidden'
+            - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+            - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+    wallet_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_UnauthorizedBasic'
+            - $ref: '#/components/schemas/wallet_UnauthorizedHS256'
+            - $ref: '#/components/schemas/wallet_BadFormatHS256'
+            - $ref: '#/components/schemas/wallet_AuthInvalid'
+            - $ref: '#/components/schemas/wallet_BadFormat'
+    wallet_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_GatewayTimeout'
+  schemas:
+    wallet_SubAccountBalanceResponse:
+      required:
+      - main
+      - trading
+      type: object
+      properties:
+        main:
+          $ref: '#/components/schemas/wallet_BalanceResponse'
+        trading:
+          $ref: '#/components/schemas/wallet_BalanceResponse'
+    wallet_SubAccACLRequest:
+      type: object
+      properties:
+        isPayoutEnabled:
+          type: boolean
+          description: Permission to create payout.
+        description:
+          type: string
+          description: Text description for the ACL setting.
+    wallet_SubAccountResponse:
+      required:
+      - id
+      - email
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: User identifier.
+        email:
+          type: string
+          description: User's email address.
+        status:
+          type: string
+          enum:
+          - new
+          - active
+          - disable
+          description: "User account status:\n  * *new*—account is created, but not confirmed by email;\n  * *active*—account is fully functioning;\n  * *disable*—account is disabled.\n"
+    wallet_BalanceResponse:
+      required:
+      - currency
+      - available
+      - reserved
+      type: object
+      properties:
+        currency:
+          type: string
+          description: Currency code.
+        available:
+          type: string
+          description: Amount available for withdrawals or transfers.
+        reserved:
+          type: string
+          description: Amount reserved for incomplete transactions.
+    wallet_SubAccTransfer:
+      required:
+      - subAccountId
+      - currency
+      - amount
+      - type
+      type: object
+      properties:
+        subAccountId:
+          type: integer
+          format: uint64
+          description: Subaccount identifier.
+        currency:
+          type: string
+          description: Currency code.
+        amount:
+          type: string
+          description: The amount that will be transferred.
+        type:
+          type: string
+          enum:
+          - deposit
+          - withdraw
+          description: Transfer type.
+    wallet_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    wallet_CryptoAddress:
+      required:
+      - address
+      type: object
+      properties:
+        address:
+          type: string
+          description: Wallet address.
+        paymentId:
+          type: string
+          description: Payment identifier.
+        publicKey:
+          type: string
+          description: Public key.
+    wallet_SubAccACLResponse:
+      allOf:
+      - properties:
+          subAccountId:
+            type: integer
+            format: uint64
+            description: Subaccount identifier.
+      - $ref: '#/components/schemas/wallet_SubAccACLRequest'
+      - required:
+        - subAccountId
+        - isPayoutEnabled
+        - description
+    wallet_PaymentID:
+      title: Payment ID
+      type: object
+      properties:
+        payment_id:
+          type: string
+          pattern: ^[\w@\-.:<>]+$
+          description: An additional recipient identifier (for example, "Memo") required for specific currencies.
+    wallet_NotEnoughPermissions:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_TransactionNotFound:
+      title: Transaction not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * a transaction has failed to create;\n  * the requested transaction is not found.\n"
+      example:
+        error:
+          code: 20004
+          message: Transaction not found
+          description: ''
+    wallet_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Currency is not found.\n\nAny of:\n  * requested network is not found;\n  * requested currency is not found;\n  * no currency provided while the network is specified;\n  * requested network is disabled;\n  * operations relating to the request are disabled for the currency;\n  * currencies featured in an operation are not found.\n"
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    wallet_SubToSubTransferRequest:
+      title: Subaccount to subaccount transfer request
+      allOf:
+      - $ref: '#/components/schemas/wallet_SubaccountID'
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Amount'
+      - required:
+        - sub_account_id
+        - currency
+        - amount
+    wallet_ShouldUpgradePermission:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_SubaccountsIds:
+      title: Subaccount IDs
+      type: object
+      required:
+      - sub_account_ids
+      properties:
+        sub_account_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/wallet_SubaccountIdCommon'
+          description: A list of subaccounts external identifiers.
+    wallet_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_SubAccountEmailNotConfirmed:
+      title: Subaccount has not confirmed its email
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: 'At least one subaccount of the request has not confirmed its email address yet, therefore the whole request is rejected.
+
+
+        The `description` field of the error lists the external identifiers of the subaccounts to drop from the request.
+
+        '
+      example:
+        error:
+          code: 21009
+          message: Sub-account has not confirmed its email
+          description: 'The subaccounts have not confirmed their email: 5RTGF43K, 8HJKL21M'
+    wallet_SubaccountACLBase:
+      title: Subaccount ACL
+      type: object
+      required:
+      - sub_account_id
+      - deposit_address_generation_enabled
+      - withdraw_enabled
+      properties:
+        deposit_address_generation_enabled:
+          type: boolean
+          description: Flag indicating whether deposits are enabled.
+        withdraw_enabled:
+          type: boolean
+          description: Flag indicating whether withdrawals are enabled.
+        description:
+          type: string
+          description: Text description.
+    wallet_SubToSuperTransferRequest:
+      title: Subaccount to super account transfer request
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Amount'
+      - required:
+        - currency
+        - amount
+    wallet_TransactionID:
+      title: Transaction ID
+      type: string
+      format: uuid
+      description: Transaction UUID.
+      example: 27fa7f14-ca49-42fd-834a-4ce630d069d2
+    wallet_AuthInvalid:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_Address:
+      title: Deposit address
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/wallet_AddressCommon'
+    wallet_TooManyRequests:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_Balance:
+      title: Wallet balance
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - type: object
+        required:
+        - available
+        - currency
+        - reserved
+        properties:
+          available:
+            type: string
+            description: Amount available for withdrawals and transfers to the exchange account.
+            example: '14.08'
+          reserved:
+            type: string
+            description: Total amount reserved for withdrawals, withdrawal fees, and transfers to the exchange account.
+            example: '2.37'
+    wallet_LowAmount:
+      title: Low amount
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Operation amount is too low.\n\nAny of:\n  * provided amount is lesser than the currency precision (bit depth);\n  * fees are included in the final amount, and the amount is lesser than fees.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+          description: Amount too low
+    wallet_AmountCommon:
+      title: Amount
+      type: string
+      description: 'The amount of the operation.
+
+
+        Format: currency precision
+
+
+        Values: > 0
+
+
+        ℹ️ Call `GET /public/currency/{currency}` to get the currency precision.
+
+        '
+      example: '2.37'
+    wallet_SubAccountTwoFactorRequired:
+      title: Two-factor authentication is required
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: The super account has no two-factor authentication enabled.
+      example:
+        error:
+          code: 21008
+          message: Two-factor authentication is required
+    wallet_Result:
+      title: Result
+      type: object
+      required:
+      - result
+      properties:
+        result:
+          type: boolean
+    wallet_NetworkCommon:
+      title: Network
+      type: string
+      description: Network code.
+      example: ETH
+    wallet_SubaccountID:
+      title: Subaccount ID
+      type: object
+      properties:
+        sub_account_id:
+          type: string
+          description: Subaccount external identifier.
+          example: A1408C
+    wallet_SubaccountIdCommon:
+      title: Subaccount ID
+      type: string
+      description: Subaccount external identifier.
+      example: A1408C
+    wallet_UpdatedAt:
+      title: Updated at
+      type: object
+      properties:
+        updated_at:
+          type: string
+          format: date-time
+          description: Date and time of the last update.
+          example: 2024-03-22 15:04:05Z07:00
+    wallet_AmountLocked:
+      title: Amount locked
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Funds needed for execution of the operation are locked.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_AddressCommon:
+      title: Deposit address
+      type: string
+      pattern: ^([\w@\-.:<>]+|[0-9A-Z]{4}( ?[0-9A-Z]{4}){8}|(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?)$
+      description: Deposit crypto address.
+      example: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_PayoutCommitted:
+      title: Payout committed
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Transaction associated with the operation was complete before being committed or rolled back.
+      example:
+        error:
+          code: 20006
+          message: Payout already committed
+    wallet_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * invalid JSON payload;\n  * invalid form payload;\n  * invalid payload format;\n  * invalid parameter value;\n  * invalid parameter format;\n  * specified parameters are mutually exclusive;\n  * a required parameter is missing;\n  * the value of a parameter is invalid;\n  * provided value is not unique;\n  * in an update request, no parameters provided.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    wallet_SubaccountTransferRequest:
+      title: Subaccount transfer request
+      allOf:
+      - $ref: '#/components/schemas/wallet_SubaccountID'
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Amount'
+      - type: object
+        required:
+        - sub_account_id
+        - currency
+        - amount
+        - type
+        properties:
+          type:
+            type: string
+            enum:
+            - to_sub_account
+            - from_sub_account
+            description: "Transfer type.\n\nValues:\n  * `to_sub_account`—from the user wallet to a subaccount wallet;\n  * `from_sub_account`—from a subaccount wallet to the user wallet.\n\n⚠️ Only a subaccount with `active` status may receive funds from the user (super account).\n"
+    wallet_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_Amount:
+      title: Amount
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/wallet_AmountCommon'
+    wallet_UserDisabled:
+      title: User disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: A subaccount has not confirmed the registration or is disabled which is required for execution of the operation.
+      example:
+        error:
+          code: 10021
+          message: User disabled
+    wallet_GatewayTimeout:
+      title: Gateway Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Gateway timeout.
+      example:
+        error:
+          code: 22008
+          message: Gateway timeout. Please, try again later.
+    wallet_Currency:
+      title: Currency
+      properties:
+        currency:
+          $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_SubaccountACL:
+      title: Subaccount ACL
+      allOf:
+      - $ref: '#/components/schemas/wallet_SubaccountID'
+      - $ref: '#/components/schemas/wallet_SubaccountACLBase'
+      - $ref: '#/components/schemas/wallet_CreatedAt'
+      - $ref: '#/components/schemas/wallet_UpdatedAt'
+    wallet_VerificationLevelTooLow:
+      title: Verification level is too low
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: The verification level of the user is insufficient for the operation.
+      example:
+        error:
+          code: 22011
+          message: Verification level is too low
+    wallet_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: The request has been canceled.
+      example:
+        error:
+          code: 408
+          message: Request timeout
+    wallet_SubAccountAlreadyFrozenOrDisabled:
+      title: Subaccount already frozen or disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: A subaccount has already been frozen or disabled regardless of super account actions.
+      example:
+        error:
+          code: 21003
+          message: Subaccount already frozen
+    wallet_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_Subaccount:
+      title: Subaccount
+      type: object
+      required:
+      - email
+      - sub_account_id
+      - status
+      properties:
+        sub_account_id:
+          type: string
+          description: Subaccount external identifier.
+          example: A1408C
+        email:
+          type: string
+          format: email
+          description: User email address.
+          example: johndoe@example.com
+        status:
+          type: string
+          enum:
+          - new
+          - active
+          - disable
+          description: "Account status.\n\nValues:\n  * `new`—account is created, but not confirmed by email;\n  * `active`—account is fully functioning (it is normally accomplished after email confirmation);\n  * `disable`—account is disabled (the user cannot initiate account deactivation — it can only be done by the CRM operator).\n"
+    wallet_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_CurrencyCommon:
+      title: Cryptocurrency
+      type: string
+      description: Cryptocurrency code.
+      example: USDT
+    wallet_SubAccountNotFound:
+      title: Subaccount not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * a subaccount does not exist;\n  * a subaccount does not belong to the super account.\n"
+      example:
+        error:
+          code: 21001
+          message: Subaccount not found
+    wallet_SubaccountACLRequest:
+      title: Subaccount ACL request
+      allOf:
+      - $ref: '#/components/schemas/wallet_SubaccountsIds'
+      - $ref: '#/components/schemas/wallet_SubaccountACLBase'
+    wallet_MarginBalanceFields:
+      title: Margin balance
+      required:
+      - reserved_margin
+      type: object
+      properties:
+        reserved_margin:
+          type: string
+          description: Amount reserved for margin trading.
+          example: '0'
+    wallet_CreatedAt:
+      title: Created at
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: Date and time of the creation.
+          example: 2024-03-22 15:04:05Z07:00
+    wallet_Error_2:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_DepositAddressBase:
+      title: Deposit address
+      allOf:
+      - $ref: '#/components/schemas/wallet_Address'
+      - $ref: '#/components/schemas/wallet_PaymentID'
+      - type: object
+        required:
+        - currency
+        - address
+        properties:
+          public_key:
+            type: string
+            description: Public key.
+        example:
+          address: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_SubAccountCreationDisabled:
+      title: Subaccount creation is disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Creation of subaccounts is switched off for the broker.
+      example:
+        error:
+          code: 21010
+          message: Sub-account creation is disabled for the broker
+    wallet_SubaccountBalance:
+      title: Subaccount balance
+      allOf:
+      - type: object
+        required:
+        - wallet
+        properties:
+          wallet:
+            $ref: '#/components/schemas/wallet_Balance'
+      - type: object
+        required:
+        - spot
+        properties:
+          spot:
+            $ref: '#/components/schemas/wallet_ExchangeBalance'
+      - type: object
+        required:
+        - derivatives
+        properties:
+          derivatives:
+            $ref: '#/components/schemas/wallet_ExchangeBalance'
+    wallet_InsufficientFunds:
+      title: Insufficient funds
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Available balance is insufficient for execution of the operation.
+      example:
+        error:
+          code: 20001
+          message: Insufficient funds
+          description: Check that the funds are sufficient, given commissions
+    wallet_SubaccountCreateRequest:
+      title: Subaccount create request
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: 'Email address of the subaccount, it is also its login.
+
+
+            The address is unique within the broker and cannot be the same as the address of the super account.
+
+            '
+          example: sub.account@example.com
+        password:
+          type: string
+          description: 'Password of the subaccount, set by the super account.
+
+
+            At least 6 non-whitespaced characters and at most 255 characters in total, including a number and a non-numeric letter or symbol.
+
+            '
+          example: Str0ngPassw0rd
+    wallet_BadFormat:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_UserNotFound:
+      title: User not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: User not found.
+      example:
+        error:
+          code: 22004
+          message: User not found
+    wallet_NotFound:
+      title: Not Found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * a subaccount is not found;\n  * the user is not a super account.\n"
+      example:
+        error:
+          code: 404
+          message: Not Found
+    wallet_SpotBalance:
+      title: Spot balance
+      required:
+      - available
+      - reserved
+      type: object
+      properties:
+        available:
+          type: string
+          description: Amount available for trading or transferring to a wallet.
+          example: '2.27'
+        reserved:
+          type: string
+          description: Total amount reserved for active orders and incomplete transfers to a wallet.
+          example: '0.237'
+    wallet_SubAccountEmailExists:
+      title: Subaccount email already registered
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: 'The email address provided for a subaccount is already registered within the broker, the address of the super account included.
+
+
+        Relates to the `email` field of the request.
+
+        '
+      example:
+        error:
+          code: 21005
+          message: Email already registered
+    wallet_SubAccountWeakPassword:
+      title: Subaccount password does not meet requirements
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: 'The password provided for a subaccount does not meet the requirements: at least 6 non-whitespaced characters and at most 255 characters in total, including a number and a non-numeric letter or symbol.
+
+
+        Relates to the `password` field of the request.
+
+        '
+      example:
+        error:
+          code: 21006
+          message: Password does not meet requirements
+    wallet_SubaccountCreated:
+      title: Subaccount created
+      description: 'The result of the subaccount creation. Every field is known at the creation time, therefore all of them are always present.
+
+        '
+      required:
+      - sub_account_id
+      - email
+      - status
+      - sub_account_status
+      - created_at
+      type: object
+      properties:
+        sub_account_id:
+          type: string
+          description: Subaccount external identifier.
+          example: 6358A25B
+        email:
+          type: string
+          format: email
+          description: User email address.
+          example: sub.account@example.com
+        status:
+          type: string
+          enum:
+          - new
+          - active
+          - disable
+          description: "Account status. After the creation it is always `\"new\"`.\n\nValues:\n  * `new`—account is created, but not confirmed by email;\n  * `active`—account is fully functioning (it is normally accomplished after email confirmation);\n  * `disable`—account is disabled (the user cannot initiate account deactivation — it can only be done by the CRM operator).\n"
+          example: new
+        sub_account_status:
+          type: string
+          enum:
+          - invited
+          - active
+          - frozen
+          - frozen_invited
+          description: "The lifecycle status of the subaccount itself, not of its holder. After the creation it is always `\"invited\"`.\n\nValues:\n  * `invited`—the subaccount is created, the invitation has not been accepted yet;\n  * `active`—the subaccount is active, the transition happens on its first sign-in;\n  * `frozen`—the subaccount is frozen by the super account;\n  * `frozen_invited`—the subaccount is frozen before the invitation was accepted.\n"
+          example: invited
+        created_at:
+          type: string
+          description: Date and time of the creation.
+          example: '2026-08-18T12:00:00Z'
+    wallet_ExchangeBalance:
+      title: Exchange balance
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_SpotBalance'
+      - $ref: '#/components/schemas/wallet_MarginBalanceFields'
+    wallet_SubAccountCallerNotSuper:
+      title: Caller is not a super account
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: A subaccount cannot create subaccounts of its own.
+      example:
+        error:
+          code: 21007
+          message: User is not a super account
+    wallet_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_2'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_NotEnoughPermissions_2:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_TransactionNotFound_2:
+      title: Transaction not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * a transaction has failed to create;\n  * the requested transaction is not found.\n"
+      example:
+        error:
+          code: 20004
+          message: Transaction not found
+          description: ''
+    wallet_CurrencyNotFound_2:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Currency is not found.\n\nAny of:\n  * requested network is not found;\n  * requested currency is not found;\n  * no currency provided while the network is specified;\n  * requested network is disabled;\n  * operations relating to the request are disabled for the currency;\n  * currencies featured in an operation are not found.\n"
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    wallet_ShouldUpgradePermission_2:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_BadFormatHS256_2:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_SubAccountEmailNotConfirmed_2:
+      title: Subaccount has not confirmed its email
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: 'At least one subaccount of the request has not confirmed its email address yet, therefore the whole request is rejected.
+
+
+        The `description` field of the error lists the external identifiers of the subaccounts to drop from the request.
+
+        '
+      example:
+        error:
+          code: 21009
+          message: Sub-account has not confirmed its email
+          description: 'The subaccounts have not confirmed their email: 5RTGF43K, 8HJKL21M'
+    wallet_AuthInvalid_2:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_TooManyRequests_2:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_LowAmount_2:
+      title: Low amount
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Operation amount is too low.\n\nAny of:\n  * provided amount is lesser than the currency precision (bit depth);\n  * fees are included in the final amount, and the amount is lesser than fees.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+          description: Amount too low
+    wallet_SubAccountTwoFactorRequired_2:
+      title: Two-factor authentication is required
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: The super account has no two-factor authentication enabled.
+      example:
+        error:
+          code: 21008
+          message: Two-factor authentication is required
+    wallet_AmountLocked_2:
+      title: Amount locked
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Funds needed for execution of the operation are locked.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_PayoutCommitted_2:
+      title: Payout committed
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Transaction associated with the operation was complete before being committed or rolled back.
+      example:
+        error:
+          code: 20006
+          message: Payout already committed
+    wallet_Validation_2:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * invalid JSON payload;\n  * invalid form payload;\n  * invalid payload format;\n  * invalid parameter value;\n  * invalid parameter format;\n  * specified parameters are mutually exclusive;\n  * a required parameter is missing;\n  * the value of a parameter is invalid;\n  * provided value is not unique;\n  * in an update request, no parameters provided.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    wallet_UnauthorizedBasic_2:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_UserDisabled_2:
+      title: User disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: A subaccount has not confirmed the registration or is disabled which is required for execution of the operation.
+      example:
+        error:
+          code: 10021
+          message: User disabled
+    wallet_GatewayTimeout_2:
+      title: Gateway Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Gateway timeout.
+      example:
+        error:
+          code: 22008
+          message: Gateway timeout. Please, try again later.
+    wallet_VerificationLevelTooLow_2:
+      title: Verification level is too low
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: The verification level of the user is insufficient for the operation.
+      example:
+        error:
+          code: 22011
+          message: Verification level is too low
+    wallet_RequestTimeout_2:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: The request has been canceled.
+      example:
+        error:
+          code: 408
+          message: Request timeout
+    wallet_SubAccountAlreadyFrozenOrDisabled_2:
+      title: Subaccount already frozen or disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: A subaccount has already been frozen or disabled regardless of super account actions.
+      example:
+        error:
+          code: 21003
+          message: Subaccount already frozen
+    wallet_Internal_2:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_Forbidden_2:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_SubAccountNotFound_2:
+      title: Subaccount not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * a subaccount does not exist;\n  * a subaccount does not belong to the super account.\n"
+      example:
+        error:
+          code: 21001
+          message: Subaccount not found
+    wallet_Error_3:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_SubAccountCreationDisabled_2:
+      title: Subaccount creation is disabled
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Creation of subaccounts is switched off for the broker.
+      example:
+        error:
+          code: 21010
+          message: Sub-account creation is disabled for the broker
+    wallet_InsufficientFunds_2:
+      title: Insufficient funds
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Available balance is insufficient for execution of the operation.
+      example:
+        error:
+          code: 20001
+          message: Insufficient funds
+          description: Check that the funds are sufficient, given commissions
+    wallet_BadFormat_2:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_UserNotFound_2:
+      title: User not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: User not found.
+      example:
+        error:
+          code: 22004
+          message: User not found
+    wallet_NotFound_2:
+      title: Not Found
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * a subaccount is not found;\n  * the user is not a super account.\n"
+      example:
+        error:
+          code: 404
+          message: Not Found
+    wallet_SubAccountEmailExists_2:
+      title: Subaccount email already registered
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: 'The email address provided for a subaccount is already registered within the broker, the address of the super account included.
+
+
+        Relates to the `email` field of the request.
+
+        '
+      example:
+        error:
+          code: 21005
+          message: Email already registered
+    wallet_SubAccountWeakPassword_2:
+      title: Subaccount password does not meet requirements
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: 'The password provided for a subaccount does not meet the requirements: at least 6 non-whitespaced characters and at most 255 characters in total, including a number and a non-numeric letter or symbol.
+
+
+        Relates to the `password` field of the request.
+
+        '
+      example:
+        error:
+          code: 21006
+          message: Password does not meet requirements
+    wallet_SubAccountCallerNotSuper_2:
+      title: Caller is not a super account
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: A subaccount cannot create subaccounts of its own.
+      example:
+        error:
+          code: 21007
+          message: User is not a super account
+    wallet_UnauthorizedHS256_2:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error_3'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  parameters:
+    wallet_currencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Currency code.
+    wallet_networkCode:
+      name: network_code
+      in: query
+      schema:
+        type: string
+      description: Network code.
+    wallet_userIdPath:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: uint64
+      description: User identifier.
+    wallet_SubaccountIdPath:
+      name: sub_account_id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_SubaccountIdCommon'
+    wallet_CurrencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_Network:
+      name: network_code
+      in: query
+      schema:
+        $ref: '#/components/schemas/wallet_NetworkCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml
+- hitbtc-v2-openapi.yml

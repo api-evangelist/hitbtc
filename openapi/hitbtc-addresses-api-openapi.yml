@@ -1,0 +1,816 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Addresses API
+  version: ''
+  description: 'Operations tagged Addresses across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Addresses
+paths:
+  /wallet/crypto/address:
+    get:
+      tags:
+      - Addresses
+      summary: Get addresses
+      description: 'Returns the list of latest generated deposit addresses per currency.
+
+
+        ⚠️ Generation of a deposit address and deposits may be rejected due to an insufficient verification level.
+
+
+        ℹ️ If no addresses have ever been generated for a currency, nothing will be returned in the list.
+
+
+        ℹ️ If no an address have ever been generated for a currency and `currency` parameter is specified, a new address will be generated and returned in a response.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/wallet_CurrencyReq'
+      - $ref: '#/components/parameters/wallet_Network'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_DepositAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Forbidden'
+                - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+                - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+                - $ref: '#/components/schemas/wallet_VerificationRequired'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoAddress
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Addresses
+      summary: Generate an address
+      description: 'Returns a newly generated deposit address.
+
+
+        ⚠️ Generation of a deposit address and deposits may be rejected due to the user has an insufficient verification level.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_DepositAddressRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/wallet_DepositAddressRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_DepositAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Forbidden'
+                - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+                - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+                - $ref: '#/components/schemas/wallet_VerificationRequired'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postWalletCryptoAddress
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/address/recent-deposit:
+    get:
+      tags:
+      - Addresses
+      summary: Get recent deposited addresses
+      description: 'Returns up to 10 last unique addresses featured in deposits (as the destination).
+
+
+        ℹ️ Only deposits in `"SUCCESS"` status are considered.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/wallet_CurrencyReq'
+      - $ref: '#/components/parameters/wallet_Network'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                maxItems: 10
+                uniqueItems: true
+                items:
+                  $ref: '#/components/schemas/wallet_RecentDepositAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/wallet_Forbidden'
+                - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+                - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+                - $ref: '#/components/schemas/wallet_VerificationRequired'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoAddressRecentDeposit
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/address/recent-withdraw:
+    get:
+      tags:
+      - Addresses
+      summary: Get recent withdrawal recipients
+      description: 'Returns up to 10 last unique addresses featured in withdrawals (as the destination).
+
+
+        ℹ️ Only on-chain withdrawals in `"SUCCESS"` status are considered.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/wallet_CurrencyReq'
+      - $ref: '#/components/parameters/wallet_Network'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                maxItems: 10
+                uniqueItems: true
+                items:
+                  $ref: '#/components/schemas/wallet_DepositAddress'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoAddressRecentWithdraw
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/address/check-mine:
+    get:
+      tags:
+      - Addresses
+      summary: Check address ownership
+      description: 'Determines whether the provided deposit address belongs to the user.
+
+
+        **Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          pattern: ^([\w@\-.:<>]+|[0-9A-Z]{4}( ?[0-9A-Z]{4}){8}|(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?)$
+        description: Deposit crypto address.
+        example: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_CurrencyNotFound'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_UserNotFound'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getWalletCryptoAddressCheckMine
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /wallet/crypto/address/white-list:
+    get:
+      tags:
+      - Addresses
+      summary: Get whitelisted addresses
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - addresses
+                properties:
+                  addresses:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wallet_WhitelistedAddress'
+        '401':
+          $ref: '#/components/responses/wallet_401'
+        '403':
+          $ref: '#/components/responses/wallet_403'
+        '408':
+          $ref: '#/components/responses/wallet_408'
+        '429':
+          $ref: '#/components/responses/wallet_429'
+        '500':
+          $ref: '#/components/responses/wallet_500'
+        '502':
+          $ref: '#/components/responses/wallet_502'
+        '503':
+          $ref: '#/components/responses/wallet_503'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      description: '**Permission**: Payment information
+
+
+        **IP limit**: 10/10
+
+
+        **Account limit**: 20/30'
+      operationId: getWalletCryptoAddressWhiteList
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    wallet_PaymentID:
+      title: Payment ID
+      type: object
+      properties:
+        payment_id:
+          type: string
+          pattern: ^[\w@\-.:<>]+$
+          description: An additional recipient identifier (for example, "Memo") required for specific currencies.
+    wallet_VerificationRequired:
+      title: Verification required
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Verification level is insufficient for the given operation.
+      example:
+        error:
+          code: 20090
+          message: KYC required
+    wallet_NotEnoughPermissions:
+      title: Not enough permissions
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1007
+          message: Not enough permissions
+    wallet_WhitelistedAddress:
+      title: Whitelisted address
+      description: "A whitelist entry. `currency` and `network` are optional independently of each other, and at least one of them is always present:\n\n  * both present—the entry covers that currency in that network only;\n  * `currency` omitted—the entry covers every currency of its network;\n  * `network` omitted—the entry is not bound to a network.\n\n`payment_id` is present only for the currencies that require an additional recipient identifier.\n"
+      allOf:
+      - $ref: '#/components/schemas/wallet_Address'
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_PaymentID'
+      - required:
+        - name
+        - address
+      - properties:
+          name:
+            type: string
+            description: 'Name of the whitelist item.
+
+              '
+            example: ETH withdrawal
+          network:
+            $ref: '#/components/schemas/wallet_NetworkCommon'
+    wallet_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Currency is not found.\n\nAny of:\n  * requested network is not found;\n  * requested currency is not found;\n  * no currency provided while the network is specified;\n  * requested network is disabled;\n  * operations relating to the request are disabled for the currency;\n  * currencies featured in an operation are not found.\n"
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    wallet_ShouldUpgradePermission:
+      title: Should upgrade permission
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Current permission scope in the authentication service is insufficient.
+      example:
+        error:
+          code: 1006
+          message: Action unavailable, please upgrade scopes
+    wallet_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * missing required parameters;\n  * the maximum of the time window is exceeded.\n"
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_DepositAddress:
+      title: Deposit address
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Network'
+      - $ref: '#/components/schemas/wallet_DepositAddressBase'
+      - example:
+          currency: USDT
+          network_code: ETH
+          address: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_AuthInvalid:
+      title: Invalid authorization
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Invalid JWT.
+      example:
+        error:
+          code: 1005
+          message: Invalid authorization
+    wallet_TooManyRequests:
+      title: Too Many Requests
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Rate limits are exceeded.
+      example:
+        error:
+          code: 429
+          message: Too many requests
+    wallet_Address:
+      title: Deposit address
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/wallet_AddressCommon'
+    wallet_RecentDepositAddress:
+      title: Deposit address
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - type: object
+        properties:
+          network_name:
+            type: string
+            description: Network full name.
+        example:
+          currency: USDT
+          network_code: ETH
+          network_name: Ethereum
+          address: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_Result:
+      title: Result
+      type: object
+      required:
+      - result
+      properties:
+        result:
+          type: boolean
+    wallet_NetworkCommon:
+      title: Network
+      type: string
+      description: Network code.
+      example: ETH
+    wallet_Network:
+      title: Network
+      type: object
+      properties:
+        network_code:
+          $ref: '#/components/schemas/wallet_NetworkCommon'
+    wallet_AddressCommon:
+      title: Deposit address
+      type: string
+      pattern: ^([\w@\-.:<>]+|[0-9A-Z]{4}( ?[0-9A-Z]{4}){8}|(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?)$
+      description: Deposit crypto address.
+      example: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * user is not allowed to perform the requested operation.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    wallet_Currency:
+      title: Currency
+      properties:
+        currency:
+          $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_DepositAddressRequest:
+      title: Deposit address request
+      allOf:
+      - $ref: '#/components/schemas/wallet_Currency'
+      - $ref: '#/components/schemas/wallet_Network'
+      - type: object
+        required:
+        - currency
+    wallet_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: The request has been canceled.
+      example:
+        error:
+          code: 408
+          message: Request timeout
+    wallet_BadGateway:
+      title: Bad Gateway
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Unclassified error while connecting the authentication service.
+      example:
+        error:
+          code: 502
+          message: Bad gateway
+    wallet_ServiceUnavailable:
+      title: Service Unavailable
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * withdrawals are disabled;\n  * unclassified internal error.\n"
+      example:
+        error:
+          code: 503
+          message: Service unavailable
+    wallet_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * currency settings forbid the requested operation;\n  * the user has insufficient permissions for the operation;\n  * requested operation is forbidden for the user;\n  * insufficient API key permissions;\n  * provided IP address is not in the white list;\n  * the user is not eligible for the given currency by the configuration;\n  * provided operation parameters are forbidden by the configuration;\n  * a withdrawal operation failed to pass pre-AML checks.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    wallet_CurrencyCommon:
+      title: Cryptocurrency
+      type: string
+      description: Cryptocurrency code.
+      example: USDT
+    wallet_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+              description: Custom error code.
+            message:
+              type: string
+              description: Error message.
+            description:
+              type: string
+              description: Error description.
+    wallet_DepositAddressBase:
+      title: Deposit address
+      allOf:
+      - $ref: '#/components/schemas/wallet_Address'
+      - $ref: '#/components/schemas/wallet_PaymentID'
+      - type: object
+        required:
+        - currency
+        - address
+        properties:
+          public_key:
+            type: string
+            description: Public key.
+        example:
+          address: 3A3MR43kUvahSAJtTsxzE8mcTz3VfL9upi
+    wallet_BadFormat:
+      title: Bad Format
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: Provided parameters do not meet any supported authentication scheme.
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    wallet_UserNotFound:
+      title: User not found
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: User not found.
+      example:
+        error:
+          code: 22004
+          message: User not found
+    wallet_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Internal error.\n\nAny of:\n  * unclassified internal error;\n  * user bank account is blocked;\n  * transaction(s) for the requested operation have not been created;\n  * transaction(s) for the requested operation have been rolled back.\n"
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    wallet_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/wallet_Error'
+      type: object
+      description: "Any of:\n  * invalid API key;\n  * invalid time window value;\n  * invalid HMAC signature format.\n"
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_408:
+      description: Request Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_RequestTimeout'
+    wallet_429:
+      description: Too Many Requests
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_TooManyRequests'
+    wallet_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Internal'
+    wallet_502:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_BadGateway'
+    wallet_503:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_ServiceUnavailable'
+    wallet_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_Forbidden'
+            - $ref: '#/components/schemas/wallet_ShouldUpgradePermission'
+            - $ref: '#/components/schemas/wallet_NotEnoughPermissions'
+    wallet_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/wallet_UnauthorizedBasic'
+            - $ref: '#/components/schemas/wallet_UnauthorizedHS256'
+            - $ref: '#/components/schemas/wallet_BadFormatHS256'
+            - $ref: '#/components/schemas/wallet_AuthInvalid'
+            - $ref: '#/components/schemas/wallet_BadFormat'
+  parameters:
+    wallet_CurrencyReq:
+      name: currency
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/wallet_CurrencyCommon'
+    wallet_Network:
+      name: network_code
+      in: query
+      schema:
+        $ref: '#/components/schemas/wallet_NetworkCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

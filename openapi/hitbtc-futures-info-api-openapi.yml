@@ -1,0 +1,354 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Futures Info API
+  version: ''
+  description: 'Operations tagged Futures Info across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Futures Info
+paths:
+  /public/futures/info:
+    get:
+      tags:
+      - Futures Info
+      summary: Get futures info
+      parameters:
+      - $ref: '#/components/parameters/marketData_Symbols'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_FuturesInfoMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicFuturesInfo
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /public/futures/info/{symbol}:
+    get:
+      tags:
+      - Futures Info
+      summary: Get contract futures info
+      parameters:
+      - $ref: '#/components/parameters/marketData_SymbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_FuturesInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_InstrumentNotFound'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicFuturesInfoBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  schemas:
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_FuturesInfoBase:
+      title: Futures info
+      type: object
+      required:
+      - contract_type
+      - mark_price
+      - index_price
+      - open_interest
+      - timestamp
+      properties:
+        contract_type:
+          type: string
+          enum:
+          - perpetual
+          - cash_settled
+          description: Contract type.
+        mark_price:
+          type: string
+          default: '0'
+          description: Recent asset price adjusted by the value of fair basis.
+          example: '30505.48'
+        index_price:
+          type: string
+          default: '0'
+          description: Average underlying asset price.
+          example: '30503.94'
+        open_interest:
+          type: string
+          default: '0'
+          description: Total quantity of traded futures contracts.
+          example: '3.93843'
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+          example: '2024-06-26T14:22:57.304Z'
+    marketData_FuturesInfo:
+      allOf:
+      - type: object
+      - title: Futures info
+        discriminator:
+          propertyName: contract_type
+          mapping:
+            perpetual: '#/components/schemas/marketData_PerpetualFuturesInfo'
+            cash_settled: '#/components/schemas/marketData_CashSettledFuturesInfo'
+        oneOf:
+        - $ref: '#/components/schemas/marketData_PerpetualFuturesInfo'
+        - $ref: '#/components/schemas/marketData_CashSettledFuturesInfo'
+    marketData_PerpetualFuturesInfo:
+      title: Perpetual
+      allOf:
+      - $ref: '#/components/schemas/marketData_FuturesInfoBase'
+      - type: object
+        required:
+        - funding_rate
+        - next_funding_time
+        - indicative_funding_rate
+        - premium_index
+        - avg_premium_index
+        - interest_rate
+        properties:
+          funding_rate:
+            type: string
+            default: '0'
+            description: Percentage of contract mark value paid after the end of the current funding interval.
+            example: '0.00025'
+          next_funding_time:
+            type: string
+            format: date-time
+            description: Timestamp of the next funding.
+            example: '2024-06-26T20:32:01.636Z'
+          indicative_funding_rate:
+            type: string
+            default: '0'
+            description: Estimated value of `funding_rate` in the next funding period calculated at the moment.
+            example: '0.00025'
+          premium_index:
+            type: string
+            default: '0'
+            description: 'Time-weighted average over premium indexes from the previous funding to the current moment.
+
+
+              ℹ️ Used during calculation of `indicative_funding_rate`.
+
+              '
+            example: '0'
+          avg_premium_index:
+            type: string
+            default: '0'
+            description: 'Time-weighted average over premium indexes for **previous** funding period.
+
+
+              ℹ️ Used during calculation of `funding_rate` for adjusting it to the deviation of contract market price from the mark price.
+
+              '
+            example: '0'
+          interest_rate:
+            type: string
+            default: '0'
+            description: Contract interest rate for one funding period.
+            example: '0.001'
+    marketData_CashSettledFuturesInfo:
+      title: Cash settled
+      allOf:
+      - $ref: '#/components/schemas/marketData_FuturesInfoBase'
+      - type: object
+        required:
+        - indicative_settlement_price
+        - expiry
+        properties:
+          indicative_settlement_price:
+            type: string
+            default: '0'
+            description: 'Expected price of closing position on a cash settled contract.
+
+
+              ℹ️ Calculated during the last 30 minutes prior to contract expiration—until that, equals to `index_price`.
+
+              '
+            example: '31503.94'
+          expiry:
+            type: string
+            description: Contract expiration date.
+            example: '2024-07-26T14:22:57.304Z'
+    marketData_FuturesInfoMap:
+      title: Futures info
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: symbol
+        $ref: '#/components/schemas/marketData_FuturesInfo'
+      example:
+        BTCUSDT_PERP:
+          contract_type: perpetual
+          mark_price: '30505.48'
+          index_price: '30503.94'
+          funding_rate: '0.00025'
+          open_interest: '3.93843'
+          next_funding_time: '2024-06-26T20:32:01.636Z'
+          indicative_funding_rate: '0.00025'
+          premium_index: '0'
+          avg_premium_index: '-0.000016478878555706'
+          interest_rate: '0.001'
+          timestamp: '2024-06-26T14:22:57.304Z'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+  parameters:
+    marketData_Symbols:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_SymbolCommon'
+      description: A comma-separated list of symbol codes.
+    marketData_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/marketData_SymbolCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

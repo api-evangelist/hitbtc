@@ -1,0 +1,380 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Trades History API
+  version: ''
+  description: 'Operations tagged Trades History across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Trades History
+paths:
+  /public/trades:
+    get:
+      tags:
+      - Trades History
+      summary: Get trades history
+      parameters:
+      - $ref: '#/components/parameters/marketData_Symbols'
+      - $ref: '#/components/parameters/marketData_ByTimestamp'
+      - $ref: '#/components/parameters/marketData_SortDesc'
+      - $ref: '#/components/parameters/marketData_From'
+      - $ref: '#/components/parameters/marketData_Till'
+      - $ref: '#/components/parameters/marketData_Limit10'
+      - $ref: '#/components/parameters/marketData_Pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_TradeMap'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicTrades
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /public/trades/{symbol}:
+    get:
+      tags:
+      - Trades History
+      summary: Get symbol trades history
+      parameters:
+      - $ref: '#/components/parameters/marketData_SymbolPath'
+      - $ref: '#/components/parameters/marketData_SortDesc'
+      - $ref: '#/components/parameters/marketData_ByTimestamp'
+      - $ref: '#/components/parameters/marketData_From'
+      - $ref: '#/components/parameters/marketData_Till'
+      - $ref: '#/components/parameters/marketData_Limit100'
+      - $ref: '#/components/parameters/marketData_Offset'
+      - $ref: '#/components/parameters/marketData_Pool'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Trade'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      description: '**Permission**: None
+
+
+        **IP limit**: 30/50'
+      operationId: getPublicTradesBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    marketData_TradeMap:
+      title: Trades
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: symbol
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_Trade'
+      example:
+        BTCUSDT:
+        - id: 1098303
+          price: '30930.12'
+          qty: '0.24689'
+          side: sell
+          timestamp: '2024-06-26T12:32:01.636Z'
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_Validation:
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: "Any of:\n  * missing required parameter;\n  * invalid value of a numeric parameter.\n"
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Validation error. Please, check request parameters and try again.
+          code: 10001
+          message: Bad request parameter [PARAMETER] ISSUE
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    marketData_TimestampCommon:
+      title: Timestamp
+      oneOf:
+      - title: ISO 8601
+        type: string
+        format: date-time
+        description: 'Format: ISO 8601
+
+          '
+        example: '2024-03-22T15:04:05.590Z'
+      - title: UNIX seconds
+        type: integer
+        description: 'Format: UNIX timestamp in seconds
+
+          '
+        example: 1687778487
+      - title: UNIX milliseconds
+        type: integer
+        description: 'Format: UNIX timestamp in milliseconds
+
+          '
+        example: 1687778556151
+    marketData_Trade:
+      type: object
+      required:
+      - id
+      - price
+      - qty
+      - side
+      - timestamp
+      properties:
+        id:
+          type: integer
+          description: Trade identifier.
+          example: 1098303
+        price:
+          type: string
+          description: Trade price.
+          example: '30930.12'
+        qty:
+          type: string
+          description: Trade quantity.
+          example: '0.24689'
+        side:
+          type: string
+          enum:
+          - sell
+          - buy
+          description: Aggressor order side.
+        timestamp:
+          type: string
+          format: date-time
+          description: Trade timestamp.
+          example: '2024-06-26T12:32:01.636Z'
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  parameters:
+    marketData_SortDesc:
+      name: sort
+      in: query
+      schema:
+        type: string
+        enum:
+        - DESC
+        - ASC
+        default: DESC
+      description: "Sort order.\n\nValues:\n  * `ASC`—ascending;\n  * `DESC`—descending.\n"
+    marketData_ByTimestamp:
+      name: by
+      in: query
+      schema:
+        type: string
+        enum:
+        - timestamp
+        - id
+        default: timestamp
+      description: The name of the field to order the results by.
+    marketData_Pool:
+      name: exclude_pool
+      in: query
+      schema:
+        type: boolean
+      description: Flag indicating whether to return trades for a single broker.
+    marketData_Symbols:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/marketData_SymbolCommon'
+      description: A comma-separated list of symbol codes.
+    marketData_Limit100:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 100
+      description: The number of items to return.
+    marketData_Till:
+      name: till
+      in: query
+      schema:
+        allOf:
+        - $ref: '#/components/schemas/marketData_TimestampCommon'
+        - default: 1000
+      description: Interval end value.
+    marketData_Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100000
+        default: 0
+      description: The number of items to skip before starting to collect the result set.
+    marketData_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/marketData_SymbolCommon'
+    marketData_From:
+      name: from
+      in: query
+      schema:
+        allOf:
+        - $ref: '#/components/schemas/marketData_TimestampCommon'
+        - default: 1
+      description: Interval start value.
+    marketData_Limit10:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 1000
+        default: 10
+      description: The number of items to return.
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

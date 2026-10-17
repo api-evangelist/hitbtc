@@ -1,0 +1,349 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Futures Fees API
+  version: ''
+  description: 'Operations tagged Futures Fees across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Futures Fees
+paths:
+  /futures/fee:
+    get:
+      tags:
+      - Futures Fees
+      summary: Get futures fees
+      description: 'Returns user personal trading fee rates.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                  - $ref: '#/components/schemas/trading_Fee'
+                  - $ref: '#/components/schemas/trading_Contract'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_NotAvailable'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getFuturesFee
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /futures/fee/{symbol}:
+    get:
+      tags:
+      - Futures Fees
+      summary: Get a futures fee
+      description: 'Returns user personal trading fee rates.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/trading_SymbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_Fee'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getFuturesFeeBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  parameters:
+    trading_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_SymbolCommon'
+  schemas:
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_Fee:
+      title: Trading fees
+      type: object
+      required:
+      - make_rate
+      - take_rate
+      properties:
+        take_rate:
+          type: string
+          description: Liquidity taker fee rate applied to the order value.
+          example: '0.001'
+        make_rate:
+          type: string
+          description: Liquidity provider fee rate applied to the order value.
+          example: '-0.0001'
+    trading_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    trading_Contract:
+      title: Contract
+      example:
+        symbol: BTCUSDT_PERP
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_SymbolNotFound:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

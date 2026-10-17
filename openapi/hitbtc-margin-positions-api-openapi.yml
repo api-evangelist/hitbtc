@@ -1,0 +1,1116 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Margin Positions API
+  version: ''
+  description: 'Operations tagged Margin Positions across 4 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Margin Positions
+paths:
+  /margin/position:
+    get:
+      tags:
+      - Margin Positions
+      summary: Get all open positions
+      description: 'Returns a list of open positions.
+
+
+        **Permission:** *TradingRead*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserPositionInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginPosition
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Margin Positions
+      summary: Close all margin positions
+      description: 'Returns a list of the successfully closed margin positions.
+
+
+        **Permission:** *TradingTrade*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_UserPositionInfo'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteMarginPosition
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /margin/position/{symbol}:
+    parameters:
+    - $ref: '#/components/parameters/trading_symbolPath'
+    get:
+      tags:
+      - Margin Positions
+      summary: Get margin position by symbol
+      description: 'Returns open position for the requested symbol.
+
+
+        **Permission:** *TradingRead*'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserPositionInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginPositionBySymbol
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Margin Positions
+      summary: Close open position by symbol
+      description: 'Returns margin account details.
+
+
+        **Permission:** *TradingTrade*'
+      parameters:
+      - name: price
+        in: query
+        schema:
+          type: number
+          minimum: 0
+        description: Market price to close the position.
+      - name: strictValidate
+        in: query
+        schema:
+          type: boolean
+        description: Price and quantity will be checked for incrementation within the symbol’s tick size and quantity step.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_UserMarginAccountInfo'
+        '400':
+          $ref: '#/components/responses/trading_BadRequestError'
+        '401':
+          $ref: '#/components/responses/trading_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/trading_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/trading_InternalServerError'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteMarginPositionBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /margin/position/{margin_mode}/{symbol}:
+    delete:
+      tags:
+      - Margin Positions
+      summary: Close a margin position
+      parameters:
+      - $ref: '#/components/parameters/trading_MarginModePath'
+      - $ref: '#/components/parameters/trading_SymbolPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_ClosePositionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/trading_ClosePositionRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_Position'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_InvalidPrice'
+                - $ref: '#/components/schemas/trading_BadPrice'
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_PositionNotOpened'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_UnknownMarginMode'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_MarginTradingIsDisabled'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Place/cancel orders
+
+
+        **IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteMarginPositionByMarginModeBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UserPositionInfo:
+      required:
+      - id
+      - symbol
+      - quantity
+      - pnl
+      - priceEntry
+      - priceMarginCall
+      - priceLiquidation
+      - createdAt
+      - updatedAt
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+        symbol:
+          type: string
+          description: Symbol code.
+        quantity:
+          type: string
+          description: Position quantity.
+        pnl:
+          type: string
+          description: Unrealized profit and loss.
+        feeCumulative:
+          type: string
+          description: "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+        priceEntry:
+          type: string
+          description: Average weighted price of position's open orders.
+        priceMarginCall:
+          type: string
+          description: Margin call price.
+        priceLiquidation:
+          type: string
+          description: Liquidation Price.
+        createdAt:
+          type: string
+          format: date-time
+          description: Position creation date and time.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Position last update date and time.
+    trading_UserMarginAccountInfo:
+      required:
+      - symbol
+      - leverage
+      - marginBalance
+      - marginBalanceOrders
+      - marginBalanceRequired
+      - createdAt
+      - updatedAt
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: Trading symbol, where base currency is the currency of funds reserved on the trading account for positions and quote currency is the currency of funds reserved on a margin account (e.g., "BTCUSDT").
+        leverage:
+          type: string
+          description: Margin leverage. The ratio of the trader's own funds to funds borrowed from the platform.
+        marginBalance:
+          type: string
+          description: The total value of funds reserved for margin.
+        marginBalanceOrders:
+          type: string
+          description: The value reserved for margin orders.
+        marginBalanceRequired:
+          type: string
+          description: The value reserved for margin position close.
+        createdAt:
+          type: string
+          format: date-time
+          description: Account creation date and time.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Account last update date and time.
+        position:
+          $ref: '#/components/schemas/trading_UserPositionInfo'
+    trading_ResponseFormatter:
+      title: Formatter error
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Any of:
+
+        * the position symbol is not found when returning the response;
+
+        * a margin balance currency is not found when returning the response.
+
+        '
+      example:
+        error:
+          code: 500
+          message: Internal error
+          description: response formatter error
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_MarginModeCommon:
+      title: Margin mode
+      type: string
+      enum:
+      - cross
+      - Cross
+      - isolated
+      - Isolated
+      description: Margin mode.
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_PositionBase:
+      title: Margin position
+      type: object
+      required:
+      - id
+      - symbol
+      - margin_mode
+      - quantity
+      - price_entry
+      - price_margin_call
+      - price_liquidation
+      - pnl
+      - created_at
+      - updated_at
+      - status
+      - required_margin
+      - orders_margin
+      - margin_auto
+      - amr
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+          example: 1408
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        quantity:
+          type: string
+          description: Position quantity.
+          example: '0.00007'
+        price_entry:
+          type: string
+          description: Average weighted price of position open orders.
+          example: '33304.11'
+        price_margin_call:
+          type: string
+          description: Margin call price.
+          example: '25395.20'
+        price_liquidation:
+          type: string
+          description: Liquidation price.
+          example: '24884.62'
+        pnl:
+          type: string
+          description: Unrealized profit and loss.
+          example: '0.014772687500'
+        fee_cumulative:
+          type: string
+          description: "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+          example: '0.14'
+        created_at:
+          type: string
+          format: date-time
+          description: Position creation date and time.
+          example: '2024-03-22T17:26:10.758Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Position last update date and time.
+          example: '2024-03-22T21:20:03.64Z'
+        status:
+          type: string
+          enum:
+          - normal
+          - blocked
+          - closeOnly
+          description: "Position status.\n\nValues:\n* `normal`—the client can place and cancel orders, amend and change\n  the margin;\n* `blocked`—the client cannot place orders on either side;\n* `closeOnly`—the client may only place orders to close the\n  position.\n"
+        required_margin:
+          type: string
+          description: 'Amount of currency reserved for close orders.
+
+            '
+          example: '1.126441946273'
+        orders_margin:
+          type: string
+          description: 'Amount of currency reserved for open orders.
+
+            '
+          example: '0'
+        margin_call:
+          type: boolean
+          description: 'Flag indicating whether additional margin is required to maintain the position.
+
+            '
+        margin_auto:
+          type: boolean
+          description: "Flag indicating whether AMM (auto margin management) is enabled for\n the position.\n"
+        amr:
+          type: boolean
+          description: "Current value of the AMR (auto margin replenishment) flag of the\n position.\n"
+    trading_UnknownMarginMode:
+      title: Unknown margin mode
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Invalid margin mode.
+
+        '
+      example:
+        error:
+          code: 2025
+          message: Unknown margin mode
+    trading_Position:
+      title: Margin position
+      allOf:
+      - $ref: '#/components/schemas/trading_PositionBase'
+      - $ref: '#/components/schemas/trading_Leverage'
+    trading_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    trading_ExchangeClosed:
+      title: Exchange closed
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Exchange is temporary closed.
+
+        '
+      example:
+        error:
+          code: 20010
+          message: Exchange temporary closed
+    trading_Error_2:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_SymbolNotFound:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_PositionNotOpened:
+      title: Position not opened
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Requested position is not open (has `0` quantity).
+
+        '
+      example:
+        error:
+          code: 20032
+          message: Margin account of position not found
+    trading_Leverage:
+      title: Leverage
+      type: object
+      required:
+      - leverage
+      properties:
+        leverage:
+          type: string
+          description: 'Leverage—the ratio of the user own funds to funds borrowed from the
+
+            platform.
+
+            '
+          example: '12.00'
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_StrictValidateCommon:
+      title: Strict validate
+      type: boolean
+      default: false
+      description: Price and quantity will be checked for incrementation within the symbol tick size and quantity step (see the symbol `tick_size` and `quantity_increment`).
+    trading_InvalidPrice:
+      title: Invalid price
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Invalid price value.
+
+
+        Any of:
+
+        * price is not a decimal with a dot as the separator;
+
+        * maximum bit depth is exceeded;
+
+        * price is less or equal to zero.
+
+        '
+      example:
+        error:
+          code: 2020
+          message: Price is not a valid decimal
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_SymbolExpired:
+      title: Symbol expired
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Trades on the given symbol are suspended.
+
+        '
+      example:
+        error:
+          code: 20046
+          message: Exchange symbol is expired
+    trading_ClosePositionRequest:
+      title: Close position request
+      type: object
+      properties:
+        price:
+          type: number
+          exclusiveMinimum: 0
+          description: Position close price.
+          example: 27001.99
+        strict_validate:
+          $ref: '#/components/schemas/trading_StrictValidateCommon'
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_BadPrice:
+      title: Bad price
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Invalid price format.
+
+        '
+      example:
+        error:
+          code: 2022
+          message: Bad price
+    trading_MarginTradingIsDisabled:
+      title: Margin trading is disabled
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Margin trading is forbidden for the user.
+
+        '
+      example:
+        error:
+          code: 20040
+          message: Margin trading forbidden
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error_2'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_ResponseFormatter_2:
+      title: Formatter error
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Any of:
+
+        * the position symbol is not found when returning the response;
+
+        * a margin balance currency is not found when returning the response.
+
+        '
+      example:
+        error:
+          code: 500
+          message: Internal error
+          description: response formatter error
+    trading_BadFormatHS256_2:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_NotAvailable_2:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_UnknownMarginMode_2:
+      title: Unknown margin mode
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Invalid margin mode.
+
+        '
+      example:
+        error:
+          code: 2025
+          message: Unknown margin mode
+    trading_ExchangeClosed_2:
+      title: Exchange closed
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Exchange is temporary closed.
+
+        '
+      example:
+        error:
+          code: 20010
+          message: Exchange temporary closed
+    trading_Error_3:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT_2:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal_2:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_SymbolNotFound_2:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_PositionNotOpened_2:
+      title: Position not opened
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Requested position is not open (has `0` quantity).
+
+        '
+      example:
+        error:
+          code: 20032
+          message: Margin account of position not found
+    trading_UnauthorizedHS256_2:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden_2:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_InvalidPrice_2:
+      title: Invalid price
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Invalid price value.
+
+
+        Any of:
+
+        * price is not a decimal with a dot as the separator;
+
+        * maximum bit depth is exceeded;
+
+        * price is less or equal to zero.
+
+        '
+      example:
+        error:
+          code: 2020
+          message: Price is not a valid decimal
+    trading_RequestTimeout_2:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat_2:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_SymbolExpired_2:
+      title: Symbol expired
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Trades on the given symbol are suspended.
+
+        '
+      example:
+        error:
+          code: 20046
+          message: Exchange symbol is expired
+    trading_Validation_2:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_BadPrice_2:
+      title: Bad price
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Invalid price format.
+
+        '
+      example:
+        error:
+          code: 2022
+          message: Bad price
+    trading_MarginTradingIsDisabled_2:
+      title: Margin trading is disabled
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Margin trading is forbidden for the user.
+
+        '
+      example:
+        error:
+          code: 20040
+          message: Margin trading forbidden
+    trading_UnauthorizedBasic_2:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error_3'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    trading_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+  parameters:
+    trading_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Symbol code.
+    trading_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_SymbolCommon'
+    trading_MarginModePath:
+      name: margin_mode
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_MarginModeCommon'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml
+- hitbtc-v2-openapi.yml

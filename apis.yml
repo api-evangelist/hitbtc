@@ -89,23 +89,16 @@ common:
   url: https://x.com/hitbtc
 
 apis:
-- aid: hitbtc:hitbtc-api-v3
-  image: https://api.hitbtc.com/images/favicon.png
-  name: HitBTC API v3
-  description: HitBTC REST API v3 covering public market data (currencies, symbols, tickers, trades, order books, candles, futures info), spot,
-    margin and futures trading, wallet management, sub-accounts and user management. Authenticated with Basic or HS256 (HMAC-SHA256) API keys.
+- aid: hitbtc:hitbtc-account-api
+  name: HitBTC Account API
+  description: The Account API from HitBTC — 6 operation(s) for account.
   humanURL: https://api.hitbtc.com/
   baseURL: https://api.hitbtc.com/api/3
   tags:
-  - Market Data
-  - Trading
-  - Wallets
+  - Account
   properties:
   - type: OpenAPI
-    url: openapi/hitbtc-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://api.hitbtc.com/api/3/explore/spec.yaml
+    url: openapi/hitbtc-account-api-openapi.yml
   - type: Documentation
     url: https://api.hitbtc.com/
   - type: APIReference
@@ -122,21 +115,2287 @@ apis:
     url: json-schema/hitbtc-trading-margin-params-schema.json
   - type: JSONSchema
     url: json-schema/hitbtc-trading-margin-settings-schema.json
-- aid: hitbtc:hitbtc-api-v2
-  image: https://api.hitbtc.com/images/favicon.png
-  name: HitBTC API v2
-  description: Legacy HitBTC REST API v2 (public market data, trading, account and wallet), still served with its own OpenAPI contract and Swagger
-    UI explorer.
-  humanURL: https://api.hitbtc.com/api/2/explore/
-  baseURL: https://api.hitbtc.com/api/2
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-addresses-api
+  name: HitBTC Addresses API
+  description: The Addresses API from HitBTC — 5 operation(s) for addresses.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Addresses
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-addresses-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-airdrops-api
+  name: HitBTC Airdrops API
+  description: The Airdrops API from HitBTC — 2 operation(s) for airdrops.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Airdrops
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-airdrops-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-amount-locks-api
+  name: HitBTC Amount Locks API
+  description: The Amount Locks API from HitBTC — 1 operation(s) for amount locks.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Amount Locks
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-amount-locks-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-api-keys-api
+  name: HitBTC API Keys API
+  description: The API Keys API from HitBTC — 1 operation(s) for api keys.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-candles-api
+  name: HitBTC Candles API
+  description: The Candles API from HitBTC — 4 operation(s) for candles.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Candles
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-candles-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-conversions-api
+  name: HitBTC Conversions API
+  description: The Conversions API from HitBTC — 2 operation(s) for conversions.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Conversions
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-conversions-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-crypto-address-api
+  name: HitBTC Crypto Address API
+  description: The Crypto Address API from HitBTC — 4 operation(s) for crypto address.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Crypto Address
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-crypto-address-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-currencies-api
+  name: HitBTC Currencies API
+  description: The Currencies API from HitBTC — 2 operation(s) for currencies.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Currencies
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-currencies-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-currency-api
+  name: HitBTC Currency API
+  description: The Currency API from HitBTC — 2 operation(s) for currency.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Currency
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-currency-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-exchange-balances-api
+  name: HitBTC Exchange Balances API
+  description: The Exchange Balances API from HitBTC — 2 operation(s) for exchange balances.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Exchange Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-exchange-balances-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-funding-history-api
+  name: HitBTC Funding History API
+  description: The Funding History API from HitBTC — 2 operation(s) for funding history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Funding History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-funding-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-accounts-api
+  name: HitBTC Futures Accounts API
+  description: The Futures Accounts API from HitBTC — 5 operation(s) for futures accounts.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-balances-api
+  name: HitBTC Futures Balances API
+  description: The Futures Balances API from HitBTC — 2 operation(s) for futures balances.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-balances-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-fees-api
+  name: HitBTC Futures Fees API
+  description: The Futures Fees API from HitBTC — 2 operation(s) for futures fees.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Fees
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-fees-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-history-api
+  name: HitBTC Futures History API
+  description: The Futures History API from HitBTC — 4 operation(s) for futures history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-info-api
+  name: HitBTC Futures Info API
+  description: The Futures Info API from HitBTC — 2 operation(s) for futures info.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Info
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-info-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-order-lists-api
+  name: HitBTC Futures Order Lists API
+  description: The Futures Order Lists API from HitBTC — 1 operation(s) for futures order lists.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Order Lists
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-order-lists-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-orders-api
+  name: HitBTC Futures Orders API
+  description: The Futures Orders API from HitBTC — 2 operation(s) for futures orders.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-orders-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-parameters-api
+  name: HitBTC Futures Parameters API
+  description: The Futures Parameters API from HitBTC — 1 operation(s) for futures parameters.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Parameters
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-parameters-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-futures-positions-api
+  name: HitBTC Futures Positions API
+  description: The Futures Positions API from HitBTC — 3 operation(s) for futures positions.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Futures Positions
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-futures-positions-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-history-api
+  name: HitBTC History API
+  description: The History API from HitBTC — 5 operation(s) for history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-index-price-candles-api
+  name: HitBTC Index Price Candles API
+  description: The Index Price Candles API from HitBTC — 2 operation(s) for index price candles.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Index Price Candles
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-index-price-candles-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-mapping-api
+  name: HitBTC Mapping API
+  description: The Mapping API from HitBTC — 2 operation(s) for mapping.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Mapping
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-mapping-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-account-api
+  name: HitBTC Margin Account API
+  description: The Margin Account API from HitBTC — 2 operation(s) for margin account.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Account
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-account-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-accounts-api
+  name: HitBTC Margin Accounts API
+  description: The Margin Accounts API from HitBTC — 5 operation(s) for margin accounts.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-history-api
+  name: HitBTC Margin History API
+  description: The Margin History API from HitBTC — 4 operation(s) for margin history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-order-lists-api
+  name: HitBTC Margin Order Lists API
+  description: The Margin Order Lists API from HitBTC — 1 operation(s) for margin order lists.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Order Lists
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-order-lists-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-orders-api
+  name: HitBTC Margin Orders API
+  description: The Margin Orders API from HitBTC — 3 operation(s) for margin orders.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-orders-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-parameters-api
+  name: HitBTC Margin Parameters API
+  description: The Margin Parameters API from HitBTC — 1 operation(s) for margin parameters.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Parameters
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-parameters-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-positions-api
+  name: HitBTC Margin Positions API
+  description: The Margin Positions API from HitBTC — 3 operation(s) for margin positions.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Positions
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-positions-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-margin-settings-api
+  name: HitBTC Margin Settings API
+  description: The Margin Settings API from HitBTC — 2 operation(s) for margin settings.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Margin Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-margin-settings-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-mark-price-candles-api
+  name: HitBTC Mark Price Candles API
+  description: The Mark Price Candles API from HitBTC — 2 operation(s) for mark price candles.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Mark Price Candles
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-mark-price-candles-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-network-fees-api
+  name: HitBTC Network Fees API
+  description: The Network Fees API from HitBTC — 5 operation(s) for network fees.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Network Fees
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-network-fees-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-offchain-and-commissions-api
+  name: HitBTC Offchain And Commissions API
+  description: >-
+    The Offchain And Commissions API from HitBTC — 4 operation(s) for offchain and commissions.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Offchain And Commissions
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-offchain-and-commissions-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-open-interest-candles-api
+  name: HitBTC Open Interest Candles API
+  description: The Open Interest Candles API from HitBTC — 2 operation(s) for open interest candles.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Open Interest Candles
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-open-interest-candles-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-order-books-api
+  name: HitBTC Order Books API
+  description: The Order Books API from HitBTC — 2 operation(s) for order books.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Order Books
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-order-books-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-order-lists-api
+  name: HitBTC Order Lists API
+  description: The Order Lists API from HitBTC — 1 operation(s) for order lists.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Order Lists
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-order-lists-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-orderbook-api
+  name: HitBTC Orderbook API
+  description: The Orderbook API from HitBTC — 1 operation(s) for orderbook.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Orderbook
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-orderbook-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-orders-api
+  name: HitBTC Orders API
+  description: The Orders API from HitBTC — 2 operation(s) for orders.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-orders-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-premium-index-candles-api
+  name: HitBTC Premium Index Candles API
+  description: The Premium Index Candles API from HitBTC — 2 operation(s) for premium index candles.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Premium Index Candles
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-premium-index-candles-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-price-history-api
+  name: HitBTC Price History API
+  description: The Price History API from HitBTC — 1 operation(s) for price history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Price History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-price-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-quote-history-api
+  name: HitBTC Quote History API
+  description: The Quote History API from HitBTC — 1 operation(s) for quote history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Quote History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-quote-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-quote-tickers-api
+  name: HitBTC Quote Tickers API
+  description: The Quote Tickers API from HitBTC — 2 operation(s) for quote tickers.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Quote Tickers
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-quote-tickers-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-quotes-api
+  name: HitBTC Quotes API
+  description: The Quotes API from HitBTC — 1 operation(s) for quotes.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-rate-api
+  name: HitBTC Rate API
+  description: The Rate API from HitBTC — 1 operation(s) for rate.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Rate
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-rate-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-spot-orders-api
+  name: HitBTC Spot Orders API
+  description: The Spot Orders API from HitBTC — 2 operation(s) for spot orders.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Spot Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-spot-orders-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-subaccounts-api
+  name: HitBTC Subaccounts API
+  description: The Subaccounts API from HitBTC — 17 operation(s) for subaccounts.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Subaccounts
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-subaccounts-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-symbol-api
+  name: HitBTC Symbol API
+  description: The Symbol API from HitBTC — 2 operation(s) for symbol.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Symbol
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-symbol-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-symbols-api
+  name: HitBTC Symbols API
+  description: The Symbols API from HitBTC — 2 operation(s) for symbols.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Symbols
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-symbols-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-ticker-api
+  name: HitBTC Ticker API
+  description: The Ticker API from HitBTC — 2 operation(s) for ticker.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Ticker
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-ticker-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-tickers-api
+  name: HitBTC Tickers API
+  description: The Tickers API from HitBTC — 2 operation(s) for tickers.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Tickers
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-tickers-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-trades-api
+  name: HitBTC Trades API
+  description: The Trades API from HitBTC — 2 operation(s) for trades.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Trades
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-trades-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-trades-history-api
+  name: HitBTC Trades History API
+  description: The Trades History API from HitBTC — 2 operation(s) for trades history.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Trades History
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-trades-history-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-trading-api
+  name: HitBTC Trading API
+  description: The Trading API from HitBTC — 2 operation(s) for trading.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
   tags:
   - Trading
   properties:
   - type: OpenAPI
-    url: openapi/hitbtc-v2-openapi.yml
+    url: openapi/hitbtc-trading-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-trading-fees-api
+  name: HitBTC Trading Fees API
+  description: The Trading Fees API from HitBTC — 2 operation(s) for trading fees.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Trading Fees
+  properties:
   - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://api.hitbtc.com/api/2/explore/spec.yaml
+    url: openapi/hitbtc-trading-fees-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-transactions-api
+  name: HitBTC Transactions API
+  description: The Transactions API from HitBTC — 2 operation(s) for transactions.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-transfers-api
+  name: HitBTC Transfers API
+  description: The Transfers API from HitBTC — 1 operation(s) for transfers.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Transfers
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-transfers-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-wallet-balances-api
+  name: HitBTC Wallet Balances API
+  description: The Wallet Balances API from HitBTC — 2 operation(s) for wallet balances.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Wallet Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-wallet-balances-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-withdraw-api
+  name: HitBTC Withdraw API
+  description: The Withdraw API from HitBTC — 3 operation(s) for withdraw.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Withdraw
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-withdraw-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-order-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-transaction-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-user-order-info-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-market-data-currency-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-new-order-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-history-trade-schema.json
+- aid: hitbtc:hitbtc-withdrawals-api
+  name: HitBTC Withdrawals API
+  description: The Withdrawals API from HitBTC — 5 operation(s) for withdrawals.
+  humanURL: https://api.hitbtc.com/
+  baseURL: https://api.hitbtc.com/api/3
+  tags:
+  - Withdrawals
+  properties:
+  - type: OpenAPI
+    url: openapi/hitbtc-withdrawals-api-openapi.yml
+  - type: Documentation
+    url: https://api.hitbtc.com/
+  - type: APIReference
+    url: https://api.hitbtc.com/api/3/explore/
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-position-history-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-withdrawal-request-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-report-reason-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-wallet-subaccount-created-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-params-schema.json
+  - type: JSONSchema
+    url: json-schema/hitbtc-trading-margin-settings-schema.json
   - type: JSONSchema
     url: json-schema/hitbtc-trading-history-order-schema.json
   - type: JSONSchema

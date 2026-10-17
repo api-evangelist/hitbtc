@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Currency API
+  version: ''
+  description: 'Operations tagged Currency across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Currency
+paths:
+  /public/currency:
+    get:
+      tags:
+      - Currency
+      summary: Get currencies
+      description: Returns the actual list of available currencies, tokens, etc.
+      parameters:
+      - name: currencies
+        in: query
+        style: form
+        explode: false
+        description: A comma-separated list of currency codes.
+        schema:
+          type: array
+          items:
+            type: string
+      - $ref: '#/components/parameters/marketData_extended'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Currency'
+      security: []
+      operationId: getPublicCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /public/currency/{currency}:
+    get:
+      tags:
+      - Currency
+      summary: Get currency
+      parameters:
+      - $ref: '#/components/parameters/marketData_currencyPath'
+      - $ref: '#/components/parameters/marketData_extended'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Currency'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicCurrencyByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  schemas:
+    marketData_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    marketData_Currency:
+      required:
+      - id
+      - fullName
+      - crypto
+      - payinEnabled
+      - payinPaymentId
+      - payoutEnabled
+      - payoutIsPaymentId
+      - transferEnabled
+      - delisted
+      - payinConfirmations
+      - payoutFee
+      - precisionPayout
+      - precisionTransfer
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Currency identifier.
+        fullName:
+          type: string
+          nullable: true
+          description: Full currency name.
+        crypto:
+          type: boolean
+          description: Determines whether the currency belongs to a blockchain.
+        payinEnabled:
+          type: boolean
+          description: Determines whether it is allowed to generate addresses for a deposit.
+        payinPaymentId:
+          type: boolean
+          description: Determines whether it is required to provide additional information other than the address for a deposit.
+        payoutEnabled:
+          type: boolean
+          description: Determines whether the withdrawal is allowed.
+        payoutIsPaymentId:
+          type: boolean
+          description: Determines whether providing additional information for the withdrawal is allowed.
+        transferEnabled:
+          type: boolean
+          description: Determines whether the transfer between trading account and wallet account is allowed (may be disabled on a maintenance).
+        delisted:
+          type: boolean
+          default: false
+          description: An indication of whether the currency was delisted.
+        payinConfirmations:
+          type: number
+          description: Count of confirmations for the transaction.
+        payoutFee:
+          type: string
+          nullable: true
+          description: Default withdrawal fee.
+        precisionPayout:
+          type: number
+          description: Currency precision for the payout (accepted number of digits after the decimal point).
+        precisionTransfer:
+          type: number
+          description: Currency precision for transfer (accepted number of digits after the decimal point).
+        lowProcessingTime:
+          type: string
+          nullable: true
+          description: The lowest processing time in seconds for the payout operation.
+        highProcessingTime:
+          type: string
+          nullable: true
+          description: The highest processing time in seconds for the payout operation.
+        avgProcessingTime:
+          type: string
+          nullable: true
+          description: The average processing time in seconds for the payout operation.
+        tokenFamily:
+          type: string
+          nullable: true
+          description: Token group.
+        sign:
+          type: string
+          nullable: true
+          description: Currency sign.
+        cryptoPaymentIdName:
+          type: string
+          nullable: true
+          description: Transaction identifier, e.g., comment, message, memo, attachment, etc.
+        cryptoType:
+          type: string
+          nullable: true
+          description: Type of crypto platform.
+        qrPrefix:
+          type: string
+          nullable: true
+          description: QR prefix. The prefix is used to indicate the currency in a deposit address.
+        cryptoExplorer:
+          type: string
+          nullable: true
+          description: Link to the currency explorer with "{tx}" placeholder instead of hash.
+        category:
+          type: string
+          nullable: true
+          description: Currency category.
+        isInstrumentsStable:
+          type: boolean
+          description: If `true`, the pairs of this currency are displayed on the Stable tab.
+        accountTopOrder:
+          type: number
+          description: The order in which the user sees the currencies on the Account page.
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+  parameters:
+    marketData_extended:
+      name: extended
+      in: query
+      description: "A flag indicating whether to display all fields. If `false`, only the following fields will be returned:\n    - *id*\n    - *fullName*\n    - *crypto*\n    - *payinEnabled*\n    - *payinPaymentId*\n    - *payoutEnabled*\n    - *payoutIsPaymentId*\n    - *transferEnabled*\n    - *delisted*\n    - *payinConfirmations*\n    - *payoutFee*\n    - *precisionPayout*\n    - *precisionTransfer*\n    - *lowProcessingTime*\n    - *highProcessingTime*\n    - *avgProcessingTime*\n"
+      schema:
+        type: boolean
+        default: false
+    marketData_currencyPath:
+      name: currency
+      in: path
+      required: true
+      description: Currency code.
+      schema:
+        type: string
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

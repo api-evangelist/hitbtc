@@ -1,0 +1,394 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Margin Settings API
+  version: ''
+  description: 'Operations tagged Margin Settings across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Margin Settings
+paths:
+  /margin-settings:
+    get:
+      tags:
+      - Margin Settings
+      summary: Get margin settings
+      description: 'Returns the AMM (auto margin management) and AMR (auto margin
+
+        replenishment) settings of the user.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_MarginSettings'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginSettings
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin-settings/amm:
+    put:
+      tags:
+      - Margin Settings
+      summary: Set AMM
+      description: 'Changes the AMM (auto margin management) flag of the user.
+
+
+        The new value is applied to the orders placed after the request; margin
+
+        accounts that are already in a fixed mode keep it.
+
+
+        ℹ️ The request is rejected with the `403` status code if
+
+        `user_can_change_amm` is `false`.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_SetAmmRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/trading_SetAmmRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_SetAmm'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_Validation'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_AmmDisabled'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: putMarginSettingsAmm
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_AmmDisabled:
+      title: AMM feature is disabled
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'AMM (auto margin management) is disabled on the platform.
+
+        '
+      example:
+        error:
+          code: 65
+          message: AMM feature is disabled
+    trading_MarginSettings:
+      title: Margin settings
+      type: object
+      required:
+      - default_amm
+      - user_can_change_amm
+      - user_can_change_amr_isolated
+      - user_can_change_amr_cross
+      - current_amm
+      - amm_override_set
+      properties:
+        default_amm:
+          type: boolean
+          description: "Default value of the AMM (auto margin management) flag on the\n platform.\n"
+        user_can_change_amm:
+          type: boolean
+          description: "Flag indicating whether the user is allowed to change the AMM (auto\n margin management) flag.\n"
+        user_can_change_amr_isolated:
+          type: boolean
+          description: "Flag indicating whether the user is allowed to change the AMR (auto\n margin replenishment) flag of isolated margin accounts.\n"
+        user_can_change_amr_cross:
+          type: boolean
+          description: "Flag indicating whether the user is allowed to change the AMR (auto\n margin replenishment) flag of cross-margin accounts.\n"
+        current_amm:
+          type: boolean
+          description: "Effective value of the AMM (auto margin management) flag of the user:\n either the value set by the user or the default one.\n\nℹ️ This is the value the exchange web interface puts into\n `margin_auto` of every new order.\n"
+        amm_override_set:
+          type: boolean
+          description: "Flag indicating whether the user has set an own value of the AMM\n (auto margin management) flag instead of the default one.\n"
+      example:
+        default_amm: false
+        user_can_change_amm: true
+        user_can_change_amr_isolated: true
+        user_can_change_amr_cross: true
+        current_amm: true
+        amm_override_set: true
+    trading_SetAmm:
+      title: Set AMM
+      type: object
+      required:
+      - amm
+      properties:
+        amm:
+          type: boolean
+          description: 'Value of the AMM (auto margin management) flag of the user.
+
+            '
+      example:
+        amm: true
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_SetAmmRequest:
+      title: Set AMM request
+      type: object
+      required:
+      - amm
+      properties:
+        amm:
+          type: boolean
+          description: 'New value of the AMM (auto margin management) flag of the user.
+
+            '
+      example:
+        amm: true
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  responses:
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

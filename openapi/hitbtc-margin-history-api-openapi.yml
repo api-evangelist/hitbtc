@@ -1,0 +1,1255 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Margin History API
+  version: ''
+  description: 'Operations tagged Margin History across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Margin History
+paths:
+  /margin/history/order:
+    get:
+      tags:
+      - Margin History
+      summary: Get margin orders history
+      description: 'Returns all margin orders with trades for the last 24 hours.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/trading_ClOrderId'
+      - $ref: '#/components/parameters/trading_Symbols'
+      - $ref: '#/components/parameters/trading_Sort'
+      - $ref: '#/components/parameters/trading_By'
+      - $ref: '#/components/parameters/trading_From'
+      - $ref: '#/components/parameters/trading_Till'
+      - $ref: '#/components/parameters/trading_Limit'
+      - $ref: '#/components/parameters/trading_Offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_MarginOrderHistory'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginHistoryOrder
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/history/trade:
+    get:
+      tags:
+      - Margin History
+      summary: Get margin trades history
+      parameters:
+      - $ref: '#/components/parameters/trading_OrderId'
+      - $ref: '#/components/parameters/trading_PositionId'
+      - $ref: '#/components/parameters/trading_Symbols'
+      - $ref: '#/components/parameters/trading_Sort'
+      - $ref: '#/components/parameters/trading_By'
+      - $ref: '#/components/parameters/trading_From'
+      - $ref: '#/components/parameters/trading_Till'
+      - $ref: '#/components/parameters/trading_Limit'
+      - $ref: '#/components/parameters/trading_Offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_MarginTradeHistory'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginHistoryTrade
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/history/positions:
+    get:
+      tags:
+      - Margin History
+      summary: Get margin positions history
+      parameters:
+      - $ref: '#/components/parameters/trading_Sort'
+      - $ref: '#/components/parameters/trading_ByTs'
+      - $ref: '#/components/parameters/trading_TsFrom'
+      - $ref: '#/components/parameters/trading_TsTill'
+      - $ref: '#/components/parameters/trading_Limit'
+      - $ref: '#/components/parameters/trading_Offset'
+      - $ref: '#/components/parameters/trading_Symbols'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_PositionHistory'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginHistoryPositions
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/history/clearing:
+    get:
+      tags:
+      - Margin History
+      summary: Get interests history
+      description: 'Returns the history of interest payments by position symbol or the currency of payments (the quote currency in positions).
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 20/30'
+      parameters:
+      - $ref: '#/components/parameters/trading_Currency'
+      - $ref: '#/components/parameters/trading_Symbol'
+      - $ref: '#/components/parameters/trading_Sort'
+      - $ref: '#/components/parameters/trading_ByTs'
+      - $ref: '#/components/parameters/trading_From'
+      - $ref: '#/components/parameters/trading_Till'
+      - $ref: '#/components/parameters/trading_Limit'
+      - $ref: '#/components/parameters/trading_Offset'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_Interest'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_CurrencyNotFound'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginHistoryClearing
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_MarginAuto:
+      title: Auto margin management
+      type: object
+      properties:
+        margin_auto:
+          type: boolean
+          description: "Flag indicating whether AMM (auto margin management) is enabled for\n the margin account or position the order belongs to.\n\nConditions: returned for margin orders only\n"
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_MarginModeCommon:
+      title: Margin mode
+      type: string
+      enum:
+      - cross
+      - Cross
+      - isolated
+      - Isolated
+      description: Margin mode.
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_MarginMarketOrderHistory:
+      title: Market orders
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderCommon'
+      - $ref: '#/components/schemas/trading_OrderListFields'
+      - $ref: '#/components/schemas/trading_PositionId'
+      - $ref: '#/components/schemas/trading_MarginMode'
+      - $ref: '#/components/schemas/trading_MarginAuto'
+    trading_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided currency has not been found.
+
+
+        Any of:
+
+        * the currency is disabled;
+
+        * the currency is unavailable for a given market.
+
+        '
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    trading_MarginStopLimitOrderHistory:
+      title: Stop limit orders
+      allOf:
+      - $ref: '#/components/schemas/trading_MarginLimitOrderHistory'
+      - $ref: '#/components/schemas/trading_StopPrice'
+    trading_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    trading_ClosePosition:
+      title: Close position
+      type: object
+      properties:
+        close_position:
+          type: boolean
+          description: "Flag indicating a stop market order must close a margin position\n when executed or be canceled otherwise.\n"
+    trading_MarginStopMarketOrderHistory:
+      title: Stop limit orders
+      allOf:
+      - $ref: '#/components/schemas/trading_MarginMarketOrderHistory'
+      - $ref: '#/components/schemas/trading_StopPrice'
+      - $ref: '#/components/schemas/trading_ClosePosition'
+      - required:
+        - stop_price
+    trading_MarginTradeHistory:
+      title: Trades history
+      allOf:
+      - $ref: '#/components/schemas/trading_Trade'
+      - $ref: '#/components/schemas/trading_PositionId'
+      - $ref: '#/components/schemas/trading_MarginTradeFields'
+    trading_Clearing:
+      title: Clearing
+      type: object
+      required:
+      - timestamp
+      - currency
+      - amount
+      properties:
+        timestamp:
+          type: integer
+          format: uint64
+          description: Transfer timestamp in nanoseconds.
+          example: 1646524800267
+        position_id:
+          type: integer
+          format: uint64
+          description: 'Position identifier.
+
+
+            Conditions: the user holds a position
+
+            '
+          example: 1408
+        position_quantity:
+          type: string
+          description: 'Position quantity.
+
+
+            Conditions: the user holds a position
+
+            '
+          example: '0.00010'
+        position_entry_value:
+          type: string
+          description: 'Position entry value.
+
+
+            Conditions: the user holds a position
+
+            '
+          example: '5.126379000000'
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        currency:
+          type: string
+          description: Transfer currency.
+          example: USDT
+        amount:
+          type: string
+          description: Transfer amount.
+          example: '0.011819526000'
+        rate:
+          type: string
+          description: 'Interest rate.
+
+
+            Conditions: `null` if the withdrawal occurred during a close trade (debt collection)
+
+            '
+          example: '0.0001'
+        debt_delta:
+          type: string
+          description: 'Debt value.
+
+
+            Conditions: the user was unable to pay funding during the last withdrawal but had a positive UPnL
+
+            '
+          example: '0'
+    trading_MarginTradeFields:
+      title: Margin trade
+      type: object
+      required:
+      - pnl
+      - otc
+      - liquidation
+      - margin_mode
+      properties:
+        position_id:
+          type: integer
+          format: uint64
+          description: Identifier of the aggressor order position.
+          example: 237
+        pnl:
+          type: string
+          description: Realized PnL.
+          example: '0'
+        fee_cumulative:
+          type: string
+          description: "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+          example: 0.14
+        otc:
+          type: boolean
+          nullable: true
+          description: Over-the-counter order flag.
+        liquidation:
+          type: boolean
+          description: Flag indicating whether it is a liquidation trade.
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+    trading_PositionHistory:
+      title: Positions history
+      type: object
+      required:
+      - id
+      - entry_value
+      - entry_price
+      - avg_buy_price
+      - avg_sell_price
+      - quantity
+      - buy_quantity
+      - sell_quantity
+      - margin_call_price
+      - liquidation_price
+      - bankruptcy_price
+      - margin
+      - required_margin
+      - orders_margin
+      - pnl
+      - leverage
+      - margin_mode
+      - state
+      - symbol
+      - margin_call
+      - margin_auto
+      - amr
+      - create_timestamp
+      - update_timestamp
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+          example: 1408
+        entry_value:
+          type: string
+          description: Position value in currency.
+          example: '0'
+        entry_price:
+          type: string
+          description: Weighted average open price.
+          example: '0.000'
+        avg_buy_price:
+          type: string
+          description: Weighted average buy price.
+          example: '1978.057'
+        avg_sell_price:
+          type: string
+          description: Weighted average sell price.
+          example: '3851.001'
+        quantity:
+          type: string
+          description: Position quantity.
+          example: '0'
+        buy_quantity:
+          type: string
+          description: Total quantity of buy trades in the position.
+          example: '0'
+        sell_quantity:
+          type: string
+          description: Total quantity of sell trades in the position.
+          example: '0'
+        margin_call_price:
+          type: string
+          description: If the market is equal to or worse than this price a margin call will be issued.
+          example: '0.000'
+        liquidation_price:
+          type: string
+          description: The price at which the platform begins to close the position.
+          example: '0.000'
+        bankruptcy_price:
+          type: string
+          description: The price at which the position can no longer be closed with any non-negative PnL.
+          example: '0.000'
+        margin:
+          type: string
+          description: Amount of margin expressed in the quote currency.
+          example: '100.169018395350'
+        required_margin:
+          type: string
+          description: Margin reserved for close orders.
+          example: '0'
+        orders_margin:
+          type: string
+          description: Margin reserved for open orders.
+          example: '0.000006557500'
+        pnl:
+          type: string
+          description: Unrealized Profit and Loss.
+          example: '0.187294400000'
+        leverage:
+          type: string
+          description: Position leverage.
+          example: '10.00'
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        state:
+          type: string
+          description: Position state.
+          enum:
+          - closed
+          - active
+          - liquidated
+        fee_cumulative:
+          type: string
+          description: "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+          example: 0.14
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        margin_call:
+          type: boolean
+          description: Flag indicating the position is close to the liquidation, and increased margin may prevent it from happening.
+        margin_auto:
+          type: boolean
+          description: "Flag indicating whether AMM (auto margin management) was enabled for\n the position.\n"
+        amr:
+          type: boolean
+          description: 'Value of the AMR (auto margin replenishment) flag of the position.
+
+            '
+        create_timestamp:
+          type: integer
+          format: uint64
+          description: Timestamp of the position creation in nanoseconds.
+          example: 1626881592397
+        update_timestamp:
+          type: integer
+          format: uint64
+          description: Timestamp of the position last update in nanoseconds.
+          example: 1639570624225
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_OrderTradesBase:
+      title: Order trades
+      type: object
+      required:
+      - id
+      - quantity
+      - price
+      - fee
+      - timestamp
+      - taker
+      description: The list of trades the order participated in.
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Trade identifier.
+          example: 112263
+        quantity:
+          type: string
+          description: Quantity of the trade.
+          example: '5.457'
+        price:
+          type: string
+          description: Trade price.
+          example: '27001.99'
+        fee:
+          type: string
+          description: Fee paid for trade.
+          example: '0.000097776600'
+        timestamp:
+          type: string
+          description: Date and time of the trade.
+          example: '2024-03-22T17:01:05.092Z'
+        taker:
+          type: boolean
+          description: Liquidity indicator.
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_OrderListFields:
+      title: Order list
+      type: object
+      properties:
+        order_list_id:
+          type: string
+          description: 'Order list identifier.
+
+
+            Conditions: order list
+
+            '
+          example: d8574207d9e3b16a4a5511753eeef175
+        contingency_type:
+          type: string
+          enum:
+          - allOrNone
+          - oneCancelOther
+          - oneTriggerOther
+          - oneTriggerOneCancelOther
+          description: "Order list type.\n\nConditions: order list\n\nValues:\n  * `allOrNone` (AON)—all orders in the set should be executed within a single transaction or become expired otherwise;\n  * `oneCancelOther` (OCO)—all orders in the set should be canceled if one of them was executed;\n  * `oneTriggerOther` (OTO)—execution of the first (primary) order on the list activates other (secondary) orders as independent of each other;\n  * `oneTriggerOneCancelOther` (OTOCO)—the execution of the first (primary) order on the list activates the other (secondary) orders as an OCO order list.\n"
+    trading_SymbolNotFound:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_MarginOrderHistory:
+      allOf:
+      - type: object
+      - title: Orders history
+        discriminator:
+          propertyName: type
+          mapping:
+            limit: '#/components/schemas/trading_MarginLimitOrderHistory'
+            market: '#/components/schemas/trading_MarginMarketOrderHistory'
+            stopLimit: '#/components/schemas/trading_MarginStopLimitOrderHistory'
+            stopMarket: '#/components/schemas/trading_MarginStopMarketOrderHistory'
+            takeProfitLimit: '#/components/schemas/trading_MarginStopLimitOrderHistory'
+            takeProfitMarket: '#/components/schemas/trading_MarginStopMarketOrderHistory'
+        oneOf:
+        - $ref: '#/components/schemas/trading_MarginLimitOrderHistory'
+        - $ref: '#/components/schemas/trading_MarginMarketOrderHistory'
+        - $ref: '#/components/schemas/trading_MarginStopLimitOrderHistory'
+        - $ref: '#/components/schemas/trading_MarginStopMarketOrderHistory'
+        - $ref: '#/components/schemas/trading_MarginStopLimitOrderHistory'
+        - $ref: '#/components/schemas/trading_MarginStopMarketOrderHistory'
+    trading_OrderCommon:
+      title: Order
+      type: object
+      required:
+      - id
+      - client_order_id
+      - symbol
+      - quantity
+      - quantity_cumulative
+      - time_in_force
+      - side
+      - status
+      - type
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: integer
+          format: uint64
+          example: 828680665
+          description: Unique order identifier as assigned by the exchange.
+        client_order_id:
+          type: string
+          description: Client-provided or system-generated identifier of an order.
+          example: d8574207d9e3b16a4a5511753eeef175
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        side:
+          type: string
+          enum:
+          - sell
+          - buy
+          description: Order side.
+        status:
+          type: string
+          enum:
+          - new
+          - suspended
+          - partiallyFilled
+          - filled
+          - canceled
+          - expired
+          - rejected
+          description: 'Order status.
+
+
+            Values:
+
+            * `new`—an order is placed in the order book;
+
+            * `suspended`—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book;
+
+            * `partiallyFilled`—an order is executed, but a part of its quantity is not filled yet;
+
+            * `filled`—order quantity filled completely;
+
+            * `canceled`—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances;
+
+            * `expired`—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements;
+
+            * `rejected`—an order has been rejected.
+
+            '
+        type:
+          type: string
+          enum:
+          - limit
+          - market
+          - stopLimit
+          - stopMarket
+          - takeProfitLimit
+          - takeProfitMarket
+          description: 'Order type.
+
+
+            Values:
+
+            * `limit`—an order that will be executed at or better than the specified price. The remainder, if any, is added to the order book or expired by terms of its Time-In-Force instruction;
+
+            * `market`—an order that will be executed at the "best" available market price. If the order depletes its price level, then leaves quantity is placed to the order book at this limit price;
+
+            * `stopLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);
+
+            * `stopMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);
+
+            * `takeProfitLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below);
+
+            * `takeProfitMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below).
+
+            '
+        time_in_force:
+          type: string
+          enum:
+          - GTC
+          - IOC
+          - FOK
+          - Day
+          - GTD
+          description: 'Order expiration mode.
+
+
+            Values:
+
+            * `GTC` ("Good-Till-Canceled")—order will not be closed until it is filled;
+
+            * `IOC` ("Immediate-Or-Cancel")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled;
+
+            * `FOK` ("Fill-Or-Kill")—order must be executed immediately and completely or not executed at all;
+
+            * `Day`—keeps the order active until the end of the trading day (23:59 UTC+0);
+
+            * `GTD` ("Good-Till-Date")—order will be canceled on the specified date.
+
+            '
+        quantity:
+          type: string
+          description: Order quantity.
+          example: '13.942'
+        quantity_cumulative:
+          type: string
+          description: Executed order quantity.
+          example: '5.240'
+        expire_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: 'Date of order expiration.
+
+
+            Conditions: `time_in_force` is `"GTD"`
+
+            '
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: Date of order creation.
+          example: '2024-03-22T14:18:47.321Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Date of order last update.
+          example: '2024-03-22T15:23:56.876Z'
+        price_average:
+          type: string
+          description: 'Average price of executed order quantity.
+
+            '
+          example: '27001.99'
+    trading_StopPrice:
+      title: Stop price
+      type: object
+      properties:
+        stop_price:
+          type: string
+          description: The price level that triggers order activation.
+          example: '27003.99'
+    trading_Interest:
+      title: Interest
+      allOf:
+      - $ref: '#/components/schemas/trading_Clearing'
+      - type: object
+        required:
+        - type
+        properties:
+          trade_id:
+            type: integer
+            format: uint64
+            description: 'Trade identifier.
+
+
+              Conditions: the user holds a position
+
+              '
+            example: 112263
+          type:
+            type: string
+            enum:
+            - interest
+            description: Transfer type.
+    trading_PositionId:
+      title: Position ID
+      type: object
+      required:
+      - position_id
+      properties:
+        position_id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+          example: 1408
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_MarginLimitOrderHistory:
+      title: Limit orders
+      allOf:
+      - $ref: '#/components/schemas/trading_MarginMarketOrderHistory'
+      - $ref: '#/components/schemas/trading_Price'
+    trading_Trade:
+      title: Trade
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderTradesBase'
+      - type: object
+        required:
+        - order_id
+        - client_order_id
+        - side
+        - symbol
+        properties:
+          order_id:
+            type: integer
+            format: uint64
+            description: Unique identifier of the aggressor order as assigned by the exchange.
+            example: 816088377
+          client_order_id:
+            type: string
+            description: Unique identifier of the aggressor order as assigned by the trader.
+            example: d8574207d9e3b16a4a5511753eeef175
+          symbol:
+            type: string
+            description: Symbol code.
+            example: BTCUSDT
+          side:
+            type: string
+            enum:
+            - sell
+            - buy
+            description: Aggressor order side.
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_Price:
+      title: Price
+      type: object
+      required:
+      - price
+      properties:
+        price:
+          type: string
+          pattern: ^\d+\.?\d*$
+          description: Order price.
+          example: '27001.99'
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_MarginMode:
+      title: Margin mode
+      type: object
+      required:
+      - margin_mode
+      properties:
+        margin_mode:
+          default: isolated
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  parameters:
+    trading_By:
+      name: by
+      in: query
+      schema:
+        type: string
+        default: id
+        enum:
+        - timestamp
+        - ts
+        - id
+      description: "The type of field the entries sorted by.\n\nValues:\n  * `timestamp`, `ts`—date and time of entry creation;\n  * `id`—identifier of the entry.\n"
+    trading_TsTill:
+      name: till
+      in: query
+      schema:
+        type: string
+        format: date-time
+        description: 'Interval end value.
+
+
+          Format: RFC 3339 in nanoseconds
+
+          '
+        example: '2024-03-22T15:04:05.999999999'
+      description: Entry identifier or timestamp.
+    trading_OrderId:
+      name: order_id
+      in: query
+      schema:
+        type: integer
+        format: uint64
+        minimum: 0
+      description: Order identifier as assigned by the exchange.
+      example: 816088377
+    trading_ByTs:
+      name: by
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+        - timestamp
+        - ts
+      description: "The type of field entries sorted by.\n\nValues:\n  * `timestamp`, `ts`—date and time of entry creation.\n"
+    trading_Symbols:
+      name: symbol
+      in: query
+      schema:
+        type: array
+        nullable: true
+        items:
+          $ref: '#/components/schemas/trading_SymbolCommon'
+        minItems: 1
+      style: form
+      explode: false
+      description: Comma-separated symbol codes.
+    trading_PositionId:
+      name: position_id
+      in: query
+      schema:
+        type: integer
+        format: uint64
+        minimum: 0
+      description: Position identifier.
+      example: 972
+    trading_Sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+        default: desc
+        enum:
+        - desc
+        - asc
+      description: "Sort order.\n\nValues:\n  * `asc`—ascending (from A to Z);\n  * `desc`—descending (from Z to A).\n"
+    trading_TsFrom:
+      name: from
+      in: query
+      schema:
+        type: string
+        format: date-time
+        description: 'Interval start value.
+
+
+          Format: RFC 3339 in nanoseconds
+
+          '
+        example: '2024-03-22T15:04:05.999999999'
+      description: Entry identifier or timestamp.
+    trading_From:
+      name: from
+      in: query
+      schema:
+        oneOf:
+        - type: integer
+          format: uint64
+          description: Interval start value.
+        - type: string
+          format: date-time
+          description: 'Interval start value.
+
+
+            Format: RFC 3339 in nanoseconds
+
+            '
+          example: '2024-03-22T15:04:05.999999999'
+    trading_Limit:
+      name: limit
+      in: query
+      description: The number of items to return.
+      schema:
+        maximum: 1000
+        minimum: 1
+        type: integer
+        format: int
+        default: 100
+    trading_Offset:
+      name: offset
+      in: query
+      schema:
+        maximum: 100000
+        minimum: 0
+        type: integer
+        format: int
+        default: 0
+      description: The number of items to skip before starting to collect the result set.
+    trading_Till:
+      name: till
+      in: query
+      schema:
+        oneOf:
+        - type: integer
+          format: uint64
+          description: Interval end value.
+        - type: string
+          format: date-time
+          description: 'Interval end value.
+
+
+            Format: RFC 3339 in nanoseconds
+
+            '
+          example: '2024-03-22T15:04:05.999999999'
+    trading_Symbol:
+      name: symbol
+      in: query
+      schema:
+        $ref: '#/components/schemas/trading_SymbolCommon'
+    trading_Currency:
+      name: currency
+      in: query
+      schema:
+        $ref: '#/components/schemas/trading_CurrencyCommon'
+    trading_ClOrderId:
+      name: client_order_id
+      in: query
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 32
+        pattern: ^[a-zA-Z0-9_\-]{8,32}$
+      description: Client-provided or system-generated identifier of the order.
+  responses:
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

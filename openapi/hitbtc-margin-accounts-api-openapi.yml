@@ -1,0 +1,1202 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Margin Accounts API
+  version: ''
+  description: 'Operations tagged Margin Accounts across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Margin Accounts
+paths:
+  /margin/account:
+    get:
+      tags:
+      - Margin Accounts
+      summary: Get margin accounts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_Account'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_MarginTradingIsDisabled'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginAccount
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/account/isolated/{symbol}:
+    get:
+      tags:
+      - Margin Accounts
+      summary: Get an isolated margin account
+      parameters:
+      - $ref: '#/components/parameters/trading_SymbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_AccountIsolated'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginAccountIsolatedBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/account/cross/{currency}:
+    get:
+      tags:
+      - Margin Accounts
+      summary: Get a cross-margin account
+      parameters:
+      - $ref: '#/components/parameters/trading_CurrencyPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_AccountCross'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_CurrencyNotFound'
+                - $ref: '#/components/schemas/trading_UnknownMarginMode'
+                - $ref: '#/components/schemas/trading_UnknownMarginAccount'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_MarginTradingIsDisabled'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getMarginAccountCrossByCurrency
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/account/{margin_mode}/{instrument}:
+    put:
+      tags:
+      - Margin Accounts
+      summary: Update a margin account
+      description: 'Creates, updates, or closes a margin account.
+
+
+        ℹ️ To retrieve all funds from a margin account, set `margin_balance` to `0`.
+
+
+        ℹ️ The request is not required if AMM (auto margin management) is
+
+        enabled: margin is reserved and released automatically. It still can be
+
+        used to reserve additional margin for the account.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 300/450'
+      parameters:
+      - $ref: '#/components/parameters/trading_MarginModePath'
+      - name: instrument
+        in: path
+        required: true
+        schema:
+          oneOf:
+          - $ref: '#/components/schemas/trading_SymbolCommon'
+          - $ref: '#/components/schemas/trading_CurrencyCommon'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/trading_MarginBalanceRequest'
+              - $ref: '#/components/schemas/trading_StrictValidateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/trading_MarginBalanceRequest'
+              - $ref: '#/components/schemas/trading_StrictValidateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_AccountReport'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_CurrencyNotFound'
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_MarginTradingForbidden'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_UnknownMarginMode'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_MarginTradingIsDisabled'
+        '500':
+          description: Interval Server Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_Internal'
+                - $ref: '#/components/schemas/trading_ResponseFormatter'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: putMarginAccountByMarginModeByInstrument
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /margin/margin-settings/amr:
+    put:
+      tags:
+      - Margin Accounts
+      summary: Set AMR
+      description: 'Changes the AMR (auto margin replenishment) flag of a margin margin
+
+        account: an isolated one addressed by `symbol` or a cross-margin one
+
+        addressed by `currency`.
+
+
+        ℹ️ For a cross-margin account, the flag is applied to all the positions
+
+        of the account at once.
+
+
+        ℹ️ The request is rejected with the `403` status code if
+
+        `user_can_change_amr_isolated`/`user_can_change_amr_cross` is `false`
+
+        for the requested margin mode.
+
+
+        ℹ️ Setting the value the account already has is not an error: the
+
+        current state is returned, but no report is sent.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 20/30'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_SetAmrRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/trading_SetAmrRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_SetAmr'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_CurrencyNotFound'
+                - $ref: '#/components/schemas/trading_UnknownMarginMode'
+                - $ref: '#/components/schemas/trading_UnknownMarginAccount'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_AmmDisabled'
+                - $ref: '#/components/schemas/trading_MarginTradingIsDisabled'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: putMarginMarginSettingsAmr
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_ResponseFormatter:
+      title: Formatter error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * the position symbol is not found when returning the response;
+
+        * a margin balance currency is not found when returning the response.
+
+        '
+      example:
+        error:
+          code: 500
+          message: Internal error
+          description: response formatter error
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_MarginModeCommon:
+      title: Margin mode
+      type: string
+      enum:
+      - cross
+      - Cross
+      - isolated
+      - Isolated
+      description: Margin mode.
+    trading_AmmDisabled:
+      title: AMM feature is disabled
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'AMM (auto margin management) is disabled on the platform.
+
+        '
+      example:
+        error:
+          code: 65
+          message: AMM feature is disabled
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_PositionBase:
+      title: Margin position
+      type: object
+      required:
+      - id
+      - symbol
+      - margin_mode
+      - quantity
+      - price_entry
+      - price_margin_call
+      - price_liquidation
+      - pnl
+      - created_at
+      - updated_at
+      - status
+      - required_margin
+      - orders_margin
+      - margin_auto
+      - amr
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Position identifier.
+          example: 1408
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        quantity:
+          type: string
+          description: Position quantity.
+          example: '0.00007'
+        price_entry:
+          type: string
+          description: Average weighted price of position open orders.
+          example: '33304.11'
+        price_margin_call:
+          type: string
+          description: Margin call price.
+          example: '25395.20'
+        price_liquidation:
+          type: string
+          description: Liquidation price.
+          example: '24884.62'
+        pnl:
+          type: string
+          description: Unrealized profit and loss.
+          example: '0.014772687500'
+        fee_cumulative:
+          type: string
+          description: "Total amount of fees paid throughout the position lifetime until it\n is closed.\n\nFormat: Decimal\n\nValues: `0` if a new position created\n\n⚠️ This value does zero out after the position closes  and does not\n when it flips.\n"
+          example: '0.14'
+        created_at:
+          type: string
+          format: date-time
+          description: Position creation date and time.
+          example: '2024-03-22T17:26:10.758Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Position last update date and time.
+          example: '2024-03-22T21:20:03.64Z'
+        status:
+          type: string
+          enum:
+          - normal
+          - blocked
+          - closeOnly
+          description: "Position status.\n\nValues:\n* `normal`—the client can place and cancel orders, amend and change\n  the margin;\n* `blocked`—the client cannot place orders on either side;\n* `closeOnly`—the client may only place orders to close the\n  position.\n"
+        required_margin:
+          type: string
+          description: 'Amount of currency reserved for close orders.
+
+            '
+          example: '1.126441946273'
+        orders_margin:
+          type: string
+          description: 'Amount of currency reserved for open orders.
+
+            '
+          example: '0'
+        margin_call:
+          type: boolean
+          description: 'Flag indicating whether additional margin is required to maintain the position.
+
+            '
+        margin_auto:
+          type: boolean
+          description: "Flag indicating whether AMM (auto margin management) is enabled for\n the position.\n"
+        amr:
+          type: boolean
+          description: "Current value of the AMR (auto margin replenishment) flag of the\n position.\n"
+    trading_CurrencyNotFound:
+      title: Currency not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided currency has not been found.
+
+
+        Any of:
+
+        * the currency is disabled;
+
+        * the currency is unavailable for a given market.
+
+        '
+      example:
+        error:
+          code: 2002
+          message: Currency not found
+    trading_StrictValidateRequest:
+      title: Strict validate
+      type: object
+      properties:
+        strict_validate:
+          type: boolean
+          description: Price and quantity will be checked for incrementation within the symbol tick size and quantity step (see the symbol `tick_size` and `quantity_increment`).
+          default: false
+    trading_UnknownMarginMode:
+      title: Unknown margin mode
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid margin mode.
+
+        '
+      example:
+        error:
+          code: 2025
+          message: Unknown margin mode
+    trading_UnknownMarginAccount:
+      title: Unknown margin account
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'No margin account for a given instrument is found.
+
+        '
+      example:
+        error:
+          code: 10025
+          message: Unknown margin account
+    trading_Position:
+      title: Margin position
+      allOf:
+      - $ref: '#/components/schemas/trading_PositionBase'
+      - $ref: '#/components/schemas/trading_Leverage'
+    trading_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    trading_AccountCross:
+      title: Cross
+      allOf:
+      - $ref: '#/components/schemas/trading_AccountBase'
+      - $ref: '#/components/schemas/trading_Leverage'
+      - type: object
+        required:
+        - positions
+        properties:
+          positions:
+            type: array
+            items:
+              $ref: '#/components/schemas/trading_Position'
+            description: Open positions of the margin account.
+          currencies:
+            type: array
+            items:
+              $ref: '#/components/schemas/trading_IsolatedAccountBalance'
+            description: 'Amount of funds on margin account.
+
+              '
+    trading_AccountBase:
+      title: Margin account
+      type: object
+      required:
+      - symbol
+      - type
+      - created_at
+      - updated_at
+      - currencies
+      - margin_call
+      - margin_auto
+      - amr
+      properties:
+        symbol:
+          type: string
+          description: 'Trading symbol, where base currency is the currency of funds
+
+            reserved on the exchange account for positions and quote currency is
+
+            the currency of funds reserved on a margin account.
+
+            '
+          example: BTCUSDT
+        type:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        created_at:
+          type: string
+          format: date-time
+          description: 'Account creation date and time.
+
+            '
+          example: '2024-03-22T17:26:10.758Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: 'Account last update date and time.
+
+            '
+          example: '2024-03-22T21:20:03.64Z'
+        margin_call:
+          type: boolean
+          description: 'Flag indicating whether additional margin is required to maintain
+
+            the position.
+
+            '
+        margin_auto:
+          type: boolean
+          description: 'Flag indicating whether AMM (auto margin management) is enabled for
+
+            the margin account.
+
+            '
+        amr:
+          type: boolean
+          description: 'Current value of the AMR (auto margin replenishment) flag of the
+
+            margin account.
+
+            '
+    trading_MarginBalanceRequest:
+      title: Margin balance request
+      allOf:
+      - $ref: '#/components/schemas/trading_StrictValidateRequest'
+      - type: object
+        required:
+        - margin_balance
+        properties:
+          margin_balance:
+            type: number
+            minimum: 0
+            description: Amount of currency reserved for margin trading.
+            example: 2.37
+    trading_SetAmr:
+      title: Set AMR
+      type: object
+      required:
+      - margin_mode
+      - amr
+      properties:
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        symbol:
+          type: string
+          description: 'Symbol code of the isolated margin account.
+
+
+            Conditions: `margin_mode` is `isolated`
+
+            '
+          example: BTCUSDT
+        currency:
+          type: string
+          description: 'Currency code of the cross-margin account.
+
+
+            Conditions: `margin_mode` is `cross`
+
+            '
+          example: USDT
+        amr:
+          type: boolean
+          description: "Current value of the AMR (auto margin replenishment) flag of the\n margin account.\n"
+      example:
+        margin_mode: isolated
+        symbol: BTCUSDT
+        amr: true
+    trading_ExchangeClosed:
+      title: Exchange closed
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Exchange is temporary closed.
+
+        '
+      example:
+        error:
+          code: 20010
+          message: Exchange temporary closed
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_Leverage:
+      title: Leverage
+      type: object
+      required:
+      - leverage
+      properties:
+        leverage:
+          type: string
+          description: 'Leverage—the ratio of the user own funds to funds borrowed from the
+
+            platform.
+
+            '
+          example: '12.00'
+    trading_SymbolNotFound:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_MarginTradingForbidden:
+      title: Margin trading forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Margin trading is forbidden for the user.
+
+
+        Any of:
+
+        * the user is not found;
+
+        * user verification level does not allow margin trading;
+
+        * the user is suspected of fraudulent activity.
+
+        '
+      example:
+        error:
+          code: 20052
+          message: Margin trading forbidden
+    trading_AccountIsolated:
+      title: Isolated
+      allOf:
+      - $ref: '#/components/schemas/trading_AccountBase'
+      - $ref: '#/components/schemas/trading_Leverage'
+      - type: object
+        required:
+        - positions
+        properties:
+          positions:
+            type: array
+            items:
+              $ref: '#/components/schemas/trading_PositionBase'
+            description: Open positions of the margin account.
+          currencies:
+            type: array
+            items:
+              $ref: '#/components/schemas/trading_IsolatedAccountBalance'
+            description: 'Amount of funds on margin account.
+
+              '
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_MarginMode:
+      title: Margin mode
+      type: object
+      required:
+      - margin_mode
+      properties:
+        margin_mode:
+          default: isolated
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+    trading_AccountReport:
+      title: Margin account report
+      oneOf:
+      - $ref: '#/components/schemas/trading_AccountIsolated'
+      - $ref: '#/components/schemas/trading_AccountCrossReport'
+    trading_AccountCrossReport:
+      title: Cross-margin account report
+      description: '⚠️ Values of `required_margin`, `margin_call_margin`,
+
+        `liquidation_margin` do not carry information that would be valuable for
+
+        predicting the condition of a position, since those change after an
+
+        adjusted price (mark price) changes.
+
+        '
+      allOf:
+      - $ref: '#/components/schemas/trading_MarginMode'
+      - required:
+        - account_margin
+        - currency
+        - margin_mode
+        - exec_type
+        - margin
+        - required_margin
+        - debt_sum
+        - margin_call
+        - margin_auto
+        - amr
+        properties:
+          exec_type:
+            type: string
+            enum:
+            - created
+            - marginChanged
+            - amrChanged
+            description: "Margin account report execution type.\n\nValues:\n* `created`—new position has been created as a result of the\n  first set margin request;\n* `marginChanged`—position margin has been added or withdrawn as\n  a result of any subsequent set margin request;\n* `amrChanged`—the value of the AMR (auto margin replenishment)\n  flag has changed.\n"
+          currency:
+            type: string
+            description: 'Currency code.
+
+              '
+            example: USDT
+          account_margin:
+            type: string
+            description: 'Amount of margin in natural units of currency.
+
+              '
+            example: '100.00'
+          margin:
+            type: string
+            description: 'Total amount of margin in natural units of currency involved in
+
+              positions, meaning that it is equal to the sum of orders margin
+
+              and account margin.
+
+              '
+            example: '100.00'
+          required_margin:
+            type: string
+            description: 'The lower boundary to `margin` minus debt. If margin is lower
+
+              than this value, placing new orders and margin retrieving are
+
+              not allowed.
+
+              '
+            example: '0'
+          margin_call_margin:
+            type: string
+            description: 'Minimum amount of margin that must be in the account to avoid
+
+              sending a margin call.
+
+
+              ℹ️ If the `account_margin` minus `debt_sum` not exceeds
+
+              `margin_call_margin`, a margin call will send.
+
+              '
+            example: '0'
+          liquidation_margin:
+            type: string
+            description: 'Minimum amount of margin that must be in the account to avoid
+
+              liquidation.
+
+
+              ℹ️ If the `account_margin` minus `debt_sum` not exceeds
+
+              `liquidation_margin`, all active orders will be canceled and
+
+              then, if condition still true, account will be liquidated.
+
+              '
+            example: '0'
+          debt_sum:
+            type: string
+            description: 'Account debt for interests (fundings), fees, and loss.
+
+              '
+            example: '0'
+          margin_call:
+            type: boolean
+            description: 'Flag indicating whether additional margin is required to
+
+              maintain the position.
+
+              '
+          margin_auto:
+            type: boolean
+            description: 'Flag indicating whether AMM (auto margin management) is enabled
+
+              for the margin account.
+
+              '
+          amr:
+            type: boolean
+            description: 'Current value of the AMR (auto margin replenishment) flag of the
+
+              margin account.
+
+              '
+    trading_Account:
+      allOf:
+      - type: object
+      - title: Margin account
+        discriminator:
+          propertyName: type
+          mapping:
+            isolated: '#/components/schemas/trading_AccountIsolated'
+            cross: '#/components/schemas/trading_AccountCross'
+        oneOf:
+        - $ref: '#/components/schemas/trading_AccountIsolated'
+        - $ref: '#/components/schemas/trading_AccountCross'
+    trading_SymbolExpired:
+      title: Symbol expired
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trades on the given symbol are suspended.
+
+        '
+      example:
+        error:
+          code: 20046
+          message: Exchange symbol is expired
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+    trading_MarginTradingIsDisabled:
+      title: Margin trading is disabled
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Margin trading is forbidden for the user.
+
+        '
+      example:
+        error:
+          code: 20040
+          message: Margin trading forbidden
+    trading_SetAmrRequest:
+      title: Set AMR request
+      type: object
+      required:
+      - margin_mode
+      - amr
+      properties:
+        margin_mode:
+          $ref: '#/components/schemas/trading_MarginModeCommon'
+        symbol:
+          type: string
+          description: "Symbol code of the isolated margin account.\n\nConditions: required if `margin_mode` is `isolated`, must be omitted\n otherwise\n"
+          example: BTCUSDT
+        currency:
+          type: string
+          description: "Currency code of the cross-margin account.\n\nConditions: required if `margin_mode` is `cross`, must be omitted\n otherwise\n"
+          example: USDT
+        amr:
+          type: boolean
+          description: "New value of the AMR (auto margin replenishment) flag of the margin\n account.\n"
+      example:
+        margin_mode: isolated
+        symbol: BTCUSDT
+        amr: true
+    trading_IsolatedAccountBalance:
+      title: Margin account balance
+      type: object
+      required:
+      - code
+      - margin_balance
+      - reserved_orders
+      - reserved_positions
+      properties:
+        code:
+          type: string
+          description: Currency code.
+          example: USDT
+        margin_balance:
+          type: string
+          description: The total value of funds reserved for the position.
+          example: '23.7'
+        reserved_orders:
+          type: string
+          description: The value reserved for active orders in the position.
+          example: '0'
+        reserved_positions:
+          type: string
+          description: The minimum value reserved for position's executed quantity that cannot be reduced.
+          example: '2.37'
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+  parameters:
+    trading_SymbolPath:
+      name: symbol
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_SymbolCommon'
+    trading_MarginModePath:
+      name: margin_mode
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_MarginModeCommon'
+    trading_CurrencyPath:
+      name: currency
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/trading_CurrencyCommon'
+  responses:
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

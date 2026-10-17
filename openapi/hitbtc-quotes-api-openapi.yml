@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Quotes API
+  version: ''
+  description: 'Operations tagged Quotes across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Quotes
+paths:
+  /public/price/rate:
+    get:
+      tags:
+      - Quotes
+      summary: Get a quote
+      description: 'Returns the mean of "best" bid price and "best" ask price in the order book.
+
+
+        ℹ️ If there is no "best" bid of ask price, the last price is returned.
+
+
+        ℹ️ If provided currencies do not match any existing symbol, the rate for intermediate pairs are multiplied of inverted depending on the direction of exchange in these pairs.
+
+
+        ℹ️ If there is no rate, an empty object is returned.
+
+
+        **Permission**: None
+
+
+        **IP limit**: 30/50'
+      parameters:
+      - name: from
+        in: query
+        required: true
+        description: Base currency code.
+        schema:
+          $ref: '#/components/schemas/marketData_CurrencyCommon'
+        example: BTC
+      - name: to
+        in: query
+        required: true
+        description: Quote currency code.
+        schema:
+          $ref: '#/components/schemas/marketData_CurrencyCommon'
+        example: USDT
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Quote'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/marketData_InstrumentNotFound'
+                - $ref: '#/components/schemas/marketData_Validation'
+        '404':
+          $ref: '#/components/responses/marketData_404'
+      security: []
+      operationId: getPublicPriceRate
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  responses:
+    marketData_404:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+            - timestamp
+            - path
+            - status
+            - error
+            - message
+            - requestId
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: Request timestamp.
+                example: '2024-03-22T15:04:05.590Z'
+              path:
+                type: string
+                description: Request path.
+                example: /api/3/public/PATH
+              status:
+                type: integer
+                description: Error status.
+                example: 404
+              error:
+                type: string
+                description: Error description.
+                example: Not Found
+              message:
+                type: string
+                nullable: true
+                enum:
+                - null
+                description: Error message.
+              requestId:
+                type: string
+                description: Request identifier.
+                example: 0cdf39b4-28499640
+  schemas:
+    marketData_Error:
+      type: object
+      required:
+      - timestamp
+      - error
+      - path
+      - requestId
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Request timestamp.
+        error:
+          type: object
+          required:
+          - description
+          - code
+          - message
+          properties:
+            description:
+              type: string
+              description: Error description.
+            code:
+              type: integer
+              format: int
+              description: Error code.
+            message:
+              type: string
+              description: Error description.
+        path:
+          type: string
+          description: Request path.
+        requestId:
+          type: string
+          description: Request identifier.
+    marketData_Price:
+      type: object
+      required:
+      - currency
+      - price
+      - timestamp
+      properties:
+        currency:
+          type: string
+          description: Quote currency code.
+          example: USDT
+        price:
+          type: string
+          description: Quotation price.
+          example: '30250.48'
+        timestamp:
+          type: string
+          format: date-time
+          description: Last update or refresh price timestamp.
+          example: '2024-03-22T15:04:05.590Z'
+    marketData_InstrumentNotFound:
+      title: Instrument not found
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: Provided currency or symbol not found.
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Try get /public/INSTRUMENT, to get list of all available INSTRUMENT.
+          code: 2002
+          message: 'No such INSTRUMENT: PARAMETER'
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_Validation:
+      $ref: '#/components/schemas/marketData_Error'
+      type: object
+      description: "Any of:\n  * missing required parameter;\n  * invalid value of a numeric parameter.\n"
+      example:
+        timestamp: '2024-03-22T15:04:05.590Z'
+        error:
+          description: Validation error. Please, check request parameters and try again.
+          code: 10001
+          message: Bad request parameter [PARAMETER] ISSUE
+        path: /api/3/public/PATH
+        requestId: 0cdf39b4-28499640
+    marketData_Quote:
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: currency
+        $ref: '#/components/schemas/marketData_Price'
+      example:
+        BTC:
+          currency: USDT
+          price: '30250.48'
+          timestamp: '2024-03-22T15:04:05.590Z'
+    marketData_CurrencyCommon:
+      title: Currency
+      type: string
+      description: Currency code.
+      example: USDT
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

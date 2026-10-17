@@ -1,0 +1,179 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Symbol API
+  version: ''
+  description: 'Operations tagged Symbol across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Symbol
+paths:
+  /public/symbol:
+    get:
+      tags:
+      - Symbol
+      summary: Get symbols
+      description: Returns the actual list of symbols (currency pairs) traded on the exchange.
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Symbol'
+      security: []
+      operationId: getPublicSymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /public/symbol/{symbol}:
+    get:
+      tags:
+      - Symbol
+      summary: Get a specific symbol
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Symbol'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicSymbolBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  schemas:
+    marketData_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    marketData_Symbol:
+      required:
+      - id
+      - baseCurrency
+      - quoteCurrency
+      - quantityIncrement
+      - tickSize
+      - feeCurrency
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Symbol code.
+        baseCurrency:
+          type: string
+          nullable: true
+          example: ETH
+          description: Name (code) of the base currency.
+        quoteCurrency:
+          type: string
+          nullable: true
+          example: USDT
+          description: Name (code) of the quote currency.
+        quantityIncrement:
+          type: string
+          nullable: true
+          example: '0.00001'
+          description: Symbol quantity should be divided by this value with no remainder.
+        tickSize:
+          type: string
+          nullable: true
+          example: '0.01'
+          description: Symbol price should be divided by this value with no remainder.
+        takeLiquidityRate:
+          type: string
+          nullable: true
+          example: '0.002'
+          default: 0.002
+          description: Default fee rate.
+        provideLiquidityRate:
+          type: string
+          nullable: true
+          example: '0.001'
+          default: 0.001
+          description: Default fee rate for the market making trades.
+        feeCurrency:
+          type: string
+          nullable: true
+          example: USDT
+          description: Currency in which fees are determined.
+        marginTrading:
+          type: boolean
+          description: Determines whether the margin trading is available.
+        maxInitialLeverage:
+          type: string
+          nullable: true
+          example: '100.00'
+          description: The maximum leverage available to the user for margin trading. Shown only if `"margin_trading"` is `true`.
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+  parameters:
+    marketData_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      description: Symbol code.
+      schema:
+        type: string
+    marketData_symbolsQuery:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      description: A comma-separated list of symbol codes.
+      schema:
+        type: array
+        items:
+          type: string
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

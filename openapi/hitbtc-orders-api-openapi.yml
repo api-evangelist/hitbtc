@@ -1,0 +1,1560 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Orders API
+  version: ''
+  description: 'Operations tagged Orders across 2 of this provider''s published API definitions: hitbtc-api-v3-spec.yaml, hitbtc-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/3
+- url: https://api.hitbtc.com/api/3
+  description: Production; the served spec declares the relative server /api/3 and the docs at api.hitbtc.com name this host
+- url: https://api.demo.hitbtc.com/api/3
+  description: Demo Environment (Sandbox), per api.hitbtc.com docs
+tags:
+- name: Orders
+paths:
+  /spot/order:
+    get:
+      tags:
+      - Orders
+      summary: Get orders
+      description: 'Returns all active and parked orders.
+
+
+        **Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 300/450'
+      parameters:
+      - $ref: '#/components/parameters/trading_Symbols'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getSpotOrder
+      x-operation-id-source: derived
+    post:
+      tags:
+      - Orders
+      summary: Place an order
+      description: '⚠️ The execution of a taker''s order may be postponed for 1 millisecond.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 300/450'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/trading_OrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_NewOrder'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_BadFlagsCombination'
+                - $ref: '#/components/schemas/trading_NotSupported'
+                - $ref: '#/components/schemas/trading_InvalidPrice'
+                - $ref: '#/components/schemas/trading_BadPrice'
+                - $ref: '#/components/schemas/trading_QuantityNotNumber'
+                - $ref: '#/components/schemas/trading_QuantityTooLow'
+                - $ref: '#/components/schemas/trading_QuantityBad'
+                - $ref: '#/components/schemas/trading_DuplicateClientOrderID'
+                - $ref: '#/components/schemas/trading_ExceedsLimit'
+                - $ref: '#/components/schemas/trading_FatFingerLimitExceeded'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_TooLateToEnter'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_InsufficientFunds'
+                - $ref: '#/components/schemas/trading_BadTimeInForce'
+                - $ref: '#/components/schemas/trading_BadType'
+                - $ref: '#/components/schemas/trading_BadDisplayQuantity'
+                - $ref: '#/components/schemas/trading_TotalOrdersCountExceeded'
+                - $ref: '#/components/schemas/trading_SymbolOrdersCountExceeded'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_Forbidden'
+                - $ref: '#/components/schemas/trading_TradingForbidden'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: postSpotOrder
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Orders
+      summary: Cancel orders
+      description: 'Cancels all active and parked orders.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 300/450'
+      parameters:
+      - $ref: '#/components/parameters/trading_Symbols'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/trading_Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_OrderNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_InvalidCancelRequestId'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteSpotOrder
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+  /spot/order/{client_order_id}:
+    parameters:
+    - $ref: '#/components/parameters/trading_ClOrderIdPath'
+    get:
+      tags:
+      - Orders
+      summary: Get an order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_NewOrder'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_OrderNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**Permission**: Orderbook, History, Trading balance
+
+
+        **IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: getSpotOrderByClientOrderId
+      x-operation-id-source: derived
+    patch:
+      tags:
+      - Orders
+      summary: Replace an order
+      description: 'Cancels the original order and places a new modified one.
+
+
+        ℹ️ If a valid request is rejected, the original order is canceled without placing a new one.
+
+
+        **Permission**: Place/cancel orders
+
+
+        **IP limit**: 300/450'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/trading_ReplaceOrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/trading_ReplaceOrderRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_SymbolNotFound'
+                - $ref: '#/components/schemas/trading_OrderNotFound'
+                - $ref: '#/components/schemas/trading_BadPrice'
+                - $ref: '#/components/schemas/trading_QuantityNotNumber'
+                - $ref: '#/components/schemas/trading_QuantityTooLow'
+                - $ref: '#/components/schemas/trading_QuantityBad'
+                - $ref: '#/components/schemas/trading_DuplicateClientOrderID'
+                - $ref: '#/components/schemas/trading_ExceedsLimit'
+                - $ref: '#/components/schemas/trading_FatFingerLimitExceeded'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_NotChanged'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_InvalidCancelRequestId'
+                - $ref: '#/components/schemas/trading_InsufficientFunds'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: patchSpotOrderByClientOrderId
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Orders
+      summary: Cancel an order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/trading_Order'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_NotAvailable'
+                - $ref: '#/components/schemas/trading_Validation'
+                - $ref: '#/components/schemas/trading_OrderNotFound'
+                - $ref: '#/components/schemas/trading_ExchangeClosed'
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+                - $ref: '#/components/schemas/trading_InvalidCancelRequestId'
+        '401':
+          $ref: '#/components/responses/trading_401'
+        '403':
+          $ref: '#/components/responses/trading_403'
+        '406':
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/trading_SymbolExpired'
+        '500':
+          $ref: '#/components/responses/trading_500'
+        '504':
+          $ref: '#/components/responses/trading_504'
+        default:
+          $ref: '#/components/responses/trading_Error'
+      description: '**IP limit**: 300/450'
+      security:
+      - trading_BasicAuth: []
+      - trading_BearerAuth: []
+      operationId: deleteSpotOrderByClientOrderId
+      x-operation-id-source: derived
+    servers:
+    - url: /api/3
+components:
+  schemas:
+    trading_BadFormatHS256:
+      title: Bad format (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * missing required parameters;
+
+        * the maximum time window is exceeded.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_OrderNotFound:
+      title: Order not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Canceled or replaced order has not been found, or the user has no active
+
+        or parked orders.
+
+        '
+      example:
+        error:
+          code: 20002
+          message: Order not found
+    trading_NotAvailable:
+      title: Not available
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trading on the requested market is not available.
+
+        '
+      example:
+        error:
+          code: 20044
+          message: Trading operation not allowed
+    trading_OrderBase:
+      title: Order
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderCommon'
+      - type: object
+        required:
+        - post_only
+        properties:
+          post_only:
+            type: boolean
+            description: 'A post-only order is an order that does not remove liquidity.
+
+
+              ⚠️ If the post-only order would cause a match with a
+
+              pre-existing order as a taker, then the order will be canceled.
+
+              '
+    trading_NewStopMarketOrder:
+      title: Market stop order
+      allOf:
+      - $ref: '#/components/schemas/trading_NewMarketOrder'
+      - $ref: '#/components/schemas/trading_StopPrice'
+      - required:
+        - stop_price
+    trading_TotalOrdersCountExceeded:
+      title: Total orders count exceeded
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Maximum number of active or suspended on the gateway is exceeded.
+
+        '
+      example:
+        error:
+          code: 61
+          message: Exceed total orders count
+    trading_SymbolCommon:
+      title: Symbol
+      type: string
+      description: Symbol code.
+    trading_DuplicateClientOrderID:
+      title: Duplicate client order Id
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided client order identifier is user in an active order or has been
+
+        used lately.
+
+        '
+      example:
+        error:
+          code: 20008
+          message: Duplicate clientOrderId
+    trading_ExchangeClosed:
+      title: Exchange closed
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Exchange is temporary closed.
+
+        '
+      example:
+        error:
+          code: 20010
+          message: Exchange temporary closed
+    trading_LimitReplaceOrderRequest:
+      title: Limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+      - $ref: '#/components/schemas/trading_PriceRequest'
+    trading_Error:
+      title: Error
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    trading_BadDisplayQuantity:
+      title: Bad display quantity
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: '`display_quantity` in a hidden order is other than 0.
+
+        '
+      example:
+        error:
+          code: 2013
+          message: Bad display quantity
+    trading_TooLateToEnter:
+      title: Too late to enter
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The order met its expiration time before it might be processed.
+
+        '
+      example:
+        error:
+          code: 20080
+          message: Internal order execution deadline exceeded
+    trading_TradingForbidden:
+      title: Trading forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Placing new order is forbidden for this liquidity pool.
+
+        '
+      example:
+        error:
+          code: 1006
+          message: Action is forbidden
+    trading_MarkupRateRequest:
+      title: Markup rate
+      type: object
+      properties:
+        take_rate:
+          type: number
+          minimum: 0
+          maximum: 0.1
+          multipleOf: 1.0e-06
+          description: Markup taker fee rate applied to the order volume.
+          example: 0.001
+        make_rate:
+          type: number
+          minimum: 0
+          maximum: 0.1
+          multipleOf: 1.0e-06
+          description: Markup maker fee rate applied to the order volume.
+          example: 0.001
+    trading_RequestTimeout:
+      title: Request Timeout
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Operation was canceled.
+
+        '
+      example:
+        error:
+          code: 504
+          message: Request Timeout
+    trading_Price:
+      title: Price
+      type: object
+      required:
+      - price
+      properties:
+        price:
+          type: string
+          pattern: ^\d+\.?\d*$
+          description: Order price.
+          example: '27001.99'
+    trading_ReplaceOrderRequestBase:
+      title: Replace order request
+      allOf:
+      - $ref: '#/components/schemas/trading_StrictValidateRequest'
+      - $ref: '#/components/schemas/trading_NewOrderClientId'
+      - $ref: '#/components/schemas/trading_QuantityRequest'
+    trading_TakeProfitMarketReplaceOrderRequest:
+      title: Take-profit market order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+    trading_SymbolOrdersCountExceeded:
+      title: Symbol orders count exceeded
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Maximum number of active or suspended for symbol is exceeded.
+
+        '
+      example:
+        error:
+          code: 62
+          message: Exceed symbol orders count
+    trading_UnauthorizedBasic:
+      title: Unauthorized (Basic)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_MarketReplaceOrderRequest:
+      title: Market order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+    trading_LimitOrderRequest:
+      title: Limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderRequestBase'
+      - $ref: '#/components/schemas/trading_MarkupRateRequest'
+      - $ref: '#/components/schemas/trading_HiddenOrderFields'
+      - $ref: '#/components/schemas/trading_PriceRequest'
+      - $ref: '#/components/schemas/trading_LimitDefaultTIF'
+    trading_QuantityRequest:
+      title: Quantity
+      type: object
+      required:
+      - quantity
+      properties:
+        quantity:
+          type: string
+          exclusiveMinimum: 0
+          description: Order quantity.
+          example: 2.37
+    trading_InvalidCancelRequestId:
+      title: Invalid cancel request Id
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The client order ID provided during an order cancellation is invalid.
+
+        '
+      example:
+        error:
+          code: 10023
+          message: Invalid cancel request ID
+    trading_MarketOrder:
+      title: Market order
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderBase'
+      - $ref: '#/components/schemas/trading_OrderTrades'
+      - $ref: '#/components/schemas/trading_OrderListFields'
+    trading_NewStopLimitOrder:
+      title: Stop limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_NewLimitOrder'
+      - $ref: '#/components/schemas/trading_StopPrice'
+      - required:
+        - stop_price
+    trading_NotSupported:
+      title: Not supported
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * hidden orders are not supported for the given symbol;
+
+        * the hidden quantity is not equal to zero.
+
+        '
+      example:
+        error:
+          code: 2015
+          message: symbol code not supported
+    trading_NewLimitOrder:
+      title: Limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_NewMarketOrder'
+      - $ref: '#/components/schemas/trading_Price'
+    trading_StopMarketOrder:
+      title: Stop market order
+      allOf:
+      - $ref: '#/components/schemas/trading_MarketOrder'
+      - $ref: '#/components/schemas/trading_StopPrice'
+      - required:
+        - stop_price
+    trading_StopPrice:
+      title: Stop price
+      type: object
+      properties:
+        stop_price:
+          type: string
+          description: The price level that triggers order activation.
+          example: '27003.99'
+    trading_QuantityBad:
+      title: Bad quantity
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid quantity format.
+
+        '
+      example:
+        error:
+          code: 2012
+          message: Bad quantity
+    trading_BadTimeInForce:
+      title: Bad Time-In-Force
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided Time-In-Force instruction is invalid or the combination of the
+
+        instruction and the order type is not allowed.
+
+        '
+      example:
+        error:
+          code: 20048
+          message: Bad time in force
+    trading_StopMarketReplaceOrderRequest:
+      title: Stop market order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+    trading_BadPrice:
+      title: Bad price
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid price format.
+
+        '
+      example:
+        error:
+          code: 2022
+          message: Bad price
+    trading_OrderRequestBase:
+      title: Order request
+      allOf:
+      - $ref: '#/components/schemas/trading_StrictValidateRequest'
+      - $ref: '#/components/schemas/trading_QuantityRequest'
+      - type: object
+        required:
+        - side
+        - symbol
+        properties:
+          client_order_id:
+            type: string
+            minLength: 8
+            maxLength: 32
+            pattern: ^[a-zA-Z0-9_\-]{8,32}$
+            description: 'Client-provided identifier of an order.
+
+
+              ⚠️ Uniqueness must be guaranteed until the last order with the same `client_order_id` becomes inactive (canceled, expired, or fully executed) and some time after that.
+
+
+              ℹ️ If omitted, will be generated by the system.
+
+              '
+          symbol:
+            type: string
+            description: Symbol code.
+            example: BTCUSDT
+          side:
+            type: string
+            enum:
+            - sell
+            - buy
+            description: Order side.
+          type:
+            type: string
+            default: limit
+            enum:
+            - limit
+            - market
+            - stopLimit
+            - stopMarket
+            - takeProfitLimit
+            - takeProfitMarket
+            description: "Order type.\n\nConditions: required if `market`, `stopMarket`, `takeProfitMarket`\n\nValues:\n  * `limit`—an order that will be executed at or better than the specified price. The remainder, if any, is added to the order book or expired by terms of its Time-In-Force instruction;\n  * `market`—an order that will be executed at the \"best\" available market price. If the order depletes its price level, then leaves quantity is placed to the order book at this limit price;\n  * `stopLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);\n  * `stopMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);\n  * `takeProfitLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below);\n  * `takeProfitMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below).\n"
+          time_in_force:
+            type: string
+            enum:
+            - GTC
+            - IOC
+            - FOK
+            - Day
+            - GTD
+            default: FOK
+            description: "Order expiration mode.\n\nConditions: `post_only` omitted\n\nValues:\n  * `GTC` (\"Good-Till-Canceled\")—order will not be closed until it is filled;\n  * `IOC` (\"Immediate-Or-Cancel\")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled;\n  * `FOK` (\"Fill-Or-Kill\")—order must be executed immediately and completely or not executed at all;\n  * `Day`—keeps the order active until the end of the trading day (23:59 UTC+0);\n  * `GTD` (\"Good-Till-Date\")—order will be canceled on the specified date.\n"
+          expire_time:
+            type: string
+            format: date-time
+            description: 'Date and time of order expiration.
+
+
+              Conditions: `time_in_force` is `"GTD"`
+
+              '
+          post_only:
+            type: boolean
+            description: 'A post-only order is an order that does not remove liquidity.
+
+
+              Conditions: `time_in_force` omitted
+
+
+              ⚠️ If the post-only order would cause a match with a pre-existing order as a taker, then the order will be canceled.
+
+              '
+            default: false
+    trading_MarketOrderRequest:
+      title: Market order
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderRequestBase'
+      - $ref: '#/components/schemas/trading_MarkupRateRequest'
+      - type: object
+        required:
+        - type
+    trading_QuantityTooLow:
+      title: Quantity too low
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Quantity is less or equal to zero or the quantity increment.
+
+        '
+      example:
+        error:
+          code: 2011
+          message: Quantity too low
+    trading_Order:
+      allOf:
+      - type: object
+      - title: Order
+        discriminator:
+          propertyName: type
+          mapping:
+            limit: '#/components/schemas/trading_LimitOrder'
+            market: '#/components/schemas/trading_MarketOrder'
+            stopLimit: '#/components/schemas/trading_StopLimitOrder'
+            stopMarket: '#/components/schemas/trading_StopMarketOrder'
+            takeProfitLimit: '#/components/schemas/trading_StopLimitOrder'
+            takeProfitMarket: '#/components/schemas/trading_StopMarketOrder'
+        oneOf:
+        - $ref: '#/components/schemas/trading_LimitOrder'
+        - $ref: '#/components/schemas/trading_MarketOrder'
+        - $ref: '#/components/schemas/trading_StopLimitOrder'
+        - $ref: '#/components/schemas/trading_StopMarketOrder'
+        - $ref: '#/components/schemas/trading_StopLimitOrder'
+        - $ref: '#/components/schemas/trading_StopMarketOrder'
+    trading_FatFingerLimitExceeded:
+      title: Fat finger limit exceeded
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Fat finger limit is exceeded.
+
+
+        If a replace request is rejected, it cancels the original order without
+
+        placing a new one.
+
+        '
+      example:
+        error:
+          code: 20045
+          message: Fat finger limit exceeded
+          description: Check that the funds are sufficient, given commissions
+    trading_StrictValidateRequest:
+      title: Strict validate
+      type: object
+      properties:
+        strict_validate:
+          type: boolean
+          description: Price and quantity will be checked for incrementation within the symbol tick size and quantity step (see the symbol `tick_size` and `quantity_increment`).
+          default: false
+    trading_StopLimitOrderRequest:
+      title: Stop limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_LimitOrderRequest'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+      - $ref: '#/components/schemas/trading_HiddenOrderFields'
+      - $ref: '#/components/schemas/trading_LimitDefaultTIF'
+      - required:
+        - stop_price
+    trading_StopLimitOrder:
+      title: Stop limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_LimitOrder'
+      - $ref: '#/components/schemas/trading_HiddenOrderFields'
+      - $ref: '#/components/schemas/trading_StopPrice'
+      - required:
+        - stop_price
+    trading_BadType:
+      title: Bad order type
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided order type is invalid.
+
+        '
+      example:
+        error:
+          code: 20049
+          message: Bad type
+    trading_ExceedsLimit:
+      title: Exceeds limit
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Available funds on the exchange balance are not sufficient.
+
+        '
+      example:
+        error:
+          code: 20001
+          message: Insufficient funds
+          description: Check that the funds are sufficient, given commissions
+    trading_NotChanged:
+      title: Not changed
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters for a new order are the as of the replaced one.
+
+        '
+      example:
+        error:
+          code: 20009
+          message: Price, quantity, or stop price has not been modified
+    trading_OrderTradesBase:
+      title: Order trades
+      type: object
+      required:
+      - id
+      - quantity
+      - price
+      - fee
+      - timestamp
+      - taker
+      description: The list of trades the order participated in.
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: Trade identifier.
+          example: 112263
+        quantity:
+          type: string
+          description: Quantity of the trade.
+          example: '5.457'
+        price:
+          type: string
+          description: Trade price.
+          example: '27001.99'
+        fee:
+          type: string
+          description: Fee paid for trade.
+          example: '0.000097776600'
+        timestamp:
+          type: string
+          description: Date and time of the trade.
+          example: '2024-03-22T17:01:05.092Z'
+        taker:
+          type: boolean
+          description: Liquidity indicator.
+    trading_PriceRequest:
+      title: Price
+      type: object
+      required:
+      - price
+      properties:
+        price:
+          type: number
+          exclusiveMinimum: 0
+          description: Order price.
+          example: 27001.99
+    trading_OrderCommon:
+      title: Order
+      type: object
+      required:
+      - id
+      - client_order_id
+      - symbol
+      - quantity
+      - quantity_cumulative
+      - time_in_force
+      - side
+      - status
+      - type
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: integer
+          format: uint64
+          example: 828680665
+          description: Unique order identifier as assigned by the exchange.
+        client_order_id:
+          type: string
+          description: Client-provided or system-generated identifier of an order.
+          example: d8574207d9e3b16a4a5511753eeef175
+        symbol:
+          type: string
+          description: Symbol code.
+          example: BTCUSDT
+        side:
+          type: string
+          enum:
+          - sell
+          - buy
+          description: Order side.
+        status:
+          type: string
+          enum:
+          - new
+          - suspended
+          - partiallyFilled
+          - filled
+          - canceled
+          - expired
+          - rejected
+          description: 'Order status.
+
+
+            Values:
+
+            * `new`—an order is placed in the order book;
+
+            * `suspended`—a `stopLimit`, `stopMarket`, `takeProfitLimit` or `takeProfitMarket` order is parked until it meets the conditions for placement in the order book;
+
+            * `partiallyFilled`—an order is executed, but a part of its quantity is not filled yet;
+
+            * `filled`—order quantity filled completely;
+
+            * `canceled`—an order is canceled. It can either be done by a user through a cancel/replace request or by the system under specific circumstances;
+
+            * `expired`—an order is deactivated after it no longer satisfies Time in Force (IOC, FOK) or Post Only requirements;
+
+            * `rejected`—an order has been rejected.
+
+            '
+        type:
+          type: string
+          enum:
+          - limit
+          - market
+          - stopLimit
+          - stopMarket
+          - takeProfitLimit
+          - takeProfitMarket
+          description: 'Order type.
+
+
+            Values:
+
+            * `limit`—an order that will be executed at or better than the specified price. The remainder, if any, is added to the order book or expired by terms of its Time-In-Force instruction;
+
+            * `market`—an order that will be executed at the "best" available market price. If the order depletes its price level, then leaves quantity is placed to the order book at this limit price;
+
+            * `stopLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);
+
+            * `stopMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—falls below, for buy orders—rises above);
+
+            * `takeProfitLimit`—a limit order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below);
+
+            * `takeProfitMarket`—a market order that remains inactive until the market crosses a specified stop price (for sell orders—rises above, for buy orders—falls below).
+
+            '
+        time_in_force:
+          type: string
+          enum:
+          - GTC
+          - IOC
+          - FOK
+          - Day
+          - GTD
+          description: 'Order expiration mode.
+
+
+            Values:
+
+            * `GTC` ("Good-Till-Canceled")—order will not be closed until it is filled;
+
+            * `IOC` ("Immediate-Or-Cancel")—order must be executed immediately. Any part of an IOC order that cannot be filled immediately will be canceled;
+
+            * `FOK` ("Fill-Or-Kill")—order must be executed immediately and completely or not executed at all;
+
+            * `Day`—keeps the order active until the end of the trading day (23:59 UTC+0);
+
+            * `GTD` ("Good-Till-Date")—order will be canceled on the specified date.
+
+            '
+        quantity:
+          type: string
+          description: Order quantity.
+          example: '13.942'
+        quantity_cumulative:
+          type: string
+          description: Executed order quantity.
+          example: '5.240'
+        expire_time:
+          type: string
+          format: date-time
+          nullable: true
+          description: 'Date of order expiration.
+
+
+            Conditions: `time_in_force` is `"GTD"`
+
+            '
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: Date of order creation.
+          example: '2024-03-22T14:18:47.321Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Date of order last update.
+          example: '2024-03-22T15:23:56.876Z'
+        price_average:
+          type: string
+          description: 'Average price of executed order quantity.
+
+            '
+          example: '27001.99'
+    trading_InsufficientFunds:
+      title: Insufficient funds
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: ''
+      example:
+        error:
+          code: 20004
+          message: Insufficient funds
+    trading_OrderListFields:
+      title: Order list
+      type: object
+      properties:
+        order_list_id:
+          type: string
+          description: 'Order list identifier.
+
+
+            Conditions: order list
+
+            '
+          example: d8574207d9e3b16a4a5511753eeef175
+        contingency_type:
+          type: string
+          enum:
+          - allOrNone
+          - oneCancelOther
+          - oneTriggerOther
+          - oneTriggerOneCancelOther
+          description: "Order list type.\n\nConditions: order list\n\nValues:\n  * `allOrNone` (AON)—all orders in the set should be executed within a single transaction or become expired otherwise;\n  * `oneCancelOther` (OCO)—all orders in the set should be canceled if one of them was executed;\n  * `oneTriggerOther` (OTO)—execution of the first (primary) order on the list activates other (secondary) orders as independent of each other;\n  * `oneTriggerOneCancelOther` (OTOCO)—the execution of the first (primary) order on the list activates the other (secondary) orders as an OCO order list.\n"
+    trading_Forbidden:
+      title: Forbidden
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* insufficient API key permissions;\n* provided IP address is not in the white list;\n* the user is not eligible for the given liquidity pool due to the\n  configuration.\n"
+      example:
+        error:
+          code: 1003
+          message: Action is forbidden for this API key
+    trading_NewOrder:
+      allOf:
+      - type: object
+      - title: New order
+        discriminator:
+          propertyName: type
+          mapping:
+            limit: '#/components/schemas/trading_NewLimitOrder'
+            market: '#/components/schemas/trading_NewMarketOrder'
+            stopLimit: '#/components/schemas/trading_NewStopLimitOrder'
+            stopMarket: '#/components/schemas/trading_NewStopMarketOrder'
+            takeProfitLimit: '#/components/schemas/trading_NewStopLimitOrder'
+            takeProfitMarket: '#/components/schemas/trading_NewStopMarketOrder'
+        oneOf:
+        - $ref: '#/components/schemas/trading_NewLimitOrder'
+        - $ref: '#/components/schemas/trading_NewMarketOrder'
+        - $ref: '#/components/schemas/trading_NewStopLimitOrder'
+        - $ref: '#/components/schemas/trading_NewStopMarketOrder'
+        - $ref: '#/components/schemas/trading_NewStopLimitOrder'
+        - $ref: '#/components/schemas/trading_NewStopMarketOrder'
+    trading_StopPriceRequest:
+      title: Stop price
+      type: object
+      properties:
+        stop_price:
+          type: number
+          exclusiveMinimum: 0
+          description: The price level that triggers order activation.
+          example: 27003.99
+    trading_NewMarketOrder:
+      title: Market order
+      allOf:
+      - $ref: '#/components/schemas/trading_OrderBase'
+      - $ref: '#/components/schemas/trading_OrderTrades'
+      - $ref: '#/components/schemas/trading_HiddenOrderFields'
+    trading_TakeProfitLimitReplaceOrderRequest:
+      title: Take-profit limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+      - $ref: '#/components/schemas/trading_PriceRequest'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+    trading_ReplaceOrderRequest:
+      title: Replace order request
+      oneOf:
+      - $ref: '#/components/schemas/trading_LimitReplaceOrderRequest'
+      - $ref: '#/components/schemas/trading_MarketReplaceOrderRequest'
+      - $ref: '#/components/schemas/trading_StopLimitReplaceOrderRequest'
+      - $ref: '#/components/schemas/trading_StopMarketReplaceOrderRequest'
+      - $ref: '#/components/schemas/trading_TakeProfitLimitReplaceOrderRequest'
+      - $ref: '#/components/schemas/trading_TakeProfitMarketReplaceOrderRequest'
+    trading_StopLimitReplaceOrderRequest:
+      title: Stop limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_ReplaceOrderRequestBase'
+      - $ref: '#/components/schemas/trading_PriceRequest'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+    trading_StopMarketOrderRequest:
+      title: Stop market order
+      allOf:
+      - $ref: '#/components/schemas/trading_MarketOrderRequest'
+      - $ref: '#/components/schemas/trading_StopPriceRequest'
+      - required:
+        - stop_price
+    trading_LimitOrder:
+      title: Limit order
+      allOf:
+      - $ref: '#/components/schemas/trading_MarketOrder'
+      - $ref: '#/components/schemas/trading_Price'
+    trading_NewOrderClientId:
+      title: Order client ID
+      type: object
+      properties:
+        new_client_order_id:
+          type: string
+          minLength: 8
+          maxLength: 32
+          pattern: ^[a-zA-Z0-9_\-]{8,32}$
+          description: 'Client-provided identifier of a new order placed or parked instead of the canceled one.
+
+
+            ⚠️ Uniqueness must be guaranteed until the last order with the same `client_order_id` becomes inactive (canceled, expired, or fully executed) and some time after that.
+
+
+            ℹ️ If omitted, will be generated by the system.
+
+            '
+          example: d8574207d9e3b16a4a5511753eeef175
+    trading_LimitDefaultTIF:
+      title: Time-in-Force
+      type: object
+      properties:
+        time_in_force:
+          default: GTC
+    trading_QuantityNotNumber:
+      title: Quantity not number
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid quantity value.
+
+
+        Any of:
+
+        * quantity is not a decimal with a dot as the separator;
+
+        * maximum bit depth is exceeded.
+
+        '
+      example:
+        error:
+          code: 2010
+          message: Quantity not a valid number
+    trading_UnauthorizedJWT:
+      title: Unauthorized (Bearer)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid JWT.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_Internal:
+      title: Internal Server Error
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: Unclassified internal error.
+      example:
+        error:
+          code: 500
+          message: Internal Server Error
+    trading_SymbolNotFound:
+      title: Symbol not found
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'The symbol featured in the request has not been found.
+
+        '
+      example:
+        error:
+          code: 2001
+          message: Symbol not found
+    trading_UnauthorizedHS256:
+      title: Unauthorized (HS256)
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * invalid API key;
+
+        * user is not allowed to perform the requested operation;
+
+        * invalid time window value;
+
+        * invalid HMAC signature format;
+
+        * invalid HMAC signature value.
+
+        '
+      example:
+        error:
+          code: 1002
+          message: Authorization is required or has been failed
+    trading_InvalidPrice:
+      title: Invalid price
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Invalid price value.
+
+
+        Any of:
+
+        * price is not a decimal with a dot as the separator;
+
+        * maximum bit depth is exceeded;
+
+        * price is less or equal to zero.
+
+        '
+      example:
+        error:
+          code: 2020
+          message: Price is not a valid decimal
+    trading_OrderTrades:
+      title: Order trades
+      type: object
+      properties:
+        trades:
+          type: array
+          items:
+            $ref: '#/components/schemas/trading_OrderTradesBase'
+    trading_HiddenOrderFields:
+      title: Hidden order
+      type: object
+      properties:
+        display_quantity:
+          type: string
+          enum:
+          - '0'
+          description: 'The visible part of the hidden order quantity.
+
+
+            Conditions: `time_in_force` is `GTC`, `Day`, `GTD`
+
+            '
+    trading_BadFormat:
+      title: Bad format
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Provided parameters do not meet any supported authentication scheme.
+
+        '
+      example:
+        error:
+          code: 1004
+          message: Unsupported authorization method
+    trading_SymbolExpired:
+      title: Symbol expired
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Trades on the given symbol are suspended.
+
+        '
+      example:
+        error:
+          code: 20046
+          message: Exchange symbol is expired
+    trading_OrderRequest:
+      allOf:
+      - type: object
+      - title: Order request
+        discriminator:
+          propertyName: type
+          mapping:
+            limit: '#/components/schemas/trading_LimitOrderRequest'
+            market: '#/components/schemas/trading_MarketOrderRequest'
+            stopLimit: '#/components/schemas/trading_StopLimitOrderRequest'
+            stopMarket: '#/components/schemas/trading_StopMarketOrderRequest'
+            takeProfitLimit: '#/components/schemas/trading_StopLimitOrderRequest'
+            takeProfitMarket: '#/components/schemas/trading_StopMarketOrderRequest'
+        oneOf:
+        - $ref: '#/components/schemas/trading_LimitOrderRequest'
+        - $ref: '#/components/schemas/trading_MarketOrderRequest'
+        - $ref: '#/components/schemas/trading_StopLimitOrderRequest'
+        - $ref: '#/components/schemas/trading_StopMarketOrderRequest'
+        - $ref: '#/components/schemas/trading_StopLimitOrderRequest'
+        - $ref: '#/components/schemas/trading_StopMarketOrderRequest'
+    trading_Validation:
+      title: Validation
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: "Any of:\n* invalid JSON payload;\n* invalid form payload;\n* specified parameters are mutually exclusive;\n* a required parameter is missing;\n* the value of a parameter is invalid;\n* pair parameters have different formats;\n* provided value does not match the currency precision while the\n  strict-validate mode is enabled.\n"
+      example:
+        error:
+          code: 10001
+          message: Validation error
+    trading_BadFlagsCombination:
+      title: Bad flags combination
+      schema:
+        $ref: '#/components/schemas/trading_Error'
+      type: object
+      description: 'Any of:
+
+        * hidden orders are not supported for the given order type;
+
+        * hidden orders are not supported for the given TIF instruction.
+
+        '
+      example:
+        error:
+          code: 2014
+          message: Bad flags combination
+  responses:
+    trading_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Error'
+    trading_401:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/trading_UnauthorizedBasic'
+            - $ref: '#/components/schemas/trading_UnauthorizedHS256'
+            - $ref: '#/components/schemas/trading_UnauthorizedJWT'
+            - $ref: '#/components/schemas/trading_BadFormat'
+            - $ref: '#/components/schemas/trading_BadFormatHS256'
+    trading_403:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Forbidden'
+    trading_500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_Internal'
+    trading_504:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/trading_RequestTimeout'
+  parameters:
+    trading_Symbols:
+      name: symbol
+      in: query
+      schema:
+        type: array
+        nullable: true
+        items:
+          $ref: '#/components/schemas/trading_SymbolCommon'
+        minItems: 1
+      style: form
+      explode: false
+      description: Comma-separated symbol codes.
+    trading_ClOrderIdPath:
+      name: client_order_id
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 32
+        pattern: ^[a-zA-Z0-9_\-]{8,32}$
+      description: Client-provided or system-generated identifier of the order.
+      example: d8574207d9e3b16a4a5511753eeef175
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: Provide a public key as the username and a secret key as the password.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      description: Provide a bearer token obtained from the authentication service.
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v3-spec.yaml
+- hitbtc-openapi.yml

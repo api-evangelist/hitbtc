@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Withdraw API
+  version: ''
+  description: 'Operations tagged Withdraw across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Withdraw
+paths:
+  /account/crypto/estimate-withdraw-levels:
+    get:
+      tags:
+      - Withdraw
+      summary: Get estimate levels for withdrawal
+      description: '**Permission:** *BankAccess*'
+      parameters:
+      - name: currency
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Currency code.
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: string
+        description: The amount that will be withdrawn.
+      - name: networkCode
+        in: query
+        schema:
+          type: string
+        description: Network code.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/wallet_GetAccountEstimateWithdrawalLevelsResponse'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '404':
+          $ref: '#/components/responses/wallet_NotFoundError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: getAccountCryptoEstimateWithdrawLevels
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/withdraw:
+    post:
+      tags:
+      - Withdraw
+      summary: Withdraw crypto
+      description: '**Permission:** *BankWithdraw*'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wallet_WithdrawRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_TransactionResult'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: postAccountCryptoWithdraw
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /account/crypto/withdraw/{id}:
+    put:
+      tags:
+      - Withdraw
+      summary: Commit a withdrawal
+      description: '**Permission:** *BankWithdraw*'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Transaction unique identifier returned to a `POST /wallet/crypto/withdraw` request.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: putAccountCryptoWithdrawById
+      x-operation-id-source: derived
+    delete:
+      tags:
+      - Withdraw
+      summary: Roll back a withdrawal
+      description: '**Permission:** *BankWithdraw*'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Transaction unique identifier returned to a `POST /wallet/crypto/withdraw` request.
+      responses:
+        '200':
+          description: Rollback result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wallet_Result'
+        '400':
+          $ref: '#/components/responses/wallet_BadRequestError'
+        '401':
+          $ref: '#/components/responses/wallet_UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/wallet_ForbiddenError'
+        '500':
+          $ref: '#/components/responses/wallet_InternalServerError'
+        default:
+          $ref: '#/components/responses/wallet_Error'
+      security:
+      - wallet_BearerAuth: []
+      - wallet_BasicAuth: []
+      operationId: deleteAccountCryptoWithdrawById
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  responses:
+    wallet_ForbiddenError:
+      description: Action is forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_UnauthorizedError:
+      description: Authorization is required or has been failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_Error:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+    wallet_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/wallet_Error'
+  schemas:
+    wallet_Result:
+      type: object
+      required:
+      - result
+      properties:
+        result:
+          type: boolean
+    wallet_WithdrawRequest:
+      allOf:
+      - required:
+        - address
+        - amount
+        - currency
+      - properties:
+          currency:
+            type: string
+            description: Currency code.
+          amount:
+            type: number
+            description: The amount that will be sent to the specified address.
+          address:
+            type: string
+            description: Address identifier.
+          paymentId:
+            type: string
+            description: An additional identifier for specific currencies (for example, "Memo").
+          includeFee:
+            type: boolean
+            description: If `true`, the sender is willing to include fee expenses to the amount of operation, so the beneficiary will receive the sum reduced by fees.
+            nullable: true
+          autoCommit:
+            type: boolean
+            description: If `false`, then you should commit or rollback a transaction in an hour. After 1 hour, the transaction will automatically be rolled back.
+            nullable: true
+          useOffchain:
+            type: string
+            description: 'Whether the withdrawal may be committed off-chain.
+
+              If "required" is selected, then only off-chain transaction can be created.
+
+              '
+            enum:
+            - never
+            - optionally
+            - required
+            default: never
+          feeLevelId:
+            type: integer
+            description: Commission level (the level affects the speed of transactions).
+          publicComment:
+            type: string
+            description: Text comment to transaction.
+            maxLength: 255
+          networkCode:
+            type: string
+            description: Network code.
+    wallet_TransactionResult:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          example: d2ce578f-647d-4fa0-b1aa-4a27e5ee597b
+          description: Transaction unique identifier as assigned by the exchange.
+    wallet_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    wallet_GetAccountEstimateWithdrawalLevelsResponse:
+      required:
+      - feeLevelId
+      - comment
+      - fee
+      - isDefault
+      type: object
+      properties:
+        feeLevelId:
+          type: integer
+          example: 5
+          description: Fee level number.
+        comment:
+          type: string
+          example: fast
+          description: Textual description.
+        fee:
+          type: string
+          example: '0.0005'
+          description: Fee rate.
+        isDefault:
+          type: boolean
+          description: An indication of whether the level is set by default.
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml

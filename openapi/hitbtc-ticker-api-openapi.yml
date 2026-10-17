@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: Hitbtc Ticker API
+  version: ''
+  description: 'Operations tagged Ticker across 2 of this provider''s published API definitions: hitbtc-api-v2-spec.yaml, hitbtc-v2-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/2
+- url: https://api.hitbtc.com/api/2
+  description: Production; the served spec declares the relative server /api/2 and the docs at api.hitbtc.com name this host
+tags:
+- name: Ticker
+paths:
+  /public/ticker:
+    get:
+      tags:
+      - Ticker
+      summary: Get tickers
+      description: Returns ticker information.
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolsQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/marketData_Ticker'
+      security: []
+      operationId: getPublicTicker
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+  /public/ticker/{symbol}:
+    get:
+      tags:
+      - Ticker
+      summary: Get ticker by symbol
+      description: Returns the ticker for a specific symbol.
+      parameters:
+      - $ref: '#/components/parameters/marketData_symbolPath'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/marketData_Ticker'
+        '400':
+          $ref: '#/components/responses/marketData_BadRequestError'
+      security: []
+      operationId: getPublicTickerBySymbol
+      x-operation-id-source: derived
+    servers:
+    - url: /api/2
+components:
+  schemas:
+    marketData_Error:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          required:
+          - code
+          - message
+          type: object
+          properties:
+            code:
+              type: integer
+              format: int
+            message:
+              type: string
+            description:
+              type: string
+    marketData_Ticker:
+      required:
+      - symbol
+      - ask
+      - bid
+      - high
+      - last
+      - low
+      - open
+      - timestamp
+      - volume
+      - volumeQuote
+      type: object
+      properties:
+        symbol:
+          type: string
+          nullable: true
+          description: Symbol code.
+        ask:
+          type: string
+          nullable: true
+          example: '0.050043'
+          description: Best ask price.
+        bid:
+          type: string
+          nullable: true
+          example: '0.050042'
+          description: Best bid price.
+        last:
+          type: string
+          nullable: true
+          example: '0.050042'
+          description: Last trade price.
+        low:
+          type: string
+          nullable: true
+          example: '0.047052'
+          description: The lowest trade price within 24 hours.
+        high:
+          type: string
+          nullable: true
+          example: '0.051679'
+          description: The highest trade price within 24 hours.
+        open:
+          type: string
+          nullable: true
+          example: '0.047800'
+          description: Last trade price 24 hours ago.
+        volume:
+          type: string
+          nullable: true
+          example: '36456.720'
+          description: Total trading amount within 24 hours in base currency.
+        volumeQuote:
+          type: string
+          nullable: true
+          example: '1782.625000'
+          description: Total trading amount within 24 hours in quote currency.
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-06-12T14:57:19.999Z'
+          description: Last update or refresh ticker timestamp.
+  parameters:
+    marketData_symbolPath:
+      name: symbol
+      in: path
+      required: true
+      description: Symbol code.
+      schema:
+        type: string
+    marketData_symbolsQuery:
+      name: symbols
+      in: query
+      style: form
+      explode: false
+      description: A comma-separated list of symbol codes.
+      schema:
+        type: array
+        items:
+          type: string
+  responses:
+    marketData_BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/marketData_Error'
+  securitySchemes:
+    wallet_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    wallet_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    trading_BasicAuth:
+      type: http
+      description: You should use public API key as username and secret API key as password to authorize.
+      scheme: basic
+    trading_BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- hitbtc-api-v2-spec.yaml
+- hitbtc-v2-openapi.yml
